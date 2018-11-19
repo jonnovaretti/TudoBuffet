@@ -42,7 +42,7 @@
             var token = params['token'];
 
             $.ajax("/api/validacao-email", {
-                data: token,
+                data: ko.toJSON({ token }) ,
                 type: "post", contentType: "application/json",
                 success: function (result) { window.location = 'register.html'; }
             });

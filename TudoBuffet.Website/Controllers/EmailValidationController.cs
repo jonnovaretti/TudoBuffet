@@ -1,24 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using TudoBuffet.Website.Services.Contracts;
 
 namespace TudoBuffet.Website.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/validacao-email")]
     [ApiController]
     public class EmailValidationController : ControllerBase
     {
-        public EmailValidationController()
-        {
+        IEmailValidator emailValidatorService;
 
+        public EmailValidationController(IEmailValidator emailValidatorService)
+        {
+            this.emailValidatorService = emailValidatorService;
         }
 
-        public ActionResult Post(string token)
+        [HttpPost]
+        public ActionResult Post(dynamic payload)
         {
+            emailValidatorService.ActiveEmail(payload.token.ToString());
 
+            return Ok();
         }
     }
 }

@@ -4,14 +4,14 @@ var mustEqual = function (val, other) {
     return val === other;
 };
 
-function User(data) {
+function UserRegister(data) {
     this.name = data.name();
     this.email = data.email();
     this.password = data.password();
     this.confirmationPassword = data.confirmationPassword();
 }
 
-function UserViewModel() {
+function UserRegisterViewModel() {
 
     this.name = ko.observable().extend({ required: true, minLength: 2, maxLength: 120 });
     this.email = ko.observable().extend({ required: true, email: true });
@@ -22,7 +22,8 @@ function UserViewModel() {
             validator: mustEqual,
             message: 'As senhas devem ser iguais',
             params: this.password
-        } });
+        }
+    });
 
     self.errors = ko.validation.group(this);
 
@@ -32,13 +33,23 @@ function UserViewModel() {
             errors.showAllMessages();
             return;
         }
-        
+
         $.ajax("/api/users", {
-            data: ko.toJSON(new User(this)),
+            data: ko.toJSON(new UserRegister(this)),
             type: "post", contentType: "application/json",
-            success: function (result) { alert(result); }
+            success: function (result) {
+                ShowMessage(result, 200);
+            },
+            error: function (result) {
+                ShowMessage(result.responseText, result.status);
+            }
         });
+
+        this.name(null);
+        this.email(null);
+        this.password(null);
+        this.confirmationPassword(null);
     };
 }
 
-ko.applyBindings(new UserViewModel());
+ko.applyBindings(new UserRegisterViewModel(), document.getElementById("register"));

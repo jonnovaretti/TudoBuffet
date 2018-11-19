@@ -10,7 +10,7 @@ using TudoBuffet.Website.Tools;
 
 namespace TudoBuffet.Website.Services
 {
-    public class EmailSenderService : IEmailSenderService
+    public class EmailSenderService : IEmailSender
     {
         private readonly MainDbContext mainDbContext;
         private readonly IOptions<ConnectionString> connectionStringConfig;
@@ -28,7 +28,7 @@ namespace TudoBuffet.Website.Services
             Response response;
             string url, body;
 
-            url = appSettings.Value.BaseUrl + "confirmacao-email?token=" + emailValidation.Token;
+            url = appSettings.Value.BaseUrl + "confirmacao-email.html?token=" + emailValidation.Token;
             body = EmailTemplateGenerator.GetEmailConfirmationTemplate(url);
 
             response = SendEmail(emailValidation, body, "Confirmação de e-mail");

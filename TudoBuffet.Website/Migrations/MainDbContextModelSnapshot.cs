@@ -28,10 +28,13 @@ namespace TudoBuffet.Website.Migrations
                         .HasMaxLength(256);
 
                     b.Property<string>("Category")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(20);
 
                     b.Property<string>("CelPhone")
                         .HasMaxLength(256);
+
+                    b.Property<DateTime>("CreateAt");
 
                     b.Property<string>("Facebook")
                         .HasMaxLength(256);
@@ -41,6 +44,8 @@ namespace TudoBuffet.Website.Migrations
 
                     b.Property<string>("Thumbprint")
                         .HasMaxLength(256);
+
+                    b.Property<DateTime?>("UpdateAt");
 
                     b.Property<Guid?>("UserId");
 
@@ -56,6 +61,8 @@ namespace TudoBuffet.Website.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("CreateAt");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256);
 
@@ -63,6 +70,10 @@ namespace TudoBuffet.Website.Migrations
 
                     b.Property<string>("Token")
                         .HasMaxLength(256);
+
+                    b.Property<DateTime?>("UpdateAt");
+
+                    b.Property<DateTime?>("ValidateAt");
 
                     b.Property<bool>("WasValidate");
 
@@ -76,13 +87,21 @@ namespace TudoBuffet.Website.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("ActivedAt");
+
+                    b.Property<DateTime>("CreateAt");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256);
+
+                    b.Property<bool>("IsActive");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256);
 
                     b.Property<int>("PasswordHash");
+
+                    b.Property<DateTime?>("UpdateAt");
 
                     b.HasKey("Id");
 

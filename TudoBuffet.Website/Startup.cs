@@ -50,9 +50,11 @@ namespace TudoBuffet.Website
             var dbConnection = "Data Source=localhost\\SQLEXPRESS;Initial Catalog=TudoBuffet;Integrated Security=True";
             services.AddDbContext<MainDbContext>(options => options.UseSqlServer(dbConnection));
 
-            services.AddTransient<IUserSignupService, UserService>();
-            services.AddTransient<IEmailSenderService, EmailSenderService>();
+            services.AddTransient<IUserSignup, UserSignupService>();
+            services.AddTransient<IEmailSender, EmailSenderService>();
             services.AddTransient<IUsersEmailsValidationUoW, UsersEmailsValidationUoW>();
+            services.AddTransient<IEmailValidator, EmailValidationService>();
+            services.AddTransient<IUserAuthenticatior, UserAuthenticatorService>();
 
             services.Configure<ConnectionString>(config.GetSection("ConnectionString"));
             services.Configure<ApplicationSetting>(config.GetSection("ApplicationSetting"));

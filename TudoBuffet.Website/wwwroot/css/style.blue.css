@@ -123,21 +123,21 @@ h1 {
   color: #999;
 }
 
-#top #login-modal .modal-header {
+#top #login-modal #message-modal .modal-header {
   background: #2b90d9;
 }
 
-#top #login-modal .modal-header h5 {
-  color: #fff;
+#top #login-modal #message-modal .modal-header h5 {
+    color: #fff;
 }
 
-#top #login-modal a {
-  color: #2b90d9;
+#top #login-modal #message-modal a {
+    color: #2b90d9;
 }
 
-#top #login-modal p {
-  font-weight: 300;
-  margin-bottom: 20px;
+#top #login-modal #message-modal p {
+    font-weight: 300;
+    margin-bottom: 20px;
 }
 
 /*

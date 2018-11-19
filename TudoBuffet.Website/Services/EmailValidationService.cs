@@ -1,12 +1,11 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using TudoBuffet.Website.Entities;
 using TudoBuffet.Website.Repositories.Context;
 using TudoBuffet.Website.Services.Contracts;
 
 namespace TudoBuffet.Website.Services
 {
-    public class EmailValidationService : IEmailValidatorService
+    public class EmailValidationService : IEmailValidator
     {
         private readonly MainDbContext mainDbContext;
 

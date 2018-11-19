@@ -44,7 +44,7 @@
                         </nav>
                     </div>
                     <div class="col-lg-6">
-                        <div class="box">
+                        <div class="box" id="register">
                             <h1>Nova conta</h1>
                             <p class="lead">Não tem registro ainda?</p>
                             <p>Se cadastrando em nosso portal, você poderá anunciar seu buffet ou divulgar seus serviços!</p>
@@ -71,48 +71,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="box">
-                            <h1>Login</h1>
-                            <p class="lead">Já tem cadastro?</p>
-                            <hr>
-                            <form action="customer-orders.html" method="post">
-                                <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="text" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="password">Password</label>
-                                    <input type="password" class="form-control">
-                                </div>
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i> Log in</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
     <div id="footer" style="padding-bottom: 0px;"></div>
     <script src="vendor/jquery/jquery.min.js"></script>
-    <script>
-        (function ($, window, document, undefined) {
-
-            $(function () {
-                $("#header").load("header.html");
-                $("#footer").load("footer.html");
-            });
-
-        })(jQuery, window, document);
-    </script>
     <script src="vendor/popper.js/umd/popper.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
     <script src="vendor/jquery.cookie/jquery.cookie.js"></script>
     <script src="js/knockout.js"></script>
     <script src="js/knockout-validation.js"></script>
     <script src="js/validation-messages.js"></script>
+    <script src="js/functions.js"></script>
     <script src="controller/register.js"></script>
 </body>
 </html>

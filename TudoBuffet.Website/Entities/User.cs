@@ -1,17 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using TudoBuffet.Website.Exceptions;
 
 namespace TudoBuffet.Website.Entities
 {
     public class User : BaseEntity
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public int PasswordHash { get; set; }
         public bool IsActive { get; set; }
         public DateTime ActivedAt { get; set; }
         public List<Buffet> Buffets { get; set; }
+
+        public void Validate()
+        {
+            if (string.IsNullOrEmpty(Email))
+                throw new BusinessException("Campo obrigatório, e-mail não preenchido");
+
+            if (!new EmailAddressAttribute().IsValid(Email))
+                throw new BusinessException("E-mail inválido");
+
+            if (string.IsNullOrEmpty(Name))
+                throw new BusinessException("Campo obrigatório, nome não preenchido");
+
+            if (PasswordHash == 0)
+                throw new BusinessException("Campo obrigatório, senha não preenchido");
+        }
 
         public void Active()
         {
