@@ -10,6 +10,8 @@ using TudoBuffet.Website.Services.Contracts;
 using TudoBuffet.Website.Services;
 using System.IO;
 using TudoBuffet.Website.Configs;
+using TudoBuffet.Website.Repositories;
+using TudoBuffet.Website.Repositories.Contracts;
 
 namespace TudoBuffet.Website
 {
@@ -50,6 +52,7 @@ namespace TudoBuffet.Website
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IEmailSenderService, EmailSenderService>();
+            services.AddTransient<IUsersEmailsValidationUoW, UsersEmailsValidationUoW>();
 
             services.Configure<ConnectionString>(config.GetSection("ConnectionString"));
             services.Configure<ApplicationSetting>(config.GetSection("ApplicationSetting"));

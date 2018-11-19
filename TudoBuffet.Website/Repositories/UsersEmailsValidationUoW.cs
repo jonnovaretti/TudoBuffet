@@ -1,5 +1,6 @@
 ﻿using TudoBuffet.Website.Entities;
 using TudoBuffet.Website.Repositories.Context;
+using TudoBuffet.Website.Repositories.Contracts;
 
 namespace TudoBuffet.Website.Repositories
 {
@@ -28,7 +29,7 @@ namespace TudoBuffet.Website.Repositories
             mainDbContext.Database.RollbackTransaction();
         }
 
-        public void Execute(User user, EmailValidation emailValidation)
+        public void ExecuteInserts(User user, EmailValidation emailValidation)
         {
             mainDbContext.Add(user);
             mainDbContext.Add(emailValidation);

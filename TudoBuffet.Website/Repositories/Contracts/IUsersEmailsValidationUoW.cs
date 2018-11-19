@@ -1,10 +1,9 @@
 ﻿using TudoBuffet.Website.Entities;
-using TudoBuffet.Website.Repositories.Contracts;
 
-namespace TudoBuffet.Website.Repositories
+namespace TudoBuffet.Website.Repositories.Contracts
 {
     public interface IUsersEmailsValidationUoW : IUnitOfWork<IUsersEmailsValidationUoW>
     {
-        void Execute(User user, EmailValidation emailValidation);
+        void ExecuteInserts(User user, EmailValidation emailValidation);
     }
 }

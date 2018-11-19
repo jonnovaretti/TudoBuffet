@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using TudoBuffet.Website.Entities;
-using TudoBuffet.Website.Repositories;
 using TudoBuffet.Website.Repositories.Context;
+using TudoBuffet.Website.Repositories.Contracts;
 using TudoBuffet.Website.Services.Contracts;
 
 namespace TudoBuffet.Website.Services
@@ -52,7 +52,7 @@ namespace TudoBuffet.Website.Services
                     user.Id = Guid.NewGuid();
                     emailValidation = EmailValidation.Build(user.Email);
 
-                    unitOfWork.Execute(user, emailValidation);
+                    unitOfWork.ExecuteInserts(user, emailValidation);
 
                     response = emailSenderService.SendEmailValidation(emailValidation);
 
