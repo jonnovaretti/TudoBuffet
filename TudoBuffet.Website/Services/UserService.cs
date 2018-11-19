@@ -2,7 +2,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net;
 using TudoBuffet.Website.Entities;
+using TudoBuffet.Website.Repositories;
 using TudoBuffet.Website.Repositories.Context;
 using TudoBuffet.Website.Services.Contracts;
 
@@ -12,11 +14,13 @@ namespace TudoBuffet.Website.Services
     {
         private readonly MainDbContext mainDbContext;
         private readonly IEmailSenderService emailSenderService;
+        private readonly IUsersEmailsValidationUoW usersEmailsValidationUoW;
 
-        public UserService(MainDbContext mainDbContext, IEmailSenderService emailSenderService)
+        public UserService(MainDbContext mainDbContext, IEmailSenderService emailSenderService, IUsersEmailsValidationUoW usersEmailsValidationUoW)
         {
             this.mainDbContext = mainDbContext;
             this.emailSenderService = emailSenderService;
+            this.usersEmailsValidationUoW = usersEmailsValidationUoW;
         }
 
         public User GetUser(Guid id)
@@ -38,7 +42,7 @@ namespace TudoBuffet.Website.Services
             if (user.PasswordHash == 0)
                 throw new FieldAccessException("Campo obrigatório, senha não preenchido");
 
-            using (var transaction = mainDbContext.Database.BeginTransaction())
+            using (var unitOfWork = usersEmailsValidationUoW.BeginTransaction())
             {
                 try
                 {
@@ -48,24 +52,21 @@ namespace TudoBuffet.Website.Services
                     user.Id = Guid.NewGuid();
                     emailValidation = EmailValidation.Build(user.Email);
 
-                    mainDbContext.Add(user);
-                    mainDbContext.Add(emailValidation);
-
-                    mainDbContext.SaveChanges();
+                    unitOfWork.Execute(user, emailValidation);
 
                     response = emailSenderService.SendEmailValidation(emailValidation);
 
-                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                        transaction.Commit();
+                    if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.Accepted)
+                        unitOfWork.Commit();
                     else
                     {
-                        transaction.Rollback();
+                        unitOfWork.Rollback();
                         throw new Exception("Ocorreu um erro durante o cadastro. Tente novamente mais tarde");
                     }
                 }
                 catch (Exception )
                 {
-                    transaction.Rollback();
+                    unitOfWork.Rollback();
                     throw;
                 }
             }

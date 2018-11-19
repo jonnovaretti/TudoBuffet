@@ -50,7 +50,9 @@ namespace TudoBuffet.Website
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IEmailSenderService, EmailSenderService>();
+
             services.Configure<ConnectionString>(config.GetSection("ConnectionString"));
+            services.Configure<ApplicationSetting>(config.GetSection("ApplicationSetting"));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

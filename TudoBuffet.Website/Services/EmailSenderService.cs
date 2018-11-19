@@ -14,11 +14,13 @@ namespace TudoBuffet.Website.Services
     {
         private readonly MainDbContext mainDbContext;
         private readonly IOptions<ConnectionString> connectionStringConfig;
+        private readonly IOptions<ApplicationSetting> appSettings;
 
-        public EmailSenderService(MainDbContext mainDbContext, IOptions<ConnectionString> connectionStringConfig)
+        public EmailSenderService(MainDbContext mainDbContext, IOptions<ConnectionString> connectionStringConfig, IOptions<ApplicationSetting> appSettings)
         {
             this.mainDbContext = mainDbContext;
             this.connectionStringConfig = connectionStringConfig;
+            this.appSettings = appSettings;
         }
 
         public Response SendEmailValidation(EmailValidation emailValidation)
@@ -26,7 +28,7 @@ namespace TudoBuffet.Website.Services
             Response response;
             string url, body;
 
-            url = "/confirmacaoemail?token=" + emailValidation.Token;
+            url = appSettings.Value.BaseUrl + "confirmacao-email?token=" + emailValidation.Token;
             body = EmailTemplateGenerator.GetEmailConfirmationTemplate(url);
 
             response = SendEmail(emailValidation, body, "Confirmação de e-mail");

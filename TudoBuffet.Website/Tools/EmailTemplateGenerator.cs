@@ -8,11 +8,11 @@
                                                     <head></head>
                                                     <body>
                                                         Você está recebendo esse e-mail da equipe TudoBuffet.
-                                                        <br>
+                                                        </br></br>
                                                         Para confirmar o cadastro, clique ou copie e cole o link abaixo:
-                                                        <br>
+                                                        </br></br>
                                                         #link#
-                                                        <br>
+                                                        </br></br>
                                                         Obrigado
                                                         <br>
                                                         TudoBuffet
