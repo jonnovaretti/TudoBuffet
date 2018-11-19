@@ -10,9 +10,9 @@ namespace TudoBuffet.Website.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserService userService;
+        private readonly IUserSignupService userService;
 
-        public UserController(IUserService userService)
+        public UserController(IUserSignupService userService)
         {
             this.userService = userService;
         }

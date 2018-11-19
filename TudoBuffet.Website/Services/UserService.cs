@@ -10,7 +10,7 @@ using TudoBuffet.Website.Services.Contracts;
 
 namespace TudoBuffet.Website.Services
 {
-    public class UserService : IUserService
+    public class UserService : IUserSignupService
     {
         private readonly MainDbContext mainDbContext;
         private readonly IEmailSenderService emailSenderService;
@@ -23,24 +23,12 @@ namespace TudoBuffet.Website.Services
             this.usersEmailsValidationUoW = usersEmailsValidationUoW;
         }
 
-        public User GetUser(Guid id)
-        {
-            return mainDbContext.Users.FirstOrDefault(u => u.Id == id);
-        }
-
         public void RegisterNewUser(User user)
         {
-            if (string.IsNullOrEmpty(user.Email))
-                throw new FieldAccessException("Campo obrigatório, e-mail não preenchido");
+            ValidateUser(user);
 
-            if(!new EmailAddressAttribute().IsValid(user.Email))
-                throw new FieldAccessException("E-mail inválido");
-
-            if (string.IsNullOrEmpty(user.Name))
-                throw new FieldAccessException("Campo obrigatório, nome não preenchido");
-
-            if (user.PasswordHash == 0)
-                throw new FieldAccessException("Campo obrigatório, senha não preenchido");
+            if (!IsNewEmail(user))
+                throw new ValidationException("Já existe um cadastro com esse e-mail");
 
             using (var unitOfWork = usersEmailsValidationUoW.BeginTransaction())
             {
@@ -64,12 +52,36 @@ namespace TudoBuffet.Website.Services
                         throw new Exception("Ocorreu um erro durante o cadastro. Tente novamente mais tarde");
                     }
                 }
-                catch (Exception )
+                catch (Exception)
                 {
                     unitOfWork.Rollback();
                     throw;
                 }
             }
+        }
+
+        private bool IsNewEmail(User user)
+        {
+            bool isNewEmail;
+
+            isNewEmail = !mainDbContext.Users.Any(u => u.Email == user.Email);
+
+            return isNewEmail;
+        }
+
+        private static void ValidateUser(User user)
+        {
+            if (string.IsNullOrEmpty(user.Email))
+                throw new ArgumentNullException("Campo obrigatório, e-mail não preenchido");
+
+            if (!new EmailAddressAttribute().IsValid(user.Email))
+                throw new FieldAccessException("E-mail inválido");
+
+            if (string.IsNullOrEmpty(user.Name))
+                throw new ArgumentNullException("Campo obrigatório, nome não preenchido");
+
+            if (user.PasswordHash == 0)
+                throw new ArgumentNullException("Campo obrigatório, senha não preenchido");
         }
     }
 }

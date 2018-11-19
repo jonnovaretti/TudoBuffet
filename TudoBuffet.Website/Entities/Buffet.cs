@@ -2,7 +2,7 @@
 
 namespace TudoBuffet.Website.Entities
 {
-    public class Buffet
+    public class Buffet : BaseEntity
     {
         public CategoryBuffet Category { get; set; }
         public string Name { get; set; }
