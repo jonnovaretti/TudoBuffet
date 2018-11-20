@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using TudoBuffet.Website.Entities;
@@ -9,6 +10,7 @@ using TudoBuffet.Website.Services.Contracts;
 namespace TudoBuffet.Website.Controllers
 {
     [Route("api/users")]
+    [AllowAnonymous]
     [ApiController]
     public class UserController : ControllerBase
     {

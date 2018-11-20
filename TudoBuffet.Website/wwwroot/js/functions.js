@@ -9,7 +9,7 @@
 
 function ShowMessage(message, status) {
     if (status >= 500) {
-        window.location = "error.html";
+        window.location = "404.html";
     }
 
     $('#message-body')[0].innerText = message;

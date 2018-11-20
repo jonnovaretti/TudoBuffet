@@ -23,7 +23,7 @@ namespace TudoBuffet.Website.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EmailsValidation", x => x.Id);
-                    table.UniqueConstraint("UNQ_Email_Validation", u => u.Email);
+                    table.UniqueConstraint("UQ_Email_Validation", x => x.Email);
                 });
 
             migrationBuilder.CreateTable(
@@ -35,14 +35,15 @@ namespace TudoBuffet.Website.Migrations
                     UpdateAt = table.Column<DateTime>(nullable: true),
                     Name = table.Column<string>(maxLength: 256, nullable: false),
                     Email = table.Column<string>(maxLength: 256, nullable: false),
-                    PasswordHash = table.Column<int>(nullable: false),
+                    PasswordHash = table.Column<string>(maxLength: 256, nullable: false),
+                    Salt = table.Column<string>(maxLength: 256, nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
                     ActivedAt = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                    table.UniqueConstraint("UNQ_Email_User", u => u.Email);
+                    table.UniqueConstraint("UQ_Email_User", x => x.Email);
                 });
 
             migrationBuilder.CreateTable(
@@ -53,12 +54,12 @@ namespace TudoBuffet.Website.Migrations
                     CreateAt = table.Column<DateTime>(nullable: false),
                     UpdateAt = table.Column<DateTime>(nullable: true),
                     Category = table.Column<string>(maxLength: 20, nullable: false),
-                    Name = table.Column<string>(maxLength: 256, nullable: false),
+                    Name = table.Column<string>(maxLength: 256, nullable: true),
                     Thumbprint = table.Column<string>(maxLength: 256, nullable: true),
                     Address = table.Column<string>(maxLength: 256, nullable: true),
                     Facebook = table.Column<string>(maxLength: 256, nullable: true),
                     CelPhone = table.Column<string>(maxLength: 256, nullable: true),
-                    UserId = table.Column<Guid>(nullable: false)
+                    UserId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {

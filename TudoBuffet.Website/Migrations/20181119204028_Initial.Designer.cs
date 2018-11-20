@@ -10,7 +10,7 @@ using TudoBuffet.Website.Repositories.Context;
 namespace TudoBuffet.Website.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20181119153509_Initial")]
+    [Migration("20181119204028_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -101,7 +101,11 @@ namespace TudoBuffet.Website.Migrations
                     b.Property<string>("Name")
                         .HasMaxLength(256);
 
-                    b.Property<int>("PasswordHash");
+                    b.Property<string>("PasswordHash")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("Salt")
+                        .HasMaxLength(256);
 
                     b.Property<DateTime?>("UpdateAt");
 

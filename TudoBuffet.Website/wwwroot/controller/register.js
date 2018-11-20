@@ -36,7 +36,8 @@ function UserRegisterViewModel() {
 
         $.ajax("/api/users", {
             data: ko.toJSON(new UserRegister(this)),
-            type: "post", contentType: "application/json",
+            type: "post",
+            contentType: "application/json",
             success: function (result) {
                 ShowMessage(result, 200);
             },

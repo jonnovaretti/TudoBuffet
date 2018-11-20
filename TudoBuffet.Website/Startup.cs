@@ -12,6 +12,11 @@ using System.IO;
 using TudoBuffet.Website.Configs;
 using TudoBuffet.Website.Repositories;
 using TudoBuffet.Website.Repositories.Contracts;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Threading.Tasks;
+using System;
+using Microsoft.IdentityModel.Tokens;
 
 namespace TudoBuffet.Website
 {
@@ -22,10 +27,6 @@ namespace TudoBuffet.Website
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-
-            var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-
-            Configuration = builder.Build();
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -43,21 +44,79 @@ namespace TudoBuffet.Website
                                  setup.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
                              });
 
+            AddServicesToContainer(services);
+            AddConfigurationInstance(services);
+            AddAuthenticationToPipeline(services);
+        }
+
+        private void AddAuthenticationToPipeline(IServiceCollection services)
+        {
             var configBuilder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
                                                           .AddJsonFile("appsettings.json", optional: true);
             var config = configBuilder.Build();
 
-            var dbConnection = "Data Source=localhost\\SQLEXPRESS;Initial Catalog=TudoBuffet;Integrated Security=True";
-            services.AddDbContext<MainDbContext>(options => options.UseSqlServer(dbConnection));
 
+            var appSettingsSection = Configuration.GetSection("ApplicationSetting");
+            var key = Encoding.ASCII.GetBytes(appSettingsSection.GetSection("SecretKey").Value);
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+
+                x.Events = new JwtBearerEvents
+                {
+                    OnTokenValidated = context =>
+                    {
+                        var userService = context.HttpContext.RequestServices.GetRequiredService<IUserAuthenticatior>();
+                        var userId = Guid.Parse(context.Principal.FindFirst("Id").Value);
+                        var user = userService.GetUserById(userId);
+                        if (user == null)
+                        {
+                            context.Fail("Não autorizado");
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
+
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+        }
+
+        private static void AddConfigurationInstance(IServiceCollection services)
+        {
+            var configBuilder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
+                                                          .AddJsonFile("appsettings.json", optional: true);
+
+            var config = configBuilder.Build();
+
+            var connectionSettings = config.GetSection("ConnectionString");
+
+            services.Configure<ConnectionString>(connectionSettings);
+            services.Configure<ApplicationSetting>(config.GetSection("ApplicationSetting"));
+
+            var dbConnection = connectionSettings.GetSection("DataBase").Value;
+            services.AddDbContext<MainDbContext>(options => options.UseSqlServer(dbConnection));
+        }
+
+        private static void AddServicesToContainer(IServiceCollection services)
+        {
             services.AddTransient<IUserSignup, UserSignupService>();
             services.AddTransient<IEmailSender, EmailSenderService>();
             services.AddTransient<IUsersEmailsValidationUoW, UsersEmailsValidationUoW>();
-            services.AddTransient<IEmailValidator, EmailValidationService>();
+            services.AddTransient<IEmailValidator, EmailValidatorService>();
             services.AddTransient<IUserAuthenticatior, UserAuthenticatorService>();
-
-            services.Configure<ConnectionString>(config.GetSection("ConnectionString"));
-            services.Configure<ApplicationSetting>(config.GetSection("ApplicationSetting"));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

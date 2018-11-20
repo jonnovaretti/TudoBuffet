@@ -39,6 +39,7 @@ namespace TudoBuffet.Website.Entities
 
             WasValidate = true;
             ValidateAt = DateTime.UtcNow;
+            UpdateAt = DateTime.UtcNow;
         }
     }
 }

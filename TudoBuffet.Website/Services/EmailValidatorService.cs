@@ -5,11 +5,11 @@ using TudoBuffet.Website.Services.Contracts;
 
 namespace TudoBuffet.Website.Services
 {
-    public class EmailValidationService : IEmailValidator
+    public class EmailValidatorService : IEmailValidator
     {
         private readonly MainDbContext mainDbContext;
 
-        public EmailValidationService(MainDbContext mainDbContext)
+        public EmailValidatorService(MainDbContext mainDbContext)
         {
             this.mainDbContext = mainDbContext;
         }

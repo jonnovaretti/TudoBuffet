@@ -9,9 +9,10 @@ namespace TudoBuffet.Website.Entities
     {
         public string Name { get; set; }
         public string Email { get; set; }
-        public int PasswordHash { get; set; }
+        public string PasswordHash { get; set; }
+        public string Salt { get; set; }
         public bool IsActive { get; set; }
-        public DateTime ActivedAt { get; set; }
+        public DateTime? ActivedAt { get; set; }
         public List<Buffet> Buffets { get; set; }
 
         public void Validate()
@@ -25,7 +26,7 @@ namespace TudoBuffet.Website.Entities
             if (string.IsNullOrEmpty(Name))
                 throw new BusinessException("Campo obrigatório, nome não preenchido");
 
-            if (PasswordHash == 0)
+            if (string.IsNullOrEmpty(PasswordHash))
                 throw new BusinessException("Campo obrigatório, senha não preenchido");
         }
 
@@ -33,6 +34,7 @@ namespace TudoBuffet.Website.Entities
         {
             IsActive = true;
             ActivedAt = DateTime.UtcNow;
+            UpdateAt = DateTime.UtcNow;
         }
     }
 }

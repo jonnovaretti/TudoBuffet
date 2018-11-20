@@ -19,7 +19,7 @@ namespace TudoBuffet.Website.Repositories.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Buffet>().Property(e => e.Category)
-                                         .HasConversion(v => v.ToString(), v => (CategoryBuffet)Enum.Parse(typeof(CategoryBuffet), v)).HasMaxLength(20);
+                                         .HasConversion(v => v.ToString(), v => (BuffetCategory)Enum.Parse(typeof(BuffetCategory), v)).HasMaxLength(20);
 
             foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(t => t.GetProperties()).Where(p => p.ClrType == typeof(string)))
             {

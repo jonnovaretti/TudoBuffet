@@ -23,7 +23,8 @@ function UserSignupViewModel() {
             data: ko.toJSON(new UserSignup(this)),
             type: "post", contentType: "application/json",
             success: function (result) {
-
+                window.sessionStorage.setItem('token', result.token);
+                window.location = "usuario-anuncios.html";
             },
             error: function (result) {
                 ShowMessage(result.responseText, result.status);

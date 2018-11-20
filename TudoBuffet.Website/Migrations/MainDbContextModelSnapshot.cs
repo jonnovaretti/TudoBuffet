@@ -99,7 +99,11 @@ namespace TudoBuffet.Website.Migrations
                     b.Property<string>("Name")
                         .HasMaxLength(256);
 
-                    b.Property<int>("PasswordHash");
+                    b.Property<string>("PasswordHash")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("Salt")
+                        .HasMaxLength(256);
 
                     b.Property<DateTime?>("UpdateAt");
 

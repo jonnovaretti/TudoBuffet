@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using TudoBuffet.Website.Configs;
 using TudoBuffet.Website.Entities;
+using TudoBuffet.Website.Infrastructures;
 using TudoBuffet.Website.Repositories.Context;
 using TudoBuffet.Website.Services.Contracts;
 
@@ -26,13 +27,18 @@ namespace TudoBuffet.Website.Services
         public bool IsCredentialCorrect(string email, string password)
         {
             User user;
-            int passwordHash;
+            string passwordHash;
+            
+            user = mainDbContext.Users.FirstOrDefault(u => u.Email == email);
 
-            passwordHash = password.GetHashCode();
+            if(user != null)
+            {
+                passwordHash = PasswordHashGenerator.CreateHashedTextFromText(password, user.Salt);
 
-            user = mainDbContext.Users.FirstOrDefault(u => u.Email == email && u.PasswordHash == passwordHash);
+                return user.PasswordHash.Equals(passwordHash);
+            }
 
-            return user != null;
+            return false;
         }
 
         public string GenerateJwt(string email)
@@ -63,6 +69,11 @@ namespace TudoBuffet.Website.Services
             tokenText = tokenHandler.WriteToken(token);
 
             return tokenText;
+        }
+
+        public User GetUserById(Guid id)
+        {
+            return mainDbContext.Users.FirstOrDefault(u => u.Id == id);
         }
     }
 }

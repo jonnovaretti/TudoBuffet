@@ -1,4 +1,5 @@
 ﻿using TudoBuffet.Website.Entities;
+using TudoBuffet.Website.Infrastructures;
 
 namespace TudoBuffet.Website.Models
 {
@@ -12,8 +13,14 @@ namespace TudoBuffet.Website.Models
         public User ToEntity()
         {
             User user = new User();
+            string salt, hashedPassword;
+
+            salt = PasswordHashGenerator.GenerateSalt();
+            hashedPassword = PasswordHashGenerator.CreateHashedTextFromText(Password, salt);
+
             user.Name = Name;
-            user.PasswordHash = Password.GetHashCode();
+            user.Salt = salt;
+            user.PasswordHash = hashedPassword;
             user.Email = Email;
 
             return user;

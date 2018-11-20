@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TudoBuffet.Website.Services.Contracts;
 
 namespace TudoBuffet.Website.Controllers
 {
     [Route("api/validacao-email")]
+    [AllowAnonymous]
     [ApiController]
     public class EmailValidationController : ControllerBase
     {
