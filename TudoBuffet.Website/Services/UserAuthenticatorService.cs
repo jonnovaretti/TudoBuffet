@@ -8,6 +8,7 @@ using System.Text;
 using TudoBuffet.Website.Configs;
 using TudoBuffet.Website.Entities;
 using TudoBuffet.Website.Infrastructures;
+using TudoBuffet.Website.Models;
 using TudoBuffet.Website.Repositories.Context;
 using TudoBuffet.Website.Services.Contracts;
 
@@ -41,7 +42,7 @@ namespace TudoBuffet.Website.Services
             return false;
         }
 
-        public string GenerateJwt(string email)
+        public AuthenticatedUser GenerateJwt(string email)
         {
             JwtSecurityTokenHandler tokenHandler;
             SecurityTokenDescriptor securityTokenConfiguration;
@@ -58,8 +59,8 @@ namespace TudoBuffet.Website.Services
             securityTokenConfiguration = new SecurityTokenDescriptor() {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim("Id", user.Id.ToString()),
-                    new Claim("Email", user.Email)
+                    new Claim("id", user.Id.ToString()),
+                    new Claim("email", user.Email)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -68,7 +69,7 @@ namespace TudoBuffet.Website.Services
             token = tokenHandler.CreateToken(securityTokenConfiguration);
             tokenText = tokenHandler.WriteToken(token);
 
-            return tokenText;
+            return new AuthenticatedUser { Token = tokenText, Id = user.Id };
         }
 
         public User GetUserById(Guid id)

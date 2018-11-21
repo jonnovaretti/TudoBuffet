@@ -9,7 +9,7 @@ using TudoBuffet.Website.Services.Contracts;
 
 namespace TudoBuffet.Website.Controllers
 {
-    [Route("api/users")]
+    [Route("api/usuarios")]
     [AllowAnonymous]
     [ApiController]
     public class UserController : ControllerBase
@@ -56,9 +56,9 @@ namespace TudoBuffet.Website.Controllers
             {
                 if (userAuthenticatiorService.IsCredentialCorrect(userModel.Email, userModel.Password))
                 {
-                    string token = userAuthenticatiorService.GenerateJwt(userModel.Email);
+                    AuthenticatedUser authenticatedUser = userAuthenticatiorService.GenerateJwt(userModel.Email);
 
-                    return Ok(new { token });
+                    return Ok(new { authenticatedUser });
                 }
 
                 return NotFound("E-mail ou senha inválidos");

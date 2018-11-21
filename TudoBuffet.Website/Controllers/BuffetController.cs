@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using TudoBuffet.Website.Entities;
+using TudoBuffet.Website.Models;
 
 namespace TudoBuffet.Website.Controllers
 {
@@ -12,10 +13,10 @@ namespace TudoBuffet.Website.Controllers
     public class BuffetController : ControllerBase
     {
         [Route("destaques")]
-        public ActionResult<List<Buffet>> GetHotest()
+        public ActionResult<List<BuffetTopModel>> GetHotest()
         {
-            List<Buffet> buffets = new List<Buffet>();
-            Buffet buffet = new Buffet();
+            List<BuffetTopModel> buffets = new List<BuffetTopModel>();
+            BuffetTopModel buffet = new BuffetTopModel();
 
             buffet.Id = Guid.NewGuid();
             buffet.Name = "Afro Festa";
@@ -24,7 +25,7 @@ namespace TudoBuffet.Website.Controllers
 
             buffets.Add(buffet);
 
-            buffet = new Buffet();
+            buffet = new BuffetTopModel();
 
             buffet.Id = Guid.NewGuid();
             buffet.Name = "Zafari Buffet";
@@ -33,7 +34,7 @@ namespace TudoBuffet.Website.Controllers
 
             buffets.Add(buffet);
 
-            buffet = new Buffet();
+            buffet = new BuffetTopModel();
 
             buffet.Id = Guid.NewGuid();
             buffet.Name = "Garotada Buffet";
@@ -42,7 +43,7 @@ namespace TudoBuffet.Website.Controllers
 
             buffets.Add(buffet);
 
-            buffet = new Buffet();
+            buffet = new BuffetTopModel();
 
             buffet.Id = Guid.NewGuid();
             buffet.Name = "Married Buffet";

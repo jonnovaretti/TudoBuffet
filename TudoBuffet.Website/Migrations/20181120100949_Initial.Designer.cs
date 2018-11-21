@@ -10,7 +10,7 @@ using TudoBuffet.Website.Repositories.Context;
 namespace TudoBuffet.Website.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20181119204028_Initial")]
+    [Migration("20181120100949_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,6 +26,10 @@ namespace TudoBuffet.Website.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime?>("ActiveUntil");
+
+                    b.Property<DateTime?>("ActivedAt");
+
                     b.Property<string>("Address")
                         .HasMaxLength(256);
 
@@ -36,6 +40,9 @@ namespace TudoBuffet.Website.Migrations
                     b.Property<string>("CelPhone")
                         .HasMaxLength(256);
 
+                    b.Property<string>("City")
+                        .HasMaxLength(256);
+
                     b.Property<DateTime>("CreateAt");
 
                     b.Property<string>("Facebook")
@@ -44,16 +51,22 @@ namespace TudoBuffet.Website.Migrations
                     b.Property<string>("Name")
                         .HasMaxLength(256);
 
-                    b.Property<string>("Thumbprint")
+                    b.Property<Guid?>("OwnerId");
+
+                    b.Property<Guid?>("PlanSelectedId");
+
+                    b.Property<int>("PriceRange");
+
+                    b.Property<string>("State")
                         .HasMaxLength(256);
 
                     b.Property<DateTime?>("UpdateAt");
 
-                    b.Property<Guid?>("UserId");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("OwnerId");
+
+                    b.HasIndex("PlanSelectedId");
 
                     b.ToTable("Buffets");
                 });
@@ -84,12 +97,65 @@ namespace TudoBuffet.Website.Migrations
                     b.ToTable("EmailsValidation");
                 });
 
+            modelBuilder.Entity("TudoBuffet.Website.Entities.Photo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid?>("BuffetId");
+
+                    b.Property<DateTime>("CreateAt");
+
+                    b.Property<bool>("IsMainPhoto");
+
+                    b.Property<string>("Path")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(256);
+
+                    b.Property<DateTime?>("UpdateAt");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuffetId");
+
+                    b.ToTable("Photo");
+                });
+
+            modelBuilder.Entity("TudoBuffet.Website.Entities.Plan", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreateAt");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256);
+
+                    b.Property<int>("Order");
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<int>("QuantityDaysActive");
+
+                    b.Property<int>("QuantityPhotosAllowed");
+
+                    b.Property<DateTime?>("UpdateAt");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Plan");
+                });
+
             modelBuilder.Entity("TudoBuffet.Website.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("ActivedAt");
+                    b.Property<DateTime?>("ActivedAt");
 
                     b.Property<DateTime>("CreateAt");
 
@@ -116,9 +182,20 @@ namespace TudoBuffet.Website.Migrations
 
             modelBuilder.Entity("TudoBuffet.Website.Entities.Buffet", b =>
                 {
-                    b.HasOne("TudoBuffet.Website.Entities.User")
+                    b.HasOne("TudoBuffet.Website.Entities.User", "Owner")
                         .WithMany("Buffets")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("OwnerId");
+
+                    b.HasOne("TudoBuffet.Website.Entities.Plan", "PlanSelected")
+                        .WithMany()
+                        .HasForeignKey("PlanSelectedId");
+                });
+
+            modelBuilder.Entity("TudoBuffet.Website.Entities.Photo", b =>
+                {
+                    b.HasOne("TudoBuffet.Website.Entities.Buffet", "Buffet")
+                        .WithMany("Photos")
+                        .HasForeignKey("BuffetId");
                 });
 #pragma warning restore 612, 618
         }

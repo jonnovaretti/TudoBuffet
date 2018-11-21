@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TudoBuffet.Website.Entities;
@@ -18,7 +19,9 @@ namespace TudoBuffet.Website.Repositories
 
         public IEnumerable<Buffet> GetBuffetsFromUserId(Guid userId)
         {
-            return mainDbContext.Buffets.Where(b => b.Owner.Id == userId);
+            return mainDbContext.Buffets.Include(b => b.PlanSelected)
+                                        .Where(b => b.Owner.Id == userId)
+                                        .DefaultIfEmpty();
         }
     }
 }

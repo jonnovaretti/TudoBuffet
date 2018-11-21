@@ -1,35 +1,36 @@
-﻿
-$(document).ready(function () {
-    var token, id;
-
-    token = window.localStorage.getItem('token');
-    id = window.localStorage.getItem('id');
-
-    if (token === undefined) {
-        window.location = "/";
-    }
-});
-
-function Ad(item) {
-    this.Id = ko.observable(item.id);
-    this.Name = ko.observable(item.name);
-    this.ActivedAt = ko.observable(item.activedAt);
-    this.Plan = ko.observable(item.plan);
-    this.Status = ko.observable(item.status);
+﻿function PurchasedPlan(item) {
+    this.id = ko.observable(item.id);
+    this.name = ko.observable(item.name);
+    this.activedAt = ko.observable(item.activedAt);
+    this.namePlan = ko.observable(item.namePlan);
+    this.status = ko.observable(item.status);
 }
 
 function AdsViewModel() {
 
-    this.ads = ko.observableArray([]);
-    this.displayMessage: ko.observable(false);
+    var self = this;
 
-    $.getJSON("/api/buffets/" + id, function (payload) {
-        var adsFound = $.map(payload, function (item) { return new Ad(item) });
+    self.purchasedPlan = ko.observableArray([]);
 
-        if (adsFound.lenght == 0)
-            displayMessage = true;
-        else
-            this.ads(adsFound);
+    self.token = ko.observable(window.sessionStorage.getItem('token'));
+
+    if (self.token() === null) {
+        window.location = "/signup.html";
+    }
+
+    $.ajax("/api/conta-logada/planos-contratados", {
+        type: "get",
+        contentType: "application/json",
+        headers: { 'Authorization': 'Bearer ' + self.token() },
+        success: function (payload) {
+
+            var adsFound = $.map(payload, function (item) { return new PurchasedPlan(item) });
+
+            self.purchasedPlan(adsFound);
+        },
+        error: function (result) {
+            ShowMessage(result.responseText, result.status);
+        }
     });
 }
 

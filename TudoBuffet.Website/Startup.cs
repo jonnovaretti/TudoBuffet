@@ -74,7 +74,7 @@ namespace TudoBuffet.Website
                     OnTokenValidated = context =>
                     {
                         var userService = context.HttpContext.RequestServices.GetRequiredService<IUserAuthenticatior>();
-                        var userId = Guid.Parse(context.Principal.FindFirst("Id").Value);
+                        var userId = Guid.Parse(context.Principal.FindFirst("id").Value);
                         var user = userService.GetUserById(userId);
                         if (user == null)
                         {
@@ -117,6 +117,7 @@ namespace TudoBuffet.Website
             services.AddTransient<IUsersEmailsValidationUoW, UsersEmailsValidationUoW>();
             services.AddTransient<IEmailValidator, EmailValidatorService>();
             services.AddTransient<IUserAuthenticatior, UserAuthenticatorService>();
+            services.AddTransient<IBuffets, Buffets>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -131,10 +132,17 @@ namespace TudoBuffet.Website
                 app.UseHsts();
             }
 
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
+            app.UseAuthentication();
+    
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

@@ -1,5 +1,6 @@
 ﻿using System;
 using TudoBuffet.Website.Entities;
+using TudoBuffet.Website.Models;
 
 namespace TudoBuffet.Website.Services.Contracts
 {
@@ -7,6 +8,6 @@ namespace TudoBuffet.Website.Services.Contracts
     {
         User GetUserById(Guid id);
         bool IsCredentialCorrect(string email, string password);
-        string GenerateJwt(string email);
+        AuthenticatedUser GenerateJwt(string email);
     }
 }

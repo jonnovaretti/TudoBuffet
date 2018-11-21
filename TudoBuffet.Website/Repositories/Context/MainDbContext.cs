@@ -15,6 +15,7 @@ namespace TudoBuffet.Website.Repositories.Context
         public DbSet<Buffet> Buffets { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<EmailValidation> EmailsValidation { get; set; }
+        public DbSet<Plan> Plans { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -19,12 +19,15 @@ function UserSignupViewModel() {
             return;
         }
 
-        $.ajax("/api/users/entrar", {
+        $.ajax("/api/usuarios/entrar", {
             data: ko.toJSON(new UserSignup(this)),
             type: "post", contentType: "application/json",
-            success: function (result) {
-                window.sessionStorage.setItem('token', result.token);
-                window.location = "usuario-anuncios.html";
+            success: function (payload) {
+
+                window.sessionStorage.setItem('token', payload.authenticatedUser.token);
+                window.sessionStorage.setItem('id', payload.authenticatedUser.id);
+
+                window.location = "usuario-buffets.html";
             },
             error: function (result) {
                 ShowMessage(result.responseText, result.status);

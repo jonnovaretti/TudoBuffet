@@ -34,7 +34,7 @@ function UserRegisterViewModel() {
             return;
         }
 
-        $.ajax("/api/users", {
+        $.ajax("/api/usuarios", {
             data: ko.toJSON(new UserRegister(this)),
             type: "post",
             contentType: "application/json",

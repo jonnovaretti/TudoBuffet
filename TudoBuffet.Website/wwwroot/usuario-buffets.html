@@ -42,7 +42,13 @@
                                   <h3 class="h4 card-title">Seção do usuário</h3>
                               </div>
                               <div class="card-body">
-                                  <ul class="nav nav-pills flex-column"><a href="customer-orders.html" class="nav-link active"><i class="fa fa-list"></i> Meus buffets</a><a href="customer-wishlist.html" class="nav-link"><i class="fa fa-heart"></i> Orçamentos recebidos</a><a href="customer-account.html" class="nav-link"><i class="fa fa-user"></i> Minha conta</a><a href="index.html" class="nav-link"><i class="fa fa-sign-out"></i> Sair</a></ul>
+                                  <ul class="nav nav-pills flex-column">
+                                      <a href="customer-orders.html" class="nav-link"><i class="fa fa-plus"></i> Novo buffet</a>
+                                      <a href="customer-orders.html" class="nav-link active"><i class="fa fa-list"></i> Meus buffets</a>
+                                      <a href="customer-wishlist.html" class="nav-link"><i class="fa fa-heart"></i> Orçamentos recebidos</a>
+                                      <a href="customer-account.html" class="nav-link"><i class="fa fa-user"></i> Minha conta</a>
+                                      <a href="index.html" class="nav-link"><i class="fa fa-sign-out"></i> Sair</a>
+                                  </ul>
                               </div>
                           </div>
                           <!-- /.col-lg-3-->
@@ -53,9 +59,7 @@
                               <h1>Buffets</h1>
                               <p class="lead">Seus buffets em um só lugar.</p>
                               <p class="text-muted">Se houver algum problema, entre em <a href="contact.html">contato</a>, responderemos o mais breve possível.</p>
-                              <hr>
-                              <div data-bind="if: displayMessage">Não foram encontrados anúncios. Clique aqui para divulgar seu buffet.</div>
-                              <div class="table-responsive">
+                              <divw class="table-responsive">
                                   <table class="table table-hover">
                                       <thead>
                                           <tr>
@@ -67,64 +71,28 @@
                                               <th></th>
                                           </tr>
                                       </thead>
-                                      <tbody>
+                                      <tbody data-bind="foreach: purchasedPlan">
                                           <tr>
-                                              <th># 1735</th>
-                                              <th>Zafari Zoo Buffet</th>
-                                              <td>22/06/2013</td>
-                                              <td>$ 150.00</td>
-                                              <td><span class="badge badge-info">Being prepared</span></td>
-                                              <td><a href="customer-order.html" class="btn btn-primary btn-sm">View</a></td>
-                                          </tr>
-                                          <tr>
-                                              <th># 1735</th>
-                                              <th>Zafari Zoo Buffet</th>
-                                              <td>22/06/2013</td>
-                                              <td>$ 150.00</td>
-                                              <td><span class="badge badge-info">Being prepared</span></td>
-                                              <td><a href="customer-order.html" class="btn btn-primary btn-sm">View</a></td>
-                                          </tr>
-                                          <tr>
-                                              <th># 1735</th>
-                                              <th>Zafari Zoo Buffet</th>
-                                              <td>22/06/2013</td>
-                                              <td>$ 150.00</td>
-                                              <td><span class="badge badge-success">Received</span></td>
-                                              <td><a href="customer-order.html" class="btn btn-primary btn-sm">View</a></td>
-                                          </tr>
-                                          <tr>
-                                              <th># 1735</th>
-                                              <th>Zafari Zoo Buffet</th>
-                                              <td>22/06/2013</td>
-                                              <td>$ 150.00</td>
-                                              <td><span class="badge badge-danger">Cancelled</span></td>
-                                              <td><a href="customer-order.html" class="btn btn-primary btn-sm">View</a></td>
-                                          </tr>
-                                          <tr>
-                                              <th># 1735</th>
-                                              <th>Zafari Zoo Buffet</th>
-                                              <td>22/06/2013</td>
-                                              <td>$ 150.00</td>
-                                              <td><span class="badge badge-warning">On hold</span></td>
+                                              <td><span data-bind="text: id" /></td>
+                                              <td><span data-bind="text: name" /></td>
+                                              <td><span data-bind="text: activedAt" /></td>
+                                              <td><span data-bind="text: namePlan" /></td>
+                                              <td><span class="badge badge-info"  data-bind="text: status"></span></td>
                                               <td><a href="customer-order.html" class="btn btn-primary btn-sm">View</a></td>
                                           </tr>
                                       </tbody>
                                   </table>
-                              </div>
+                              </divw>
                           </div>
                       </div>
                   </div>
               </div>
           </div>
       </div>
-      <div id="footer" style="padding-bottom: 0px;"></div>
+      <div id="footer" class="footer2" style="padding-bottom: 0px;"></div>
       <script src="vendor/jquery/jquery.min.js"></script>
-      <script src="vendor/popper.js/umd/popper.min.js"></script>
       <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-      <script src="vendor/jquery.cookie/jquery.cookie.js"></script>
       <script src="js/knockout.js"></script>
-      <script src="js/knockout-validation.js"></script>
-      <script src="js/validation-messages.js"></script>
       <script src="js/functions.js"></script>
       <script src="controller/usuario-buffets.js"></script>
   </body>
