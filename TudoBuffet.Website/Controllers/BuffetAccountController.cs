@@ -1,47 +1,58 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using TudoBuffet.Website.Entities;
 using TudoBuffet.Website.Models;
 using TudoBuffet.Website.Repositories.Contracts;
-using System.Security.Claims;
 
 namespace TudoBuffet.Website.Controllers
 {
-    [Route("api/conta-logada")]
+    [Route("api/area-logada/buffet")]
     [Authorize]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class BuffetAccountController : LoggedControllerBase
     {
         IBuffets buffets;
 
-        public AccountController(IBuffets buffets)
+        public BuffetAccountController(IBuffets buffets)
         {
             this.buffets = buffets;
         }
 
+        public ActionResult Post(NewBuffetModel newBuffetModel)
+        {
+            Buffet buffet;
+            try
+            {
+
+                newBuffetModel.Validate();
+                buffet = newBuffetModel.ToEntity(UserId);
+
+                buffets.Save(buffet);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return ServerError();
+            }
+        }
+
         [Route("planos-contratados")]
         [HttpGet]
-        public ActionResult<List<PurchasedPlan>> GetPurchasedPlans()
+        public ActionResult<List<PurchasedPlanModel>> GetPurchasedPlans()
         {
-            List<PurchasedPlan> purchasedPlans;
+            List<PurchasedPlanModel> purchasedPlans;
             IEnumerable<Buffet> buffetsFound;
-            Guid idParsed;
-            Claim claim;
+            
+            buffetsFound = buffets.GetBuffetsFromUserId(UserId);
 
-            claim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "id");
-            idParsed = Guid.Parse(claim.Value);
-
-            buffetsFound = buffets.GetBuffetsFromUserId(idParsed);
-
-            purchasedPlans = new List<PurchasedPlan>();
+            purchasedPlans = new List<PurchasedPlanModel>();
 
             foreach (var buffet in buffetsFound)
             {
-                var purchasedPlan = new PurchasedPlan()
+                var purchasedPlan = new PurchasedPlanModel()
                 {
                     Name = buffet.Name,
                     ActivedAt = buffet.ActivedAt.Value.ToString("dd/MM/yyyy"),

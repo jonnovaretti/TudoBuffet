@@ -8,6 +8,6 @@ namespace TudoBuffet.Website.Services.Contracts
     {
         User GetUserById(Guid id);
         bool IsCredentialCorrect(string email, string password);
-        AuthenticatedUser GenerateJwt(string email);
+        AuthenticatedUserModel GenerateJwt(string email);
     }
 }

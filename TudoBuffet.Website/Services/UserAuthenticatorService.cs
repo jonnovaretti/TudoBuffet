@@ -42,7 +42,7 @@ namespace TudoBuffet.Website.Services
             return false;
         }
 
-        public AuthenticatedUser GenerateJwt(string email)
+        public AuthenticatedUserModel GenerateJwt(string email)
         {
             JwtSecurityTokenHandler tokenHandler;
             SecurityTokenDescriptor securityTokenConfiguration;
@@ -69,7 +69,7 @@ namespace TudoBuffet.Website.Services
             token = tokenHandler.CreateToken(securityTokenConfiguration);
             tokenText = tokenHandler.WriteToken(token);
 
-            return new AuthenticatedUser { Token = tokenText, Id = user.Id };
+            return new AuthenticatedUserModel { Token = tokenText, Id = user.Id };
         }
 
         public User GetUserById(Guid id)

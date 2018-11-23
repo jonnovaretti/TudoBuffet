@@ -2,7 +2,7 @@
 
 namespace TudoBuffet.Website.Models
 {
-    public class PurchasedPlan
+    public class PurchasedPlanModel
     {
         public string Id { get; set; }
         public string Name { get; set; }

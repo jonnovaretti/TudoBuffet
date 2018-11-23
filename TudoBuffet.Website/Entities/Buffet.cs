@@ -7,15 +7,19 @@ namespace TudoBuffet.Website.Entities
     {
         public User Owner { get; set; }
         public string Name { get; set; }
-        public string Address { get; set; }
+        public string Description { get; set; }
+        public string Street { get; set; }
+        public int Number { get; set; }
+        public string District { get; set; }
         public string City { get; set; }
         public string State { get; set; }
+        public string Cellphone { get; set; }
         public string Facebook { get; set; }
-        public string CelPhone { get; set; }
+        public string Instagram { get; set; }
         public List<Photo> Photos { get; set; }
         public Plan PlanSelected { get; set; }
         public BuffetCategory Category { get; set; }
-        public PricesOptions PriceRange { get; set; }
+        public PricesOptions RangePrice { get; set; }
         public DateTime? ActivedAt { get; set; }
         public DateTime? ActiveUntil { get; set; }
     }

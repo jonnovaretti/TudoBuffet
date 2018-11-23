@@ -56,7 +56,7 @@ namespace TudoBuffet.Website.Controllers
             {
                 if (userAuthenticatiorService.IsCredentialCorrect(userModel.Email, userModel.Password))
                 {
-                    AuthenticatedUser authenticatedUser = userAuthenticatiorService.GenerateJwt(userModel.Email);
+                    AuthenticatedUserModel authenticatedUser = userAuthenticatiorService.GenerateJwt(userModel.Email);
 
                     return Ok(new { authenticatedUser });
                 }

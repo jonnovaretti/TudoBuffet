@@ -118,6 +118,7 @@ namespace TudoBuffet.Website
             services.AddTransient<IEmailValidator, EmailValidatorService>();
             services.AddTransient<IUserAuthenticatior, UserAuthenticatorService>();
             services.AddTransient<IBuffets, Buffets>();
+            services.AddTransient<IPlans, Plans>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

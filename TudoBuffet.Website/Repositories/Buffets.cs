@@ -23,5 +23,11 @@ namespace TudoBuffet.Website.Repositories
                                         .Where(b => b.Owner.Id == userId)
                                         .DefaultIfEmpty();
         }
+
+        public void Save(Buffet buffet)
+        {
+            mainDbContext.Add(buffet);
+            mainDbContext.SaveChanges();
+        }
     }
 }
