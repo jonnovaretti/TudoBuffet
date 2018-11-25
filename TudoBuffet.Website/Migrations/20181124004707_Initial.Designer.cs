@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TudoBuffet.Website.Repositories.Context;
 
 namespace TudoBuffet.Website.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    partial class MainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181124004707_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,10 +48,6 @@ namespace TudoBuffet.Website.Migrations
                     b.Property<string>("District")
                         .HasMaxLength(256);
 
-                    b.Property<string>("Environment")
-                        .IsRequired()
-                        .HasMaxLength(20);
-
                     b.Property<string>("Facebook")
                         .HasMaxLength(256);
 
@@ -59,15 +57,13 @@ namespace TudoBuffet.Website.Migrations
                     b.Property<string>("Name")
                         .HasMaxLength(256);
 
-                    b.Property<int?>("Number");
+                    b.Property<int>("Number");
 
                     b.Property<Guid?>("OwnerId");
 
                     b.Property<Guid?>("PlanSelectedId");
 
-                    b.Property<string>("Price")
-                        .IsRequired()
-                        .HasMaxLength(20);
+                    b.Property<int>("Price");
 
                     b.Property<string>("State")
                         .HasMaxLength(256);
@@ -123,13 +119,13 @@ namespace TudoBuffet.Website.Migrations
 
                     b.Property<bool>("IsMainPhoto");
 
+                    b.Property<string>("Path")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(256);
+
                     b.Property<DateTime?>("UpdateAt");
-
-                    b.Property<string>("Url")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("UrlThumbnail")
-                        .HasMaxLength(256);
 
                     b.HasKey("Id");
 

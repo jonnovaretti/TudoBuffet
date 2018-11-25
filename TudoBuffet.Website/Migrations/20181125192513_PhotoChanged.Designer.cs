@@ -10,8 +10,8 @@ using TudoBuffet.Website.Repositories.Context;
 namespace TudoBuffet.Website.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20181120100949_Initial")]
-    partial class Initial
+    [Migration("20181125192513_PhotoChanged")]
+    partial class PhotoChanged
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,14 +30,11 @@ namespace TudoBuffet.Website.Migrations
 
                     b.Property<DateTime?>("ActivedAt");
 
-                    b.Property<string>("Address")
-                        .HasMaxLength(256);
-
                     b.Property<string>("Category")
                         .IsRequired()
                         .HasMaxLength(20);
 
-                    b.Property<string>("CelPhone")
+                    b.Property<string>("Cellphone")
                         .HasMaxLength(256);
 
                     b.Property<string>("City")
@@ -45,19 +42,39 @@ namespace TudoBuffet.Website.Migrations
 
                     b.Property<DateTime>("CreateAt");
 
+                    b.Property<string>("Description")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("District")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("Environment")
+                        .IsRequired()
+                        .HasMaxLength(20);
+
                     b.Property<string>("Facebook")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("Instagram")
                         .HasMaxLength(256);
 
                     b.Property<string>("Name")
                         .HasMaxLength(256);
 
+                    b.Property<int?>("Number");
+
                     b.Property<Guid?>("OwnerId");
 
                     b.Property<Guid?>("PlanSelectedId");
 
-                    b.Property<int>("PriceRange");
+                    b.Property<string>("Price")
+                        .IsRequired()
+                        .HasMaxLength(20);
 
                     b.Property<string>("State")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("Street")
                         .HasMaxLength(256);
 
                     b.Property<DateTime?>("UpdateAt");
@@ -108,13 +125,16 @@ namespace TudoBuffet.Website.Migrations
 
                     b.Property<bool>("IsMainPhoto");
 
-                    b.Property<string>("Path")
-                        .HasMaxLength(256);
-
                     b.Property<string>("Title")
                         .HasMaxLength(256);
 
                     b.Property<DateTime?>("UpdateAt");
+
+                    b.Property<string>("Url")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("UrlThumbnail")
+                        .HasMaxLength(256);
 
                     b.HasKey("Id");
 
@@ -129,6 +149,12 @@ namespace TudoBuffet.Website.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("CreateAt");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("Image")
+                        .HasMaxLength(256);
 
                     b.Property<bool>("IsActive");
 
@@ -147,7 +173,7 @@ namespace TudoBuffet.Website.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Plan");
+                    b.ToTable("Plans");
                 });
 
             modelBuilder.Entity("TudoBuffet.Website.Entities.User", b =>

@@ -119,6 +119,7 @@ namespace TudoBuffet.Website
             services.AddTransient<IUserAuthenticatior, UserAuthenticatorService>();
             services.AddTransient<IBuffets, Buffets>();
             services.AddTransient<IPlans, Plans>();
+            services.AddTransient<IPhotos, Photos>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

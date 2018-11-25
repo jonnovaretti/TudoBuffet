@@ -16,8 +16,9 @@ namespace TudoBuffet.Website.Models
         public string Facebook { get; set; }
         public string Instagram { get; set; }
         public Guid SelectedPlan { get; set; }
-        public string Category { get; set; }
-        public string RangePrice { get; set; }
+        public string SelectedRangePrice { get; set; }
+        public string SelectedBuffetCategory { get; set; }
+        public string SelectedBuffetEnvironment { get; set; }
 
         public void Validate()
         {
@@ -46,7 +47,7 @@ namespace TudoBuffet.Website.Models
 
             buffet = new Buffet()
             {
-                Category = (BuffetCategory)Enum.Parse(typeof(BuffetCategory), Category),
+                Category = (BuffetCategory)Enum.Parse(typeof(BuffetCategory), SelectedBuffetCategory),
                 Cellphone = Cellphone,
                 City = City,
                 Description = Description,
@@ -57,9 +58,10 @@ namespace TudoBuffet.Website.Models
                 Owner = new User() { Id = ownerId },
                 Name = Name,
                 PlanSelected = new Plan() { Id = SelectedPlan },
-                RangePrice = (PricesOptions)Enum.Parse(typeof(PricesOptions), RangePrice),
+                Price = (RangePrice)Enum.Parse(typeof(RangePrice), SelectedRangePrice),
                 State = State,
-                Street = Street
+                Street = Street,
+                Environment = (BuffetEnvironment)Enum.Parse(typeof(BuffetEnvironment), SelectedBuffetEnvironment )
             };
 
             return buffet;

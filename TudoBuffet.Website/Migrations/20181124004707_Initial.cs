@@ -14,8 +14,8 @@ namespace TudoBuffet.Website.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     CreateAt = table.Column<DateTime>(nullable: false),
                     UpdateAt = table.Column<DateTime>(nullable: true),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
-                    Token = table.Column<string>(maxLength: 256, nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: false),
+                    Token = table.Column<string>(maxLength: 256, nullable: false),
                     ExpireAt = table.Column<DateTime>(nullable: false),
                     WasValidate = table.Column<bool>(nullable: false),
                     ValidateAt = table.Column<DateTime>(nullable: true)
@@ -26,22 +26,24 @@ namespace TudoBuffet.Website.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Plan",
+                name: "Plans",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     CreateAt = table.Column<DateTime>(nullable: false),
                     UpdateAt = table.Column<DateTime>(nullable: true),
-                    Name = table.Column<string>(maxLength: 256, nullable: true),
+                    Name = table.Column<string>(maxLength: 256, nullable: false),
+                    Description = table.Column<string>(maxLength: 256, nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
                     Order = table.Column<int>(nullable: false),
                     Price = table.Column<decimal>(nullable: false),
                     QuantityDaysActive = table.Column<int>(nullable: false),
-                    QuantityPhotosAllowed = table.Column<int>(nullable: false)
+                    QuantityPhotosAllowed = table.Column<int>(nullable: false),
+                    Image = table.Column<string>(maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Plan", x => x.Id);
+                    table.PrimaryKey("PK_Plans", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -51,10 +53,10 @@ namespace TudoBuffet.Website.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     CreateAt = table.Column<DateTime>(nullable: false),
                     UpdateAt = table.Column<DateTime>(nullable: true),
-                    Name = table.Column<string>(maxLength: 256, nullable: true),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
-                    PasswordHash = table.Column<string>(maxLength: 256, nullable: true),
-                    Salt = table.Column<string>(maxLength: 256, nullable: true),
+                    Name = table.Column<string>(maxLength: 256, nullable: false),
+                    Email = table.Column<string>(maxLength: 256, nullable: false),
+                    PasswordHash = table.Column<string>(maxLength: 256, nullable: false),
+                    Salt = table.Column<string>(maxLength: 256, nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
                     ActivedAt = table.Column<DateTime>(nullable: true)
                 },
@@ -70,16 +72,20 @@ namespace TudoBuffet.Website.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     CreateAt = table.Column<DateTime>(nullable: false),
                     UpdateAt = table.Column<DateTime>(nullable: true),
-                    OwnerId = table.Column<Guid>(nullable: true),
-                    Name = table.Column<string>(maxLength: 256, nullable: true),
-                    Address = table.Column<string>(maxLength: 256, nullable: true),
-                    City = table.Column<string>(maxLength: 256, nullable: true),
-                    State = table.Column<string>(maxLength: 256, nullable: true),
+                    OwnerId = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(maxLength: 256, nullable: false),
+                    Description = table.Column<string>(maxLength: 256, nullable: true),
+                    Street = table.Column<string>(maxLength: 256, nullable: false),
+                    Number = table.Column<int>(nullable: true),
+                    District = table.Column<string>(maxLength: 256, nullable: false),
+                    City = table.Column<string>(maxLength: 256, nullable: false),
+                    State = table.Column<string>(maxLength: 256, nullable: false),
+                    Cellphone = table.Column<string>(maxLength: 256, nullable: true),
                     Facebook = table.Column<string>(maxLength: 256, nullable: true),
-                    CelPhone = table.Column<string>(maxLength: 256, nullable: true),
-                    PlanSelectedId = table.Column<Guid>(nullable: true),
+                    Instagram = table.Column<string>(maxLength: 256, nullable: true),
+                    PlanSelectedId = table.Column<Guid>(nullable: false),
                     Category = table.Column<string>(maxLength: 20, nullable: false),
-                    PriceRange = table.Column<int>(nullable: false),
+                    Price = table.Column<int>(nullable: false),
                     ActivedAt = table.Column<DateTime>(nullable: true),
                     ActiveUntil = table.Column<DateTime>(nullable: true)
                 },
@@ -93,9 +99,9 @@ namespace TudoBuffet.Website.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Buffets_Plan_PlanSelectedId",
+                        name: "FK_Buffets_Plans_PlanSelectedId",
                         column: x => x.PlanSelectedId,
-                        principalTable: "Plan",
+                        principalTable: "Plans",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -107,9 +113,9 @@ namespace TudoBuffet.Website.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     CreateAt = table.Column<DateTime>(nullable: false),
                     UpdateAt = table.Column<DateTime>(nullable: true),
-                    BuffetId = table.Column<Guid>(nullable: true),
-                    Title = table.Column<string>(maxLength: 256, nullable: true),
-                    Path = table.Column<string>(maxLength: 256, nullable: true),
+                    BuffetId = table.Column<Guid>(nullable: false),
+                    Title = table.Column<string>(maxLength: 256, nullable: false),
+                    Path = table.Column<string>(maxLength: 256, nullable: false),
                     IsMainPhoto = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -154,7 +160,7 @@ namespace TudoBuffet.Website.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Plan");
+                name: "Plans");
         }
     }
 }

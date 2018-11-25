@@ -83,7 +83,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="firstname">Nome</label>
-                                            <input id="firstname" type="text" class="form-control">
+                                            <input id="firstname" type="text" class="form-control" data-bind="value: name">
                                         </div>
                                     </div>
                                 </div>
@@ -91,7 +91,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="firstname">Apresentação</label>
-                                            <textarea cols="55" rows="5" class="form-control"></textarea>
+                                            <textarea cols="55" rows="5" class="form-control" data-bind="value: description"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -100,13 +100,35 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="company">Endereço (ex: Rua/Avenida Ricardo Jafet)</label>
-                                            <input id="company" type="text" class="form-control">
+                                            <input id="company" type="text" class="form-control" data-bind="value: street">
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="street">Numero</label>
-                                            <input id="street" type="text" class="form-control">
+                                            <input id="street" type="text" class="form-control" data-bind="value: number">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.row-->
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="company">Faixa de preços</label>
+                                            <select data-bind="options: rangesPrice, optionsText: 'rangePriceText', value: selectedRangePrice, optionsCaption: 'Selecione uma faixa de preço'"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="street">Categoria</label>
+                                            <select data-bind="options: buffetCategories, optionsText: 'buffetCategoryText', value: selectedBuffetCategory, optionsCaption: 'Selecione uma categoria'"></select>
+                                        </div>
+                                    </div>
+                                    <!-- /.row-->
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="street">Ambiente</label>
+                                            <select data-bind="options: buffetEnvironments, optionsText: 'buffetEnvironmentText', value: selectedBuffetEnvironment, optionsCaption: 'Selecione um tipo de ambiente'"></select>
                                         </div>
                                     </div>
                                 </div>
@@ -115,37 +137,65 @@
                                     <div class="col-md-6 col-lg-3">
                                         <div class="form-group">
                                             <label for="city">Bairro</label>
-                                            <input id="city" type="text" class="form-control">
+                                            <input id="city" type="text" class="form-control" data-bind="value: district">
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-lg-3">
                                         <div class="form-group">
                                             <label for="state">Cidade</label>
-                                            <input id="state" type="text" class="form-control">
+                                            <input id="state" type="text" class="form-control" data-bind="value: city">
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-lg-3">
                                         <div class="form-group">
-                                            <label for="country">UF</label>
-                                            <select id="country" class="form-control"></select>
+                                            <label for="state">UF</label>
+                                            <select name="state" data-bind="value: selectedState">
+                                                <option value="AC">Acre</option>
+                                                <option value="AL">Alagoas</option>
+                                                <option value="AP">Amapá</option>
+                                                <option value="AM">Amazonas</option>
+                                                <option value="BA">Bahia</option>
+                                                <option value="CE">Ceará</option>
+                                                <option value="DF">Distrito Federal</option>
+                                                <option value="ES">Espírito Santo</option>
+                                                <option value="GO">Goiás</option>
+                                                <option value="MA">Maranhão</option>
+                                                <option value="MT">Mato Grosso</option>
+                                                <option value="MS">Mato Grosso do Sul</option>
+                                                <option value="MG">Minas Gerais</option>
+                                                <option value="PA">Pará</option>
+                                                <option value="PB">Paraíba</option>
+                                                <option value="PR">Paraná</option>
+                                                <option value="PE">Pernambuco</option>
+                                                <option value="PI">Piauí</option>
+                                                <option value="RJ">Rio de Janeiro</option>
+                                                <option value="RN">Rio Grande do Norte</option>
+                                                <option value="RS">Rio Grande do Sul</option>
+                                                <option value="RO">Rondônia</option>
+                                                <option value="RR">Roraima</option>
+                                                <option value="SC">Santa Catarina</option>
+                                                <option value="SP">São Paulo</option>
+                                                <option value="SE">Sergipe</option>
+                                                <option value="TO">Tocantins</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-lg-3">
                                         <div class="form-group">
                                             <label for="phone">Celular</label>
-                                            <input id="phone" type="text" class="form-control">
+                                            <input id="phone" type="text" class="form-control" data-bind="value: cellphone">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="facebook">Facebook</label>
-                                            <input id="facebook" type="text" class="form-control">
+                                            <label for="facebook">Página do Facebook</label>
+                                            <input id="facebook" type="text" class="form-control" data-bind="value: facebook">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="instagram">Instagram</label>
-                                            <input id="instagram" type="text" class="form-control">
+                                            <label for="instagram">Perfil do Instagram</label>
+                                            <input id="instagram" type="text" class="form-control" data-bind="value: instagram">
                                         </div>
                                     </div>
                                     <div class="col-md-12 text-center">
@@ -163,6 +213,8 @@
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
     <script src="js/knockout.js"></script>
+    <script src="js/knockout-validation.js"></script>
+    <script src="js/validation-messages.js"></script>
     <script src="js/functions.js"></script>
     <script src="controller/usuario-novo-buffet.js"></script>
 </body>

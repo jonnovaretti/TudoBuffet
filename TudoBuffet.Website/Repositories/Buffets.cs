@@ -17,6 +17,15 @@ namespace TudoBuffet.Website.Repositories
             this.mainDbContext = mainDbContext;
         }
 
+        public Buffet GetBuffetsById(string buffetId)
+        {
+            Buffet buffetFound;
+
+            buffetFound = mainDbContext.Buffets.FirstOrDefault(b => b.Id == Guid.Parse(buffetId));
+
+            return buffetFound;
+        }
+
         public IEnumerable<Buffet> GetBuffetsFromUserId(Guid userId)
         {
             return mainDbContext.Buffets.Include(b => b.PlanSelected)
@@ -24,10 +33,13 @@ namespace TudoBuffet.Website.Repositories
                                         .DefaultIfEmpty();
         }
 
-        public void Save(Buffet buffet)
+        public Guid Save(Buffet buffet)
         {
             mainDbContext.Add(buffet);
+            mainDbContext.Entry(buffet.PlanSelected).State = EntityState.Detached;
             mainDbContext.SaveChanges();
+
+            return buffet.Id;
         }
     }
 }

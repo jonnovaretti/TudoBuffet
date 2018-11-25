@@ -7,6 +7,7 @@ namespace TudoBuffet.Website.Repositories.Contracts
     public interface IBuffets
     {
         IEnumerable<Buffet> GetBuffetsFromUserId(Guid userId);
-        void Save(Buffet buffet);
+        Guid Save(Buffet buffet);
+        Buffet GetBuffetsById(string buffetId);
     }
 }
