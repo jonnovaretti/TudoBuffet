@@ -58,14 +58,14 @@ namespace TudoBuffet.Website.Controllers
         [Route("upload-foto")]
         public async Task<ActionResult<UploadFileResponseModel>> PostPhoto([FromQuery]string buffetId)
         {
+            List<UploadFileResponseModel> uploadFileResponseModel;
             IFormFile fileUploaded;
             ImageManipulation imageManipulation;
             MemoryStream bigImageManipulated, smallManipulated;
             BlobAccess blobAccess;
             Buffet buffetSelected;
-            UploadFileResponseModel uploadFileResponseModel;
             Photo photo;
-            string fileName, bigContainerName, smallContainerName, urlFile, urlThumbnail;
+            string fileName, pathForBigImages, pathForSmallImage, urlFile, urlThumbnail, containerName, completeDirectoryForBigImage, completeDirectoryForSmallImage;
 
             try
             {
@@ -78,15 +78,19 @@ namespace TudoBuffet.Website.Controllers
                 blobAccess = new BlobAccess(config.Value.BlobStorage);
                 fileUploaded = Request.Form.Files[0];
 
+                containerName = Enum.GetName(typeof(BuffetCategory), buffetSelected.Category).ToLower();
+                pathForBigImages = CreateNameBigImageContainer(buffetSelected);
+                pathForSmallImage = CreateNameSmallImageContainer(buffetSelected);
                 fileName = GenerateFileName(fileUploaded.FileName);
-                bigContainerName = CreateNameBigImageContainer(buffetSelected);
-                smallContainerName = CreateNameSmallImageContainer(buffetSelected);
+
+                completeDirectoryForBigImage = string.Concat(pathForBigImages, '/', fileName);
+                completeDirectoryForSmallImage = string.Concat(pathForSmallImage, '/', fileName);
 
                 bigImageManipulated = imageManipulation.Resize(fileUploaded.OpenReadStream(), BIG_WIDTH, BIG_HEIGHT);
-                urlFile = await blobAccess.UploadToBlob(fileName, bigContainerName, bigImageManipulated);
+                urlFile = await blobAccess.UploadToBlob(completeDirectoryForBigImage, containerName, bigImageManipulated);
 
                 smallManipulated = imageManipulation.Resize(fileUploaded.OpenReadStream(), SMALL_WIDTH, SMALL_HEIGHT);
-                urlThumbnail = await blobAccess.UploadToBlob(fileName, smallContainerName, smallManipulated);
+                urlThumbnail = await blobAccess.UploadToBlob(completeDirectoryForSmallImage, containerName, smallManipulated);
 
                 photo = new Photo {
                     Buffet = new Buffet { Id = Guid.Parse(buffetId) },
@@ -98,17 +102,19 @@ namespace TudoBuffet.Website.Controllers
 
                 await photos.SaveAsync(photo);
 
-                uploadFileResponseModel = new UploadFileResponseModel
+                uploadFileResponseModel = new List<UploadFileResponseModel>();
+                uploadFileResponseModel.Add(new UploadFileResponseModel
                 {
                     DeleteType = "DELETE",
                     Name = fileName,
                     DeleteUrl = urlFile,
                     ThumbnailUrl = urlThumbnail,
                     Type = fileUploaded.ContentType,
-                    Url = urlFile
-                };
+                    Url = urlFile,
+                    Size = fileUploaded.Length
+                });
 
-                return Ok(uploadFileResponseModel);
+                return Ok(new { Files = uploadFileResponseModel });
             }
             catch (Exception ex)
             {
@@ -118,17 +124,17 @@ namespace TudoBuffet.Website.Controllers
 
         private static string GenerateFileName(string fileName)
         {
-            return string.Concat(Guid.NewGuid().ToString().Substring(0, 8), fileName.Substring(fileName.IndexOf('.') + 1));
+            return string.Concat(Guid.NewGuid().ToString().Substring(0, 8), fileName.Substring(fileName.IndexOf('.')));
         }
 
         private static string CreateNameBigImageContainer(Buffet buffetSelected)
         {
-            return string.Concat(Enum.GetName(typeof(BuffetCategory), buffetSelected.Category).ToLower(), '/', BIG_WIDTH, 'x', BIG_HEIGHT, '/', buffetSelected.Name.ToLower().Replace(" ", "-"));
+            return string.Concat(BIG_WIDTH, 'x', BIG_HEIGHT, '/', buffetSelected.Name.ToLower().Replace(" ", "-"));
         }
 
         private static string CreateNameSmallImageContainer(Buffet buffetSelected)
         {
-            return string.Concat(Enum.GetName(typeof(BuffetCategory), buffetSelected.Category).ToLower(), '/', BIG_WIDTH, 'x', BIG_HEIGHT, '/', buffetSelected.Name.ToLower().Replace(" ", "-"));
+            return string.Concat(SMALL_WIDTH, 'x', SMALL_HEIGHT, '/', buffetSelected.Name.ToLower().Replace(" ", "-"));
         }
 
         [Route("planos-contratados")]

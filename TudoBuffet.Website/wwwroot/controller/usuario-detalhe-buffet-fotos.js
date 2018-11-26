@@ -74,11 +74,16 @@
     }).on('fileuploaddone', function (e, data) {
         $.each(data.result.files, function (index, file) {
             if (file.url) {
-                var link = $('<a>')
-                    .attr('target', '_blank')
-                    .prop('href', file.url);
-                $(data.context.children()[index])
-                    .wrap(link);
+                var link = $('<a>').attr('target', '_blank').prop('href', file.url);
+                var linkDelete = $('<a>').attr('target', '_blank').prop('href', file.deleteUrl);
+
+                link[0].innerText = 'Visualizar';
+                linkDelete[0].innerText = "Excluir";
+
+                $(data.context.children()[index].childNodes[2]).append('<br>');
+                $(data.context.children()[index].childNodes[2]).append(link);
+                $(data.context.children()[index].childNodes[2]).append('<br>');
+                $(data.context.children()[index].childNodes[2]).append(linkDelete);
             } else if (file.error) {
                 var error = $('<span class="text-danger"/>').text(file.error);
                 $(data.context.children()[index])

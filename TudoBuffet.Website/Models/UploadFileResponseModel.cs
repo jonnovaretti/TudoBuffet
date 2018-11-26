@@ -8,5 +8,6 @@
         public string DeleteType { get; set; }
         public string Type { get; set; }
         public string DeleteUrl { get; set; }
+        public long Size { get; set; }
     }
 }
