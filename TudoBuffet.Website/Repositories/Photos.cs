@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading.Tasks;
 using TudoBuffet.Website.Entities;
 using TudoBuffet.Website.Repositories.Context;
@@ -15,11 +16,22 @@ namespace TudoBuffet.Website.Repositories
             this.mainDbContext = mainDbContext;
         }
 
-        public async Task SaveAsync(Photo photo)
+        public async Task<Photo> GetById(Guid fileId)
+        {
+            Photo photoFound;
+
+            photoFound = await mainDbContext.Photos.FirstOrDefaultAsync(p => p.Id == fileId);
+
+            return photoFound;
+        }
+
+        public async Task<Guid> Save(Photo photo)
         {
             mainDbContext.Add(photo);
             mainDbContext.Entry(photo.Buffet).State = EntityState.Detached;
             await mainDbContext.SaveChangesAsync();
+
+            return photo.Id;
         }
     }
 }

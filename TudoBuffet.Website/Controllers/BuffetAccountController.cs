@@ -1,17 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using TudoBuffet.Website.Configs;
 using TudoBuffet.Website.Entities;
 using TudoBuffet.Website.Infrastructures;
 using TudoBuffet.Website.Models;
 using TudoBuffet.Website.Repositories.Contracts;
-using TudoBuffet.Website.Tools;
+using TudoBuffet.Website.Services.Contracts;
 
 namespace TudoBuffet.Website.Controllers
 {
@@ -20,19 +18,15 @@ namespace TudoBuffet.Website.Controllers
     [ApiController]
     public class BuffetAccountController : LoggedControllerBase
     {
-        private const int BIG_WIDTH = 700;
-        private const int BIG_HEIGHT = 400;
-        private const int SMALL_WIDTH = 150;
-        private const int SMALL_HEIGHT = 100;
         private readonly IBuffets buffets;
         private readonly IPhotos photos;
-        private readonly IOptions<ConnectionString> config;
+        private readonly IBlobFileHandler photoHandlerService;
 
-        public BuffetAccountController(IBuffets buffets, IPhotos photos, IOptions<ConnectionString> config)
+        public BuffetAccountController(IBuffets buffets, IPhotos photos, IBlobFileHandler photoHandlerService)
         {
             this.buffets = buffets;
             this.photos = photos;
-            this.config = config;
+            this.photoHandlerService = photoHandlerService;
         }
 
         public ActionResult Post(NewBuffetModel newBuffetModel)
@@ -58,61 +52,22 @@ namespace TudoBuffet.Website.Controllers
         [Route("upload-foto")]
         public async Task<ActionResult<UploadFileResponseModel>> PostPhoto([FromQuery]string buffetId)
         {
-            List<UploadFileResponseModel> uploadFileResponseModel;
+            List<UploadFileResponseModel> uploadFilesResponseModel;
             IFormFile fileUploaded;
-            ImageManipulation imageManipulation;
-            MemoryStream bigImageManipulated, smallManipulated;
-            BlobAccess blobAccess;
             Buffet buffetSelected;
-            Photo photo;
-            string fileName, pathForBigImages, pathForSmallImage, urlFile, urlThumbnail, containerName, completeDirectoryForBigImage, completeDirectoryForSmallImage;
 
             try
             {
                 buffetSelected = buffets.GetBuffetsById(buffetId);
 
                 if (buffetSelected.Owner.Id != UserId)
-                    throw new AccessViolationException("Foto não percetence ao usuário logado: " + UserId);
+                    throw new AccessViolationException("Buffet não percetence ao usuário logado: " + UserId);
 
-                imageManipulation = new ImageManipulation();
-                blobAccess = new BlobAccess(config.Value.BlobStorage);
                 fileUploaded = Request.Form.Files[0];
+                var uploadFileResponseModel = await photoHandlerService.Upload(buffetSelected, fileUploaded);
 
-                containerName = Enum.GetName(typeof(BuffetCategory), buffetSelected.Category).ToLower();
-                pathForBigImages = CreateNameBigImageContainer(buffetSelected);
-                pathForSmallImage = CreateNameSmallImageContainer(buffetSelected);
-                fileName = GenerateFileName(fileUploaded.FileName);
-
-                completeDirectoryForBigImage = string.Concat(pathForBigImages, '/', fileName);
-                completeDirectoryForSmallImage = string.Concat(pathForSmallImage, '/', fileName);
-
-                bigImageManipulated = imageManipulation.Resize(fileUploaded.OpenReadStream(), BIG_WIDTH, BIG_HEIGHT);
-                urlFile = await blobAccess.UploadToBlob(completeDirectoryForBigImage, containerName, bigImageManipulated);
-
-                smallManipulated = imageManipulation.Resize(fileUploaded.OpenReadStream(), SMALL_WIDTH, SMALL_HEIGHT);
-                urlThumbnail = await blobAccess.UploadToBlob(completeDirectoryForSmallImage, containerName, smallManipulated);
-
-                photo = new Photo {
-                    Buffet = new Buffet { Id = Guid.Parse(buffetId) },
-                    CreateAt = DateTime.UtcNow,
-                    Url = urlFile,
-                    UrlThumbnail = urlThumbnail,
-                    IsMainPhoto = false
-                };
-
-                await photos.SaveAsync(photo);
-
-                uploadFileResponseModel = new List<UploadFileResponseModel>();
-                uploadFileResponseModel.Add(new UploadFileResponseModel
-                {
-                    DeleteType = "DELETE",
-                    Name = fileName,
-                    DeleteUrl = urlFile,
-                    ThumbnailUrl = urlThumbnail,
-                    Type = fileUploaded.ContentType,
-                    Url = urlFile,
-                    Size = fileUploaded.Length
-                });
+                uploadFilesResponseModel = new List<UploadFileResponseModel>();
+                uploadFilesResponseModel.Add(uploadFileResponseModel);
 
                 return Ok(new { Files = uploadFileResponseModel });
             }
@@ -122,19 +77,19 @@ namespace TudoBuffet.Website.Controllers
             }
         }
 
-        private static string GenerateFileName(string fileName)
+        [Route("delete-photo")]
+        public async Task<ActionResult> DeletePhoto([FromQuery] string photoId)
         {
-            return string.Concat(Guid.NewGuid().ToString().Substring(0, 8), fileName.Substring(fileName.IndexOf('.')));
-        }
+            Photo photoSelected;
 
-        private static string CreateNameBigImageContainer(Buffet buffetSelected)
-        {
-            return string.Concat(BIG_WIDTH, 'x', BIG_HEIGHT, '/', buffetSelected.Name.ToLower().Replace(" ", "-"));
-        }
+            photoSelected = photos.GetById(Guid.Parse(photoId));
 
-        private static string CreateNameSmallImageContainer(Buffet buffetSelected)
-        {
-            return string.Concat(SMALL_WIDTH, 'x', SMALL_HEIGHT, '/', buffetSelected.Name.ToLower().Replace(" ", "-"));
+            if(photoSelected.Buffet.Owner.Id != UserId)
+                throw new AccessViolationException("Photo não percetence ao usuário logado: " + UserId);
+
+            await photoHandlerService.Delete(photoSelected);
+
+            return Ok();
         }
 
         [Route("planos-contratados")]

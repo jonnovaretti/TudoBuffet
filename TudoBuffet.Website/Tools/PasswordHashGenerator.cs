@@ -2,7 +2,7 @@
 using System;
 using System.Security.Cryptography;
 
-namespace TudoBuffet.Website.Infrastructures
+namespace TudoBuffet.Website.Tools
 {
     public class PasswordHashGenerator
     {

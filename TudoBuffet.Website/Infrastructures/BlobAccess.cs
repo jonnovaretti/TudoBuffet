@@ -37,5 +37,20 @@ namespace TudoBuffet.Website.Infrastructures
 
             return cloudBlockBlob.Uri.AbsoluteUri;
         }
+
+        public async Task DeleteFile(string fileName, string containerName)
+        {
+            CloudStorageAccount cloudStorageAccount;
+            CloudBlobClient blobClient;
+            CloudBlobContainer cloudBlobContainer;
+            CloudBlockBlob blockBlob;
+
+            cloudStorageAccount = CloudStorageAccount.Parse(storageConnection);
+            blobClient = cloudStorageAccount.CreateCloudBlobClient();
+            cloudBlobContainer = blobClient.GetContainerReference(containerName);
+            blockBlob = cloudBlobContainer.GetBlockBlobReference(fileName);
+
+            await blockBlob.DeleteAsync();
+        }
     }
 }
