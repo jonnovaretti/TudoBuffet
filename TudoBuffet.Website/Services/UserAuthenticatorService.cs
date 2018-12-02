@@ -7,10 +7,10 @@ using System.Security.Claims;
 using System.Text;
 using TudoBuffet.Website.Configs;
 using TudoBuffet.Website.Entities;
-using TudoBuffet.Website.Infrastructures;
 using TudoBuffet.Website.Models;
 using TudoBuffet.Website.Repositories.Context;
 using TudoBuffet.Website.Services.Contracts;
+using TudoBuffet.Website.Tools;
 
 namespace TudoBuffet.Website.Services
 {

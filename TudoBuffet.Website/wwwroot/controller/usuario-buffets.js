@@ -18,7 +18,7 @@ function AdsViewModel() {
         window.location = "/signup.html";
     }
 
-    $.ajax("/api/area-logada/buffet/planos-contratados", {
+    $.ajax("/api/admin/buffet/planos-contratados", {
         type: "get",
         contentType: "application/json",
         headers: { 'Authorization': 'Bearer ' + self.token() },

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using TudoBuffet.Website.Configs;
 using TudoBuffet.Website.Entities;
 using TudoBuffet.Website.Infrastructures;
-using TudoBuffet.Website.Models;
 using TudoBuffet.Website.Repositories.Contracts;
 using TudoBuffet.Website.Services.Contracts;
 using TudoBuffet.Website.Tools;
@@ -28,7 +27,7 @@ namespace TudoBuffet.Website.Services
             this.connectionString = connectionString;
         }
 
-        public async Task<UploadFileResponseModel> Upload(Buffet buffetSelected, IFormFile fileUploaded)
+        public async Task<Photo> Upload(Buffet buffetSelected, IFormFile fileUploaded)
         {
             ImageManipulation imageManipulation;
             MemoryStream bigImageManipulated, smallManipulated;
@@ -60,25 +59,18 @@ namespace TudoBuffet.Website.Services
                 CreateAt = DateTime.UtcNow,
                 UpdateAt = DateTime.UtcNow,
                 Url = urlFile,
-                UrlThumbnail = urlThumbnail,
+                Type = fileUploaded.ContentType,
+                Size = fileUploaded.Length,
+                ThumbnailUrl = urlThumbnail,
                 ContainerName = containerName,
                 FileName = completeDirectoryForBigImage,
-                ThumbprintName = completeDirectoryForSmallImage,
+                ThumbnailName = completeDirectoryForSmallImage,
                 IsMainPhoto = false
             };
 
             insertedPhotoId = await photos.Save(photo);
 
-            return new UploadFileResponseModel
-            {
-                DeleteType = "DELETE",
-                Name = fileName,
-                DeleteUrl = "api/area-logada/buffet/delete-photo?photoid=" + insertedPhotoId.ToString(),
-                ThumbnailUrl = urlThumbnail,
-                Type = fileUploaded.ContentType,
-                Url = urlFile,
-                Size = fileUploaded.Length
-            };
+            return photo;
         }
 
         public async Task Delete(Photo photo)
@@ -87,7 +79,7 @@ namespace TudoBuffet.Website.Services
 
             blobAccess = new BlobAccess(connectionString.Value.BlobStorage);
             await blobAccess.DeleteFile(photo.FileName, photo.ContainerName);
-            await blobAccess.DeleteFile(photo.ThumbprintName, photo.ContainerName);
+            await blobAccess.DeleteFile(photo.ThumbnailName, photo.ContainerName);
         }
 
         private static string GenerateFileName(string fileName)

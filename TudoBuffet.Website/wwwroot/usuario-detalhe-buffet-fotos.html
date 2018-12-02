@@ -70,8 +70,21 @@
                             <div id="progress" class="progress">
                                 <div class="progress-bar progress-bar-success"></div>
                             </div>
+                            <div id="filesFound" data-bind="foreach: photos"  class="row">
+                                <div data-bind="attr:{id: id}" class="col-md-4">
+                                    <p>
+                                        <img data-bind="attr:{src: thumbnailUrl}" />
+                                        <br>
+                                        <a target="_blank" data-bind="attr:{href: url}">Visualizar</a>
+                                        <br>
+                                        <a data-bind="attr:{href: functionDelete}">Excluir</a>
+                                        <br>
+                                    </p>
+                                </div>
+                            </div>
                             <!-- The container for the uploaded files -->
-                            <div id="files" class="files"></div>
+                            <div id="files" class="files">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -87,7 +100,7 @@
     <!-- The Canvas to Blob plugin is included for image resizing functionality -->
     <script src="https://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
     <!-- Bootstrap JS is not required, but included for the responsive demo navigation -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
     <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
     <script src="vendor/jquery/fileupload/jquery.iframe-transport.js"></script>
     <!-- The basic File Upload plugin -->
@@ -96,12 +109,8 @@
     <script src="vendor/jquery/fileupload/jquery.fileupload-process.js"></script>
     <!-- The File Upload image preview & resize plugin -->
     <script src="vendor/jquery/fileupload/jquery.fileupload-image.js"></script>
-    <!-- The File Upload audio preview plugin -->
-    <script src="vendor/jquery/fileupload/jquery.fileupload-audio.js"></script>
-    <!-- The File Upload video preview plugin -->
-    <script src="vendor/jquery/fileupload/jquery.fileupload-video.js"></script>
-    <!-- The File Upload validation plugin -->
     <script src="vendor/jquery/fileupload/jquery.fileupload-validate.js"></script>
+    <script src="js/knockout.js"></script>
     <script src="js/functions.js"></script>
     <script src="controller/usuario-detalhe-buffet-fotos.js"></script>
 </body>

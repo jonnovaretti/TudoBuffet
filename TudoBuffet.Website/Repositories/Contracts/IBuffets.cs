@@ -8,6 +8,6 @@ namespace TudoBuffet.Website.Repositories.Contracts
     {
         IEnumerable<Buffet> GetBuffetsFromUserId(Guid userId);
         Guid Save(Buffet buffet);
-        Buffet GetBuffetsById(string buffetId);
+        Buffet GetBuffetsById(Guid buffetId);
     }
 }

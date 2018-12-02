@@ -1,10 +1,46 @@
-﻿$(function () {
+﻿function Photo(data) {
+    this.name = data.name;
+    this.deleteUrl = data.deleteUrl;
+    this.thumbnailUrl = data.thumbnailUrl;
+    this.type = data.type;
+    this.url = data.url;
+    this.size = data.size;
+    this.id = data.id;
+    this.functionDelete = "javascript:callApi('" + data.deleteUrl + "', '" + data.id +"')"
+}
+
+function PhotosViewModel() {
+    var self = this;
+
+    self.photos = ko.observableArray([]);
+    self.token = ko.observable(window.sessionStorage.getItem('token'));
+    self.params = getUrlVars();
+
+    $.ajax("/api/admin/fotos?buffetId=" + self.params['buffetId'], {
+        type: "get",
+        contentType: "application/json",
+        headers: { 'Authorization': 'Bearer ' + self.token() },
+        success: function (payload) {
+            var photosFound = $.map(payload, function (item) { return new Photo(item) });
+            self.photos(photosFound);
+
+            self.photos()[1].name = 'zzz';
+        },
+        error: function (result) {
+            ShowMessage(result.responseText, result.status);
+        }
+    });
+}
+
+ko.applyBindings(new PhotosViewModel());
+
+$(function () {
     'use strict';
 
     var token = window.sessionStorage.getItem('token')
     var params = getUrlVars();
-    
-    var url = 'api/area-logada/buffet/upload-foto?buffetId=' + params['buffetId'],
+
+    var url = 'api/admin/fotos?buffetId=' + params['buffetId'],
         uploadButton = $('<button/>')
             .addClass('btn btn-primary')
             .prop('disabled', true)
@@ -39,12 +75,9 @@
     }).on('fileuploadadd', function (e, data) {
         data.context = $('<div/>').appendTo('#files');
         $.each(data.files, function (index, file) {
-            var node = $('<p/>')
-                .append($('<span/>').text(file.name));
+            var node = $('<p/>').append($('<span/>').text(file.name));
             if (!index) {
-                node
-                    .append('<br>')
-                    .append(uploadButton.clone(true).data(data));
+                node.append('<br>').append(uploadButton.clone(true).data(data));
             }
             node.appendTo(data.context);
         });
@@ -75,11 +108,12 @@
         $.each(data.result.files, function (index, file) {
             if (file.url) {
                 var link = $('<a>').attr('target', '_blank').prop('href', file.url);
-                var linkDelete = $('<a>').attr('target', '_blank').prop('href', file.deleteUrl);
+                var linkDelete = $('<a>').prop('href', "javascript:callApi('" + file.deleteUrl + "', '" + file.id + "')");
 
                 link[0].innerText = 'Visualizar';
                 linkDelete[0].innerText = "Excluir";
 
+                $(data.context)[0].id = file.id;
                 $(data.context.children()[index].childNodes[2]).append('<br>');
                 $(data.context.children()[index].childNodes[2]).append(link);
                 $(data.context.children()[index].childNodes[2]).append('<br>');
@@ -93,10 +127,26 @@
         });
     }).on('fileuploadfail', function (e, data) {
         $.each(data.files, function (index) {
-            var error = $('<span class="text-danger"/>').text('File upload failed.');
-            $(data.context.children()[index])
-                .append('<br>')
-                .append(error);
+            $(data.context.children()[index]).detach();
+            ShowMessage(data._response.jqXHR.responseText, data._response.jqXHR.status);
         });
     }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
 });
+
+function callApi(url, idDiv) {
+
+    var token = window.sessionStorage.getItem('token');
+
+    document.getElementById(idDiv).outerHTML = '';
+
+    $.ajax(url, {
+        type: "delete",
+        contentType: "application/json",
+        headers: { 'Authorization': 'Bearer ' + token },
+        success: function (payload) {
+        },
+        error: function (result) {
+            ShowMessage(result.responseText, result.status);
+        }
+    });
+}

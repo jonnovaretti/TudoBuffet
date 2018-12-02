@@ -17,11 +17,11 @@ namespace TudoBuffet.Website.Repositories
             this.mainDbContext = mainDbContext;
         }
 
-        public Buffet GetBuffetsById(string buffetId)
+        public Buffet GetBuffetsById(Guid buffetId)
         {
             Buffet buffetFound;
 
-            buffetFound = mainDbContext.Buffets.FirstOrDefault(b => b.Id == Guid.Parse(buffetId));
+            buffetFound = mainDbContext.Buffets.Include(b => b.Owner).FirstOrDefault(b => b.Id == buffetId);
 
             return buffetFound;
         }

@@ -1,5 +1,5 @@
 ﻿using TudoBuffet.Website.Entities;
-using TudoBuffet.Website.Infrastructures;
+using TudoBuffet.Website.Tools;
 
 namespace TudoBuffet.Website.Models
 {

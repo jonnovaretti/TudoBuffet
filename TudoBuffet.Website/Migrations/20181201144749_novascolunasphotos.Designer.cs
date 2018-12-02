@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TudoBuffet.Website.Repositories.Context;
 
 namespace TudoBuffet.Website.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    partial class MainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181201144749_novascolunasphotos")]
+    partial class novascolunasphotos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -131,10 +133,7 @@ namespace TudoBuffet.Website.Migrations
 
                     b.Property<long>("Size");
 
-                    b.Property<string>("ThumbnailName")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("ThumbnailUrl")
+                    b.Property<string>("ThumbprintName")
                         .HasMaxLength(256);
 
                     b.Property<string>("Type")
@@ -143,6 +142,9 @@ namespace TudoBuffet.Website.Migrations
                     b.Property<DateTime?>("UpdateAt");
 
                     b.Property<string>("Url")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("UrlThumbnail")
                         .HasMaxLength(256);
 
                     b.HasKey("Id");

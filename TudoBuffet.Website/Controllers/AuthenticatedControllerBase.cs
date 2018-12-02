@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace TudoBuffet.Website.Controllers
 {
-    public class LoggedControllerBase : ControllerBase
+    public class AuthenticatedControllerBase : ControllerBase
     {
         public Guid UserId
         {

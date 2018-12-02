@@ -7,7 +7,7 @@ namespace TudoBuffet.Website.Services.Contracts
 {
     public interface IBlobFileHandler
     {
-        Task<UploadFileResponseModel> Upload(Buffet buffet, IFormFile fileUploaded);
+        Task<Photo> Upload(Buffet buffet, IFormFile fileUploaded);
         Task Delete(Photo photo);
     }
 }
