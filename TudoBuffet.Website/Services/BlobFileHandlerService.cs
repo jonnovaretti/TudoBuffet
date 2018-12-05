@@ -14,7 +14,7 @@ namespace TudoBuffet.Website.Services
 {
     public class BlobFileHandlerService : IBlobFileHandler
     {
-        private const int BIG_WIDTH = 700;
+        private const int BIG_WIDTH = 400;
         private const int BIG_HEIGHT = 400;
         private const int SMALL_WIDTH = 150;
         private const int SMALL_HEIGHT = 100;
@@ -84,7 +84,7 @@ namespace TudoBuffet.Website.Services
 
         private static string GenerateFileName(string fileName)
         {
-            return string.Concat(Guid.NewGuid().ToString().Substring(0, 8), fileName.Substring(fileName.IndexOf('.')));
+            return string.Concat(Guid.NewGuid().ToString().Substring(0, 8), ".jpg");
         }
 
         private static string CreateNameBigImageContainer(Buffet buffetSelected)

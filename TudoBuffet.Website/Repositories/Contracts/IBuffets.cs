@@ -9,5 +9,6 @@ namespace TudoBuffet.Website.Repositories.Contracts
         IEnumerable<Buffet> GetBuffetsFromUserId(Guid userId);
         Guid Save(Buffet buffet);
         Buffet GetBuffetsById(Guid buffetId);
+        List<Buffet> GetBuffetsHighlighWeek();
     }
 }

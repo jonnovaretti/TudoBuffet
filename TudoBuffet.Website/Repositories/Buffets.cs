@@ -21,9 +21,14 @@ namespace TudoBuffet.Website.Repositories
         {
             Buffet buffetFound;
 
-            buffetFound = mainDbContext.Buffets.Include(b => b.Owner).FirstOrDefault(b => b.Id == buffetId);
+            buffetFound = mainDbContext.Buffets.Include(b => b.Owner).Include(b => b.Photos).FirstOrDefault(b => b.Id == buffetId);
 
             return buffetFound;
+        }
+
+        public List<Buffet> GetBuffetsHighlighWeek()
+        {
+            return mainDbContext.Buffets.Include(b => b.Photos).ToList();
         }
 
         public IEnumerable<Buffet> GetBuffetsFromUserId(Guid userId)

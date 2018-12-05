@@ -1,58 +1,54 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TudoBuffet.Website.Entities;
 using TudoBuffet.Website.Models;
+using TudoBuffet.Website.Repositories.Contracts;
 
 namespace TudoBuffet.Website.Controllers
 {
-    [Route("api/buffets")]
-    [AllowAnonymous]
-    [ApiController]
-    public class BuffetController : ControllerBase
+    [Route("buffet")]
+    public class BuffetController : Controller
     {
-        [Route("destaques")]
-        public ActionResult<List<BuffetTopModel>> GetHotest()
+        private readonly IBuffets buffets;
+
+        public BuffetController(IBuffets buffets)
         {
-            List<BuffetTopModel> buffets = new List<BuffetTopModel>();
-            BuffetTopModel buffet = new BuffetTopModel();
+            this.buffets = buffets;
+        }
 
-            buffet.Id = Guid.NewGuid();
-            buffet.Name = "Afro Festa";
-            buffet.Category = BuffetCategory.Infantil;
-            buffet.Thumbprint = "img/product3_2.jpg";
+        [Route("detalhe/{buffetId}")]
+        [HttpGet]
+        public IActionResult GetBuffetDetail(string buffetId)
+        {
+            Buffet buffetFound;
+            BuffetDetailModel buffetDetail;
+            DetailViewModel detailViewModel;
+            RangePriceModel rangePriceModel;
+            EnvironmentModel environmentModel;
 
-            buffets.Add(buffet);
+            buffetFound = buffets.GetBuffetsById(Guid.Parse(buffetId));
 
-            buffet = new BuffetTopModel();
+            rangePriceModel = RangePriceModel.CreateRangePriceModel(Enum.GetName(typeof(RangePrice), buffetFound.Price));
+            environmentModel = EnvironmentModel.CreateEnvironmentModel(Enum.GetName(typeof(BuffetEnvironment), buffetFound.Environment));
 
-            buffet.Id = Guid.NewGuid();
-            buffet.Name = "Zafari Buffet";
-            buffet.Category = BuffetCategory.Infantil;
-            buffet.Thumbprint = "img/product2_2.jpg";
+            buffetDetail = new BuffetDetailModel()
+            {
+                Name = buffetFound.Name,
+                Category = Enum.GetName(typeof(BuffetCategory), buffetFound.Category),
+                Description = buffetFound.Description,
+                Location = string.Concat(buffetFound.Street, ", ", buffetFound.Number, ", ", buffetFound.District, " - ", buffetFound.City, "-", buffetFound.State),
+                RangePrince = rangePriceModel.Text,
+                EnvironmentType = environmentModel.Text,
+                PhotosUrls = buffetFound.Photos.Select(p => p.Url).ToList(),
+                ThumbnailsUrls = buffetFound.Photos.Select(p => p.ThumbnailUrl).ToList()
+            };
 
-            buffets.Add(buffet);
+            detailViewModel = new DetailViewModel();
+            detailViewModel.BuffetDetail = buffetDetail;
 
-            buffet = new BuffetTopModel();
-
-            buffet.Id = Guid.NewGuid();
-            buffet.Name = "Garotada Buffet";
-            buffet.Category = BuffetCategory.Casamento;
-            buffet.Thumbprint = "img/product1_2.jpg";
-
-            buffets.Add(buffet);
-
-            buffet = new BuffetTopModel();
-
-            buffet.Id = Guid.NewGuid();
-            buffet.Name = "Married Buffet";
-            buffet.Category = BuffetCategory.Evento;
-            buffet.Thumbprint = "img/product1_2.jpg";
-
-            buffets.Add(buffet);
-
-            return buffets;
+            return View(detailViewModel);
         }
     }
 }

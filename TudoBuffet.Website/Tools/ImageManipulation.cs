@@ -6,9 +6,6 @@ namespace TudoBuffet.Website.Tools
 {
     public class ImageManipulation
     {
-        const int size = 150;
-        const int quality = 75;
-
         public MemoryStream Resize(Stream originalFile, int width, int height)
         {
             MemoryStream fileResized;
@@ -25,8 +22,8 @@ namespace TudoBuffet.Website.Tools
                 }
 
                 image.Resize(width, height);
+                image.Format = MagickFormat.Jpeg;
                 image.Strip();
-                image.Quality = quality;
 
                 fileResized = new MemoryStream();
                 image.Write(fileResized);

@@ -3,11 +3,11 @@ using TudoBuffet.Website.Entities;
 
 namespace TudoBuffet.Website.Models
 {
-    public class BuffetTopModel
+    public class BuffetHighlightWeekModel
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public BuffetCategory Category { get; set; }
-        public string Thumbprint { get; set; }
+        public string Category { get; set; }
+        public string ThumbnailUrl { get; set; }
     }
 }

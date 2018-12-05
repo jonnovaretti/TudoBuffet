@@ -75,6 +75,10 @@ namespace TudoBuffet.Website.Controllers
                     return BadRequest();
 
                 fileUploaded = Request.Form.Files[0];
+
+                if (!fileUploaded.ContentType.Contains("image"))
+                    return ServerError();
+
                 var photo = await blobFileService.Upload(buffetSelected, fileUploaded);
 
                 var photoUploadedModel = new PhotoUploadedModel

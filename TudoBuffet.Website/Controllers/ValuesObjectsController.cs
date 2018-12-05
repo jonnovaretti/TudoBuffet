@@ -37,29 +37,11 @@ namespace TudoBuffet.Website.Controllers
 
             foreach (var rangePriceText in rangesPriceText)
             {
-                switch (rangePriceText)
-                {
-                    case "Less1000":
-                        rangesPriceModel.Add(new RangePriceModel() { Code = rangePriceText, Text = "Menos de R$ 2000,00" });
-                        break;
-                    case "Between2000And4000":
-                        rangesPriceModel.Add(new RangePriceModel() { Code = rangePriceText, Text = "Entre R$ 2000,00 e R$ 4000,00" });
-                        break;
-                    case "Between4000And6000":
-                        rangesPriceModel.Add(new RangePriceModel() { Code = rangePriceText, Text = "Entre R$ 4000,00 e R$ 6000,00" });
-                        break;
-                    case "Between6000And8000":
-                        rangesPriceModel.Add(new RangePriceModel() { Code = rangePriceText, Text = "Entre R$ 6000,00 e R$ 8000,00" });
-                        break;
-                    case "Between8000And12000":
-                        rangesPriceModel.Add(new RangePriceModel() { Code = rangePriceText, Text = "Entre R$ 8000,00 e R$ 12000,00" });
-                        break;
-                    case "More12000":
-                        rangesPriceModel.Add(new RangePriceModel() { Code = rangePriceText, Text = "Mais do que R$ 12000,00" });
-                        break;
-                    default:
-                        break;
-                }
+                RangePriceModel rangePriceModel = null;
+
+                rangePriceModel = RangePriceModel.CreateRangePriceModel(rangePriceText);
+
+                rangesPriceModel.Add(rangePriceModel);
             }
 
             return Ok(rangesPriceModel);
@@ -95,29 +77,11 @@ namespace TudoBuffet.Website.Controllers
 
             foreach (var environmentText in environments)
             {
-                switch (environmentText)
-                {
-                    case "SalaoDeFesta":
-                        environmentsModel.Add(new EnvironmentModel() { Code = "SalaoDeFesta", Text = "Salão de festa" });
-                        break;
-                    case "Fazenda":
-                        environmentsModel.Add(new EnvironmentModel() { Code = "Fazenda", Text = "Fazenda" });
-                        break;
-                    case "Clube":
-                        environmentsModel.Add(new EnvironmentModel() { Code = "Clube", Text = "Clube" });
-                        break;
-                    case "Restaurante":
-                        environmentsModel.Add(new EnvironmentModel() { Code = "Restaurante", Text = "Restaurante" });
-                        break;
-                    case "AreaDeEntretenimento":
-                        environmentsModel.Add(new EnvironmentModel() { Code = "AreaDeEntretenimento", Text = "Área de entretenimento" });
-                        break;
-                    case "Praia":
-                        environmentsModel.Add(new EnvironmentModel() { Code = "Praia", Text = "Praia" });
-                        break;
-                    default:
-                        break;
-                }
+                EnvironmentModel environmentModel = null;
+
+                environmentModel = EnvironmentModel.CreateEnvironmentModel(environmentText);
+
+                environmentsModel.Add(environmentModel);
             }
 
             return Ok(environmentsModel);
