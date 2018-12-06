@@ -16,9 +16,9 @@ namespace TudoBuffet.Website.Controllers
     {
         private readonly IBuffets buffets;
         private readonly IPhotos photos;
-        private readonly IBlobFileHandler blobFileService;
+        private readonly IPhotoHandler blobFileService;
 
-        public PhotoController(IBuffets buffets, IPhotos photos, IBlobFileHandler blobFile)
+        public PhotoController(IBuffets buffets, IPhotos photos, IPhotoHandler blobFile)
         {
             this.buffets = buffets;
             this.photos = photos;
@@ -46,10 +46,10 @@ namespace TudoBuffet.Website.Controllers
                 var photoUploadedModel = new PhotoUploadedModel
                 {
                     DeleteType = "DELETE",
-                    Name = photoFound.FileName,
+                    Name = photoFound.DetailFileName,
                     DeleteUrl = "api/admin/fotos?photoid=" + photoFound.Id.ToString(),
                     ThumbnailUrl = photoFound.ThumbnailUrl,
-                    Url = photoFound.Url,
+                    Url = photoFound.DetailUrl,
                     Size = photoFound.Size,
                     Id = photoFound.Id
                 };
@@ -84,11 +84,11 @@ namespace TudoBuffet.Website.Controllers
                 var photoUploadedModel = new PhotoUploadedModel
                 {
                     DeleteType = "DELETE",
-                    Name = photo.FileName,
+                    Name = photo.DetailFileName,
                     DeleteUrl = "api/admin/fotos?photoid=" + photo.Id.ToString(),
                     ThumbnailUrl = photo.ThumbnailUrl,
                     Type = fileUploaded.ContentType,
-                    Url = photo.Url,
+                    Url = photo.DetailUrl,
                     Size = fileUploaded.Length,
                     Id = photo.Id
                 };

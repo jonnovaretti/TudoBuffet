@@ -120,7 +120,7 @@ namespace TudoBuffet.Website
             services.AddTransient<IBuffets, Buffets>();
             services.AddTransient<IPlans, Plans>();
             services.AddTransient<IPhotos, Photos>();
-            services.AddTransient<IBlobFileHandler, BlobFileHandlerService>();
+            services.AddTransient<IPhotoHandler, PhotoHandlerService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

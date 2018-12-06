@@ -18,8 +18,44 @@ namespace TudoBuffet.Website.Controllers
             this.buffets = buffets;
         }
 
-        [Route("detalhe/{buffetId}")]
         [HttpGet]
+        [Route("busca")]
+        public IActionResult SearchBuffets(FilterBuffetSearch filters)
+        {
+            SearchBuffetsViewModel searchBuffetsViewModel;
+            IEnumerable<Buffet> buffetsFound;
+            BuffetCategory? buffetCategory;
+            BuffetEnvironment? buffetEnvironment;
+            RangePrice? rangePrice;
+
+            buffetCategory = string.IsNullOrEmpty(filters.Category) ? null : (BuffetCategory?) Enum.Parse(typeof(BuffetCategory), filters.Category);
+            buffetEnvironment = string.IsNullOrEmpty(filters.Environment) ? null : (BuffetEnvironment?)Enum.Parse(typeof(BuffetEnvironment), filters.Environment);
+            rangePrice = string.IsNullOrEmpty(filters.RangePrice) ? null : (RangePrice?)Enum.Parse(typeof(RangePrice), filters.RangePrice);
+
+            buffetsFound = buffets.GetBuffets(filters.State, filters.City, buffetCategory, buffetEnvironment, rangePrice, filters.Name);
+
+            searchBuffetsViewModel = new SearchBuffetsViewModel();
+
+            foreach (var buffetFound in buffetsFound)
+            {
+                var buffetFoundModel = new BuffetSearchModel()
+                {
+                    City = buffetFound.City,
+                    Id = buffetFound.Id,
+                    Name = buffetFound.Name,
+                    State = buffetFound.State,
+                    FirstThumbnailUrl = buffetFound.Photos.Any() ? buffetFound.Photos.First().DetailUrl : string.Empty,
+                    SecondThumbnailUrl = buffetFound.Photos.Any() ? buffetFound.Photos.Last().DetailUrl : string.Empty
+                };
+
+                searchBuffetsViewModel.BuffetsSearchFound.Add(buffetFoundModel);
+            }
+
+            return View(searchBuffetsViewModel);
+        }
+
+        [HttpGet]
+        [Route("detalhe/{buffetId}")]
         public IActionResult GetBuffetDetail(string buffetId)
         {
             Buffet buffetFound;
@@ -41,7 +77,7 @@ namespace TudoBuffet.Website.Controllers
                 Location = string.Concat(buffetFound.Street, ", ", buffetFound.Number, ", ", buffetFound.District, " - ", buffetFound.City, "-", buffetFound.State),
                 RangePrince = rangePriceModel.Text,
                 EnvironmentType = environmentModel.Text,
-                PhotosUrls = buffetFound.Photos.Select(p => p.Url).ToList(),
+                PhotosUrls = buffetFound.Photos.Select(p => p.DetailUrl).ToList(),
                 ThumbnailsUrls = buffetFound.Photos.Select(p => p.ThumbnailUrl).ToList()
             };
 

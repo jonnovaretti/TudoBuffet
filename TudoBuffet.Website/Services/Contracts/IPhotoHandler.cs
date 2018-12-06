@@ -5,7 +5,7 @@ using TudoBuffet.Website.Models;
 
 namespace TudoBuffet.Website.Services.Contracts
 {
-    public interface IBlobFileHandler
+    public interface IPhotoHandler
     {
         Task<Photo> Upload(Buffet buffet, IFormFile fileUploaded);
         Task Delete(Photo photo);

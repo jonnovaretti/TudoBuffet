@@ -15,9 +15,9 @@ namespace TudoBuffet.Website.Controllers
     public class BuffetAccountController : AuthenticatedControllerBase
     {
         private readonly IBuffets buffets;
-        private readonly IBlobFileHandler photoHandlerService;
+        private readonly IPhotoHandler photoHandlerService;
 
-        public BuffetAccountController(IBuffets buffets, IBlobFileHandler photoHandlerService)
+        public BuffetAccountController(IBuffets buffets, IPhotoHandler photoHandlerService)
         {
             this.buffets = buffets;
             this.photoHandlerService = photoHandlerService;
