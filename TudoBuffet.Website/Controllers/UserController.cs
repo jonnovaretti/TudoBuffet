@@ -4,39 +4,61 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using TudoBuffet.Website.Entities;
 using TudoBuffet.Website.Exceptions;
+using TudoBuffet.Website.Infrastructures.Interfaces;
 using TudoBuffet.Website.Models;
 using TudoBuffet.Website.Services.Contracts;
 
 namespace TudoBuffet.Website.Controllers
 {
-    [Route("api/usuarios")]
+    [Route("usuarios")]
     [AllowAnonymous]
-    [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : Controller
     {
         private readonly IUserSignup userSignupService;
         private readonly IUserAuthenticatior userAuthenticatiorService;
+        private readonly IHttpContextAccessor httpContext;
+        private readonly IRecaptchaValidator recaptchaValidator;
 
-        public UserController(IUserSignup userSignupService, IUserAuthenticatior userAuthenticatiorService)
+        public UserController(IUserSignup userSignupService, IUserAuthenticatior userAuthenticatiorService, IHttpContextAccessor httpContext, IRecaptchaValidator recaptchaValidator)
         {
             this.userSignupService = userSignupService;
             this.userAuthenticatiorService = userAuthenticatiorService;
+            this.httpContext = httpContext;
+            this.recaptchaValidator = recaptchaValidator;
         }
 
-        public ActionResult Post(UserModel userModel)
+        [Route("registrar")]
+        [HttpGet]
+        public IActionResult RegisterUser()
+        {
+            return View();
+        }
+
+        [Route("registrar")]
+        public IActionResult RegisterUser(UserModel userModel)
         {
             User user;
+            string clientIp, recaptchaResponse;
 
             try
             {
+                clientIp = httpContext.HttpContext.Connection.RemoteIpAddress.ToString();
+                recaptchaResponse = Request.Form["g-recaptcha-response"];
+
+                if (!recaptchaValidator.IsRecaptchaValid(recaptchaResponse, clientIp))
+                    throw new ArgumentException("Recaptcha inválido");
+
                 if (userModel.Password != userModel.ConfirmationPassword)
                     throw new BusinessException("As senhas não correspondem");
+
+                if (userModel.Password.Length < 4)
+                    throw new BusinessException("Senha deve conter ao menos 4 caracteres");
 
                 user = userModel.ToEntity();
 
                 userSignupService.RegisterNewUser(user);
 
-                return Ok("Foi enviado um e-mail de confirmação. Siga as instruções para conseguir fazer seu anuncio.");
+                return View("Foi enviado um e-mail de confirmação. Siga as instruções para conseguir fazer seu anuncio.");
             }
             catch (BusinessException ex)
             {

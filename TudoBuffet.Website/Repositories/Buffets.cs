@@ -28,6 +28,17 @@ namespace TudoBuffet.Website.Repositories
             return buffetFound;
         }
 
+        public IEnumerable<Buffet> GetBuffetsByIds(List<string> buffetsIds)
+        {
+            IEnumerable<Buffet> buffetsFound;
+
+            buffetsFound = from b in mainDbContext.Buffets.Include(b => b.Photos)
+                           where buffetsIds.Contains(b.Id.ToString())
+                           select b;
+
+            return buffetsFound;
+        }
+
         public List<Buffet> GetBuffetsHighlighWeek()
         {
             return mainDbContext.Buffets.Include(b => b.Photos).ToList();

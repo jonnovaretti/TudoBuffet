@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using TudoBuffet.Website.Entities;
 using TudoBuffet.Website.Models;
@@ -97,6 +98,10 @@ namespace TudoBuffet.Website.Controllers
                 photosUploadedModel.Add(photoUploadedModel);
 
                 return Ok(new { Files = photosUploadedModel });
+            }
+            catch(FileLoadException e)
+            {
+                return BadRequest(e.Message);
             }
             catch (Exception ex)
             {

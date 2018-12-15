@@ -78,7 +78,8 @@ namespace TudoBuffet.Website.Controllers
                 RangePrince = rangePriceModel.Text,
                 EnvironmentType = environmentModel.Text,
                 PhotosUrls = buffetFound.Photos.Select(p => p.DetailUrl).ToList(),
-                ThumbnailsUrls = buffetFound.Photos.Select(p => p.ThumbnailUrl).ToList()
+                ThumbnailsUrls = buffetFound.Photos.Select(p => p.ThumbnailUrl).ToList(),
+                Id = buffetFound.Id
             };
 
             detailViewModel = new DetailViewModel();

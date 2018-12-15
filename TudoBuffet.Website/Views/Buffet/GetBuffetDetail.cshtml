@@ -11,125 +11,31 @@
             <!-- breadcrumb-->
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">Ladies</a></li>
-                    <li class="breadcrumb-item"><a href="#">Tops</a></li>
-                    <li aria-current="page" class="breadcrumb-item active">White Blouse Armani</li>
+                    <li class="breadcrumb-item"><a href="/">Início</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:window.history.back();">Busca</a></li>
+                    <li aria-current="page" class="breadcrumb-item active">Detalhe</li>
                 </ol>
             </nav>
         </div>
         <div class="col-lg-3">
-            <!--
-            *** MENUS AND FILTERS ***
-            _________________________________________________________
-            -->
             <div class="card sidebar-menu mb-4">
                 <div class="card-header">
-                    <h3 class="h4 card-title">Categories</h3>
-                </div>
-                <div class="card-body">
-                    <ul class="nav nav-pills flex-column category-menu">
-                        <li>
-                            <a href="category.html" class="nav-link">Men <span class="badge badge-secondary">42</span></a>
-                            <ul class="list-unstyled">
-                                <li><a href="category.html" class="nav-link">T-shirts</a></li>
-                                <li><a href="category.html" class="nav-link">Shirts</a></li>
-                                <li><a href="category.html" class="nav-link">Pants</a></li>
-                                <li><a href="category.html" class="nav-link">Accessories</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="category.html" class="nav-link active">Ladies  <span class="badge badge-light">123</span></a>
-                            <ul class="list-unstyled">
-                                <li><a href="category.html" class="nav-link">T-shirts</a></li>
-                                <li><a href="category.html" class="nav-link">Skirts</a></li>
-                                <li><a href="category.html" class="nav-link">Pants</a></li>
-                                <li><a href="category.html" class="nav-link">Accessories</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="category.html" class="nav-link">Kids  <span class="badge badge-secondary">11</span></a>
-                            <ul class="list-unstyled">
-                                <li><a href="category.html" class="nav-link">T-shirts</a></li>
-                                <li><a href="category.html" class="nav-link">Skirts</a></li>
-                                <li><a href="category.html" class="nav-link">Pants</a></li>
-                                <li><a href="category.html" class="nav-link">Accessories</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="card sidebar-menu mb-4">
-                <div class="card-header">
-                    <h3 class="h4 card-title">Brands <a href="#" class="btn btn-sm btn-danger pull-right"><i class="fa fa-times-circle"></i> Clear</a></h3>
+                    <h3 class="h4 card-title">Informações</h3>
                 </div>
                 <div class="card-body">
                     <form>
                         <div class="form-group">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox"> Armani  (10)
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox"> Versace  (12)
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox"> Carlo Bruni  (15)
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox"> Jack Honey  (14)
-                                </label>
-                            </div>
+                            <h5>Tipo de espaço</h5>
+                            <p><i class="fa fa-arrow-right"></i> @Model.BuffetDetail.Category</p>
+                            <h5>Ambiente</h5>
+                            <p><i class="fa fa-arrow-right"></i> @Model.BuffetDetail.EnvironmentType</p>
+                            <h5>Faixa de preço</h5>
+                            <p><i class="fa fa-arrow-right"></i> @Model.BuffetDetail.RangePrince</p>
                         </div>
-                        <button class="btn btn-default btn-sm btn-primary"><i class="fa fa-pencil"></i> Apply</button>
+                        <button class="btn btn-default btn-sm btn-primary" onclick="javascript:addBuffetToBudgetList('@Model.BuffetDetail.Id')"><i class="fa fa-list"></i> Adicionar na lista</button>
                     </form>
                 </div>
             </div>
-            <div class="card sidebar-menu mb-4">
-                <div class="card-header">
-                    <h3 class="h4 card-title">Colours <a href="#" class="btn btn-sm btn-danger pull-right"><i class="fa fa-times-circle"></i> Clear</a></h3>
-                </div>
-                <div class="card-body">
-                    <form>
-                        <div class="form-group">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox"><span class="colour white"></span> White (14)
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox"><span class="colour blue"></span> Blue (10)
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox"><span class="colour green"></span>  Green (20)
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox"><span class="colour yellow"></span>  Yellow (13)
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox"><span class="colour red"></span>  Red (10)
-                                </label>
-                            </div>
-                        </div>
-                        <button class="btn btn-default btn-sm btn-primary"><i class="fa fa-pencil"></i> Apply</button>
-                    </form>
-                </div>
-            </div>
-            <!-- *** MENUS AND FILTERS END ***-->
-            <div class="banner"><a href="#"><img src="img/banner.jpg" alt="sales 2014" class="img-fluid"></a></div>
         </div>
         <div class="col-lg-9">
             <div class="row">
@@ -140,7 +46,7 @@
                     <div data-slider-id="1" class="owl-carousel shop-detail-carousel">
                         @foreach (var photo in Model.BuffetDetail.PhotosUrls)
                         {
-                            <div class="item"> <img src="@photo" alt="" class="img-fluid"></div>
+                            <div class="item" style="margin-right:10px"> <img src="@photo" alt="" class="img-fluid"></div>
                         }
                     </div>
                 </div>
@@ -159,20 +65,19 @@
                 <p></p>
                 <h4>Descrição</h4>
                 <p>@Model.BuffetDetail.Description</p>
-                <h4>Tipo de espaço</h4>
-                <p>@Model.BuffetDetail.Category</p>
-                <h4>Ambiente</h4>
-                <p>@Model.BuffetDetail.EnvironmentType</p>
-                <h4>Faixa de preço</h4>
-                <p>@Model.BuffetDetail.RangePrince</p>
+                
                 <div class="social">
                     <h4>Visite as redes sociais do buffet</h4>
-                    <p><a href="#" class="external facebook"><i class="fa fa-facebook"></i></a><a href="#" class="external gplus"><i class="fa fa-google-plus"></i></a><a href="#" class="external twitter"><i class="fa fa-twitter"></i></a><a href="#" class="email"><i class="fa fa-envelope"></i></a></p>
+                    <p><a href="#" class="external facebook"><i class="fa fa-facebook"></i></a><a href="#" class="external gplus"><i class="fa fa-instagram"></i></a></p>
                 </div>
-                <h4>Endereço</h4>
+                <h4>Localização</h4>
                 <blockquote>
                     <p><em>@Model.BuffetDetail.Location</em></p>
                 </blockquote>
+                <iframe width="600"
+                        height="450"
+                        frameborder="0" style="border:0"
+                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA_FosG-_bD5EsBG2qT8a8Al2tmFxDIeg4&q=@Html.Encode(Model.BuffetDetail.Location)" allowfullscreen></iframe>
             </div>
         </div>
         <!-- /.col-md-9-->

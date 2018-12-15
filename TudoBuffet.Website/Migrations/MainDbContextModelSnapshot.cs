@@ -19,14 +19,34 @@ namespace TudoBuffet.Website.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("TudoBuffet.Website.Entities.Budget", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("DayParty");
+
+                    b.Property<string>("EmailSender")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("Observation")
+                        .HasMaxLength(256);
+
+                    b.Property<int>("QuantityPartyGuests");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Budgets");
+                });
+
             modelBuilder.Entity("TudoBuffet.Website.Entities.Buffet", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime?>("ActiveUntil");
-
                     b.Property<DateTime?>("ActivedAt");
+
+                    b.Property<Guid?>("BudgetId");
 
                     b.Property<string>("Category")
                         .IsRequired()
@@ -78,6 +98,8 @@ namespace TudoBuffet.Website.Migrations
                     b.Property<DateTime?>("UpdateAt");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BudgetId");
 
                     b.HasIndex("OwnerId");
 
@@ -178,15 +200,17 @@ namespace TudoBuffet.Website.Migrations
 
                     b.Property<decimal>("Price");
 
-                    b.Property<int>("QuantityDaysActive");
-
-                    b.Property<int>("QuantityPhotosAllowed");
-
                     b.Property<DateTime?>("UpdateAt");
 
                     b.HasKey("Id");
 
                     b.ToTable("Plans");
+
+                    b.HasData(
+                        new { Id = new Guid("68dc7964-0385-4bee-95a4-17e23f00c57a"), CreateAt = new DateTime(2018, 12, 10, 23, 4, 34, 252, DateTimeKind.Local), Description = "O plano ouro favorece o aparecimento em mais vezes nas pesquisas e irá aparecer com mais frequencia no destaques do dia", Image = "img/planouro.jpg", IsActive = true, Name = "Plano ouro", Order = 1, Price = 30.00m },
+                        new { Id = new Guid("58878d10-dd49-4422-bd0c-0eca5f33dffe"), CreateAt = new DateTime(2018, 12, 10, 23, 4, 34, 260, DateTimeKind.Local), Description = "O plano prata está a frente do plano bronze e também irá aparecer nas pesquisa com uma boa frequencia e também estará presente nos destaques do dia", Image = "img/planprata.jpg", IsActive = true, Name = "Plano prata", Order = 2, Price = 20.00m },
+                        new { Id = new Guid("6d9c516c-4d8c-451c-a8df-ef7f5dd8c83d"), CreateAt = new DateTime(2018, 12, 10, 23, 4, 34, 260, DateTimeKind.Local), Description = "O plano bronze irá aparecer nas pesquisas, mas com menos frequencia na primeira página", Image = "img/planbronze.jpg", IsActive = true, Name = "Plano bronze", Order = 3, Price = 10.00m }
+                    );
                 });
 
             modelBuilder.Entity("TudoBuffet.Website.Entities.User", b =>
@@ -209,6 +233,8 @@ namespace TudoBuffet.Website.Migrations
                     b.Property<string>("PasswordHash")
                         .HasMaxLength(256);
 
+                    b.Property<int>("Profile");
+
                     b.Property<string>("Salt")
                         .HasMaxLength(256);
 
@@ -221,8 +247,12 @@ namespace TudoBuffet.Website.Migrations
 
             modelBuilder.Entity("TudoBuffet.Website.Entities.Buffet", b =>
                 {
+                    b.HasOne("TudoBuffet.Website.Entities.Budget")
+                        .WithMany("BuffetsSelected")
+                        .HasForeignKey("BudgetId");
+
                     b.HasOne("TudoBuffet.Website.Entities.User", "Owner")
-                        .WithMany("Buffets")
+                        .WithMany()
                         .HasForeignKey("OwnerId");
 
                     b.HasOne("TudoBuffet.Website.Entities.Plan", "PlanSelected")

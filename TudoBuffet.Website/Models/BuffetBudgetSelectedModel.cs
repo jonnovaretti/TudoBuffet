@@ -1,14 +1,14 @@
 ﻿using System;
-using TudoBuffet.Website.Entities;
 
 namespace TudoBuffet.Website.Models
 {
-    public class BuffetHighlightWeekModel
+    public class BuffetBudgetSelectedModel
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Category { get; set; }
-        public string FirstThumbnailUrl { get; set; }
-        public string SecondThumbnailUrl { get; set; }
+        public string RangePrice { get; set; }
+        public string Environment { get; set; }
+        public string ThumbnailUrl { get; set; }
     }
 }

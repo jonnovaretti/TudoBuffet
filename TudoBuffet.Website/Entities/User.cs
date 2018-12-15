@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using TudoBuffet.Website.Exceptions;
+using TudoBuffet.Website.ValuesObjects;
 
 namespace TudoBuffet.Website.Entities
 {
@@ -13,21 +13,21 @@ namespace TudoBuffet.Website.Entities
         public string Salt { get; set; }
         public bool IsActive { get; set; }
         public DateTime? ActivedAt { get; set; }
-        public List<Buffet> Buffets { get; set; }
+        public Profile Profile { get; set; }
 
         public void Validate()
         {
             if (string.IsNullOrEmpty(Email))
-                throw new BusinessException("Campo obrigatório, e-mail não preenchido");
+                throw new BusinessException("Campo obrigatório, e-mail deve ser preenchido");
 
             if (!new EmailAddressAttribute().IsValid(Email))
                 throw new BusinessException("E-mail inválido");
 
             if (string.IsNullOrEmpty(Name))
-                throw new BusinessException("Campo obrigatório, nome não preenchido");
+                throw new BusinessException("Campo obrigatório, nome deve ser preenchido");
 
             if (string.IsNullOrEmpty(PasswordHash))
-                throw new BusinessException("Campo obrigatório, senha não preenchido");
+                throw new BusinessException("Campo obrigatório, senha deve ser preenchido");
         }
 
         public void Active()

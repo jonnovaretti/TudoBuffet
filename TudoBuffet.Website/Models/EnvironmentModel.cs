@@ -35,6 +35,9 @@
                 case "Praia":
                     environmentModel = new EnvironmentModel("Praia", "Praia");
                     break;
+                case "SitioChacara":
+                    environmentModel = new EnvironmentModel("SitioCharaca", "Sitio/chacara");
+                    break;
                 default:
                     break;
             }

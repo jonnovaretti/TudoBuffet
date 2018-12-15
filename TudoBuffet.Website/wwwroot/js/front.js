@@ -7,7 +7,10 @@ $(function () {
         dots: false,
         loop: true,
         autoplay: true,
-        thumbsPrerendered: true
+        thumbsPrerendered: true,
+        autoHeight: true,
+        autoHeightClass: 'owl-height',
+        autoWidth: true
     });
 
 

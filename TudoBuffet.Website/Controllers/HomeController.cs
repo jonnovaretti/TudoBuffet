@@ -28,18 +28,19 @@ namespace TudoBuffet.Website.Controllers
 
             foreach (var buffetFound in buffetsFound)
             {
-                string thumbnailUrl;
+                string firstThumbnailUrl, secondThumbnail;
 
                 if (buffetFound.Photos.Any())
                 {
-                    thumbnailUrl = buffetFound.Photos.First().ThumbnailUrl;
+                    firstThumbnailUrl = buffetFound.Photos.First().ThumbnailUrl;
+                    secondThumbnail = buffetFound.Photos.Last().ThumbnailUrl;
 
                     var buffetHighlightWeek = new BuffetHighlightWeekModel()
                     {
                         Category = Enum.GetName(typeof(BuffetCategory), buffetFound.Category),
                         Id = buffetFound.Id,
                         Name = buffetFound.Name,
-                        ThumbnailUrl = thumbnailUrl
+                        FirstThumbnailUrl = firstThumbnailUrl
                     };
 
                     homeViewModel.WeekHighlightBuffets.Add(buffetHighlightWeek);

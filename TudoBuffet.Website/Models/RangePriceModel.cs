@@ -17,7 +17,7 @@
 
             switch (rangePriceText)
             {
-                case "Less1000":
+                case "Less2000":
                     rangePriceModel = new RangePriceModel(rangePriceText, "Menos de R$ 2000,00");
                     break;
                 case "Between2000And4000":

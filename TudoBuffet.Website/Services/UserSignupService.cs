@@ -42,7 +42,8 @@ namespace TudoBuffet.Website.Services
 
                     emailValidation = EmailValidation.Build(user.Email);
 
-                    unitOfWork.ExecuteInserts(user, emailValidation);
+                    unitOfWork.ExecuteUserInsert(user);
+                    unitOfWork.ExecuteEmailValidationInsert(emailValidation);  
 
                     response = emailSenderService.SendEmailValidation(emailValidation);
 

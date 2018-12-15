@@ -28,17 +28,22 @@ namespace TudoBuffet.Website.Repositories
         {
             mainDbContext.Database.RollbackTransaction();
         }
-
-        public void ExecuteInserts(User user, EmailValidation emailValidation)
-        {
-            mainDbContext.Add(user);
-            mainDbContext.Add(emailValidation);
-            mainDbContext.SaveChanges();
-        }
-
+        
         public void Dispose()
         {
             mainDbContext.Dispose();
+        }
+
+        public void ExecuteUserInsert(User user)
+        {
+            mainDbContext.Add(user);
+            mainDbContext.SaveChanges();
+        }
+
+        public void ExecuteEmailValidationInsert(EmailValidation emailValidation)
+        {
+            mainDbContext.Add(emailValidation);
+            mainDbContext.SaveChanges();
         }
     }
 }

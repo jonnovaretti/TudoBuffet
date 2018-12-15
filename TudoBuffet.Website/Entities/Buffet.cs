@@ -21,7 +21,6 @@ namespace TudoBuffet.Website.Entities
         public BuffetCategory Category { get; set; }
         public RangePrice Price { get; set; }
         public DateTime? ActivedAt { get; set; }
-        public DateTime? ActiveUntil { get; set; }
         public BuffetEnvironment Environment { get; set; }
     }
 

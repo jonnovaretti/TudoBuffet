@@ -17,6 +17,8 @@ namespace TudoBuffet.Website.Services
     {
         private const int DETAIL_PHOTO_WIDTH = 650;
         private const int DETAIL_PHOTO_HEIGHT = 400;
+        private const int DETAIL_PHOTO_WIDTH_MINIMUM = 450;
+        private const int DETAIL_PHOTO_HEIGHT_MINIMUM = 200;
         private const int SEARCH_PHOTO_WIDTH = 310;
         private const int SEARCH_PHOTO_HEIGHT = 240;
         private const int THUMBNAIL_PHOTO_WIDTH = 140;
@@ -43,8 +45,8 @@ namespace TudoBuffet.Website.Services
             fileName = GenerateFileName(fileUploaded.FileName);
             containerName = Enum.GetName(typeof(BuffetCategory), buffetSelected.Category).ToLower();
 
-            pathForSearchImage = CreateNameImageContainer(buffetSelected, DETAIL_PHOTO_WIDTH, DETAIL_PHOTO_HEIGHT);
-            pathForDetailImage = CreateNameImageContainer(buffetSelected, SEARCH_PHOTO_WIDTH, SEARCH_PHOTO_HEIGHT);
+            pathForSearchImage = CreateNameImageContainer(buffetSelected, SEARCH_PHOTO_WIDTH, SEARCH_PHOTO_HEIGHT);
+            pathForDetailImage = CreateNameImageContainer(buffetSelected, DETAIL_PHOTO_WIDTH, DETAIL_PHOTO_HEIGHT);
             pathForThumbnailImage = CreateNameImageContainer(buffetSelected, THUMBNAIL_PHOTO_WIDTH, THUMBNAIL_PHOTO_HEIGHT);
 
             completeDirectoryForSearchImage = string.Concat(pathForSearchImage, '/', fileName);
@@ -54,7 +56,7 @@ namespace TudoBuffet.Website.Services
             searchPhotoManipulated = ManipulatePhoto(fileUploaded.OpenReadStream(), SEARCH_PHOTO_WIDTH, SEARCH_PHOTO_HEIGHT);
             searchUrl = await blobAccess.UploadToBlob(completeDirectoryForSearchImage, containerName, searchPhotoManipulated);
 
-            detailPhotoManipulated = ManipulatePhoto(fileUploaded.OpenReadStream(), DETAIL_PHOTO_WIDTH, DETAIL_PHOTO_HEIGHT);
+            detailPhotoManipulated = ManipulatePhotoDetail(fileUploaded.OpenReadStream(), DETAIL_PHOTO_WIDTH, DETAIL_PHOTO_HEIGHT, DETAIL_PHOTO_WIDTH_MINIMUM, DETAIL_PHOTO_HEIGHT_MINIMUM);
             detailUrl = await blobAccess.UploadToBlob(completeDirectoryForDetailImage, containerName, detailPhotoManipulated);
 
             thumbnailManipulated = ManipulatePhoto(fileUploaded.OpenReadStream(), THUMBNAIL_PHOTO_WIDTH, THUMBNAIL_PHOTO_HEIGHT);
@@ -105,6 +107,38 @@ namespace TudoBuffet.Website.Services
             else
             {
                 fileManipulated = imageManipulation.Resize(width, height);
+            }
+
+            return fileManipulated;
+        }
+
+        private MemoryStream ManipulatePhotoDetail(Stream file, int widthMaximum, int heightMaximum, int widthMinimum, int heightMinimum)
+        {
+            PhotoAppraiser photoAppraiser;
+            MemoryStream fileManipulated;
+            ImageManipulator imageManipulation;
+            AppraisalResult appraisalResult;
+
+            photoAppraiser = new PhotoAppraiser(widthMaximum, heightMaximum, widthMinimum, heightMinimum);
+            imageManipulation = ImageManipulator.CreateImageManipulation(file);
+
+            appraisalResult = photoAppraiser.AppraiseSize(imageManipulation.Width, imageManipulation.Height);
+
+            if (appraisalResult == AppraisalResult.ShouldBeShortenIgnoringRatio)
+            {
+                fileManipulated = imageManipulation.ResizeIgnoringRatio(widthMaximum, heightMaximum);
+            }
+            else if (appraisalResult == AppraisalResult.ShouldBeShortenKeepingRatio)
+            {
+                fileManipulated = imageManipulation.Resize(widthMaximum, heightMaximum);
+            }
+            else if (appraisalResult == AppraisalResult.Keep)
+            {
+                fileManipulated = imageManipulation.Resize(imageManipulation.Width, imageManipulation.Height);
+            }
+            else
+            {
+                throw new FileLoadException($"Tamanho da imagem é muito pequeno. O minimo é de largura {widthMinimum} e altura {heightMinimum}");
             }
 
             return fileManipulated;

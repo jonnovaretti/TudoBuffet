@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>@ViewData["Title"] - WebApplication4</title>
+    <title>@ViewData["Title"] - Todos buffets aqui!</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
@@ -12,7 +12,7 @@
     <!-- Font Awesome CSS-->
     <link rel="stylesheet" href="~/vendor/font-awesome/css/font-awesome.min.css">
     <!-- Google fonts - Roboto -->
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100">
     <!-- owl carousel-->
     <link rel="stylesheet" href="~/vendor/owl.carousel/assets/owl.carousel.css">
     <link rel="stylesheet" href="~/vendor/owl.carousel/assets/owl.theme.default.css">
@@ -28,61 +28,27 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
 </head>
 <body>
-    <!-- navbar-->
-    <header class="header mb-5">
-        <!--
-    *** TOPBAR ***
-    _________________________________________________________
-    -->
+    <header class="header mb-5" style="margin-bottom:15px!important">
         <div id="top">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 offer mb-3 mb-lg-0"></div>
                     <div class="col-lg-6 text-center text-lg-right">
                         <ul class="menu list-inline mb-0">
-                            <li class="list-inline-item"><a href="#" data-toggle="modal" data-target="#login-modal">Entrar</a></li>
-                            <li class="list-inline-item"><a href="register.html">Registrar</a></li>
+                            <li class="list-inline-item"><a href="usuarios/entrar">Entrar</a></li>
+                            <li class="list-inline-item"><a href="usuarios/registrar">Registrar</a></li>
                             <li class="list-inline-item"><a href="contact.html">Contato</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
-
-            <div id="login-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true" class="modal fade">
-                <div class="modal-dialog modal-sm">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Login</h5>
-                            <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="customer-orders.html" method="post">
-                                <div class="form-group">
-                                    <input id="email-modal" type="text" placeholder="email" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <input id="password-modal" type="password" placeholder="password" class="form-control">
-                                </div>
-                                <p class="text-center">
-                                    <button class="btn btn-primary"><i class="fa fa-sign-in"></i> Entrar</button>
-                                </p>
-                            </form>
-                            <p class="text-center text-muted">Não tem registro?</p>
-                            <p class="text-center text-muted"><a href="register.html"><strong>Registrar agora</strong></a>! Não perca tempo de divulgar seu buffet aqui!</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- *** TOP BAR END ***-->
-
-
         </div>
         <nav class="navbar navbar-expand-lg">
             <div class="container">
-                <a href="index.html" class="navbar-brand home"><img src="img/logo.png" alt="Obaju logo" class="d-none d-md-inline-block"><img src="img/logo-small.png" alt="Obaju logo" class="d-inline-block d-md-none"><span class="sr-only">Obaju - go to homepage</span></a>
+                <a href="index.html" class="navbar-brand home"><img src="~/img/logo.png" alt="Obaju logo" class="d-none d-md-inline-block"><img src="~/img/logo-small.png" alt="Obaju logo" class="d-inline-block d-md-none"><span class="sr-only">Obaju - go to homepage</span></a>
                 <div class="navbar-buttons">
                     <button type="button" data-toggle="collapse" data-target="#navigation" class="btn btn-outline-secondary navbar-toggler"><span class="sr-only">Toggle navigation</span><i class="fa fa-align-justify"></i></button>
-                    <button type="button" data-toggle="collapse" data-target="#search" class="btn btn-outline-secondary navbar-toggler"><span class="sr-only">Toggle search</span><i class="fa fa-search"></i></button><a href="basket.html" class="btn btn-outline-secondary navbar-toggler"><i class="fa fa-shopping-cart"></i></a>
+                    <button type="button" data-toggle="collapse" data-target="#search" class="btn btn-outline-secondary navbar-toggler"><span class="sr-only">Toggle search</span><i class="fa fa-search"></i></button><a href="basket.html" class="btn btn-outline-secondary navbar-toggler"><i class="fa fa-clipboard"></i>asdasdsadsad asdsa das dsa dad as ds</a>
                 </div>
                 <div id="navigation" class="collapse navbar-collapse">
                     <ul class="navbar-nav mr-auto">
@@ -155,8 +121,8 @@
                                             </ul>
                                         </div>
                                         <div class="col-md-6 col-lg-3">
-                                            <div class="banner"><a href="#"><img src="img/banner.jpg" alt="" class="img img-fluid"></a></div>
-                                            <div class="banner"><a href="#"><img src="img/banner2.jpg" alt="" class="img img-fluid"></a></div>
+                                            <div class="banner"><a href="#"><img src="~/img/banner.jpg" alt="" class="img img-fluid"></a></div>
+                                            <div class="banner"><a href="#"><img src="~/img/banner2.jpg" alt="" class="img img-fluid"></a></div>
                                         </div>
                                     </div>
                                 </li>
@@ -215,8 +181,9 @@
                         </li>
                     </ul>
                     <div class="navbar-buttons d-flex justify-content-end">
-                        <!-- /.nav-collapse-->
-                        <div id="basket-overview" class="navbar-collapse collapse d-none d-lg-block"><a href="basket.html" class="btn btn-primary navbar-btn"><i class="fa fa-shopping-cart"></i><span>3 buffets selecionados</span></a></div>
+                        <div id="basket-overview" class="navbar-collapse collapse d-none d-lg-block">
+                            <button class="btn btn-default btn-sm btn-primary" onclick="javascript: prepareBudgetList();"><i class="fa fa-list"></i> <span id="viewButtonBudgetList">3 buffets selecionados</span></button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -350,5 +317,7 @@
     <script src="~/vendor/owl.carousel2.thumbs/owl.carousel2.thumbs.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js"></script>
     <script src="~/js/front.js"></script>
+    <script src="~/js/budgetfunctions.js"></script>
+    @RenderSection("scripts", false)
 </body>
 </html>

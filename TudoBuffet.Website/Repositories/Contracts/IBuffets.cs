@@ -11,5 +11,6 @@ namespace TudoBuffet.Website.Repositories.Contracts
         Buffet GetBuffetsById(Guid buffetId);
         List<Buffet> GetBuffetsHighlighWeek();
         IEnumerable<Buffet> GetBuffets(string uf, string cidade, BuffetCategory? buffetCategory, BuffetEnvironment? buffetEnvironment, RangePrice? rangePrice, string name = null);
+        IEnumerable<Buffet> GetBuffetsByIds(List<string> list);
     }
 }

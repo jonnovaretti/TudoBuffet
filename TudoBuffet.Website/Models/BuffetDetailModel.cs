@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TudoBuffet.Website.Models
 {
@@ -12,5 +13,6 @@ namespace TudoBuffet.Website.Models
         public List<string> ThumbnailsUrls { get; set; }
         public string RangePrince { get; internal set; }
         public string EnvironmentType { get; internal set; }
+        public Guid Id { get; set; }
     }
 }

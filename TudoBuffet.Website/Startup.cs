@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Threading.Tasks;
 using System;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace TudoBuffet.Website
 {
@@ -108,6 +109,9 @@ namespace TudoBuffet.Website
 
             var dbConnection = connectionSettings.GetSection("DataBase").Value;
             services.AddDbContext<MainDbContext>(options => options.UseSqlServer(dbConnection));
+
+            var recaptchaSetting = config.GetSection("Recaptcha");
+            services.Configure<RecaptchaSetting>(recaptchaSetting);
         }
 
         private static void AddServicesToContainer(IServiceCollection services)
@@ -121,6 +125,9 @@ namespace TudoBuffet.Website
             services.AddTransient<IPlans, Plans>();
             services.AddTransient<IPhotos, Photos>();
             services.AddTransient<IPhotoHandler, PhotoHandlerService>();
+
+            services.AddHttpContextAccessor();
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

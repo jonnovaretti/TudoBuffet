@@ -1,0 +1,112 @@
+﻿@model TudoBuffet.Website.Models.BudgetSelectedViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("enviar", "orcamento", FormMethod.Post))
+{
+    <div id="email-modal" tabindex="-1" role="dialog" aria-labelledby="Email" aria-hidden="true" class="modal fade">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Informe e-mail</h5>
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-center text-muted">
+                        Nós faremos o intermédio entre você e o buffet, assim seu e-mail não fica exposto a propagandas.
+                    </p>
+                    <div class="form-group">
+                        @Html.TextBoxFor(b => b.BudgetSent.EmailSender, null, new { type = "email" })
+                    </div>
+                    <p class="text-center">
+                        <button class="btn btn-primary"><i class="fa fa-sign-in"></i>Confirmar</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- breadcrumb-->
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Início</a></li>
+                        <li aria-current="page" class="breadcrumb-item active">Lista de orçamentos</li>
+                    </ol>
+                </nav>
+            </div>
+            <div id="checkout" class="col-lg-8">
+                <div class="box">
+                    <h1>Buffets selecionados</h1>
+                    <div class="content">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2">Nome</th>
+                                        <th>Tipo festa</th>
+                                        <th>Ambiente</th>
+                                        <th>Faixa de preço</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.BuffetsBudgetSelected.Count(); i++)
+                                    {
+                                        <tr>
+                                            <td><a href="#"><img src="@Model.BuffetsBudgetSelected[i].ThumbnailUrl" alt="@Model.BuffetsBudgetSelected[i].Name"></a></td>
+                                            <td><a href="~/buffet/detalhe/@Model.BuffetsBudgetSelected[i].Id">@Model.BuffetsBudgetSelected[i].Name</a></td>
+                                            <td>@Model.BuffetsBudgetSelected[i].Category</td>
+                                            <td>@Model.BuffetsBudgetSelected[i].Environment</td>
+                                            <td>@Model.BuffetsBudgetSelected[i].RangePrice</td>
+                                            <td>@Html.HiddenFor(b => b.BuffetsBudgetSelected[i].Id)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive-->
+                    </div>
+                </div>
+                <!-- /.box-->
+            </div>
+            <!-- /.col-lg-9-->
+            <div class="col-lg-4">
+                <div id="order-summary" class="card">
+                    <div class="card-header">
+                        <h3 class="mt-4 mb-4">Detalhe orçamento</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted">Detalhe abaixo as informações da sua festa. Coloque em observações detalhes particulares da sua festa que podem influenciar o custo da festa.</p>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td>Quantidade de convidados</td>
+                                        <th>@Html.TextBoxFor(b => b.BudgetSent.QuantityPartyGuests, null, new { style = "width:50%", type = "number" }) </th>
+                                    </tr>
+                                    <tr>
+                                        <td>Data da festa</td>
+                                        <th>@Html.TextBoxFor(b => b.BudgetSent.DayParty, null, new { type = "date" }) </th>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><p>Observação</p>@Html.TextAreaFor(b => b.BudgetSent.Observation, 5, 37, null)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- /.content-->
+                            <div class="box-footer d-flex justify-content-between">
+                                <a href="#" class="btn btn-primary navbar-btn" data-toggle="modal" data-target="#email-modal"><span>Enviar orçamento</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.col-lg-3-->
+        </div>
+    </div>
+}

@@ -4,6 +4,7 @@ namespace TudoBuffet.Website.Repositories.Contracts
 {
     public interface IUsersEmailsValidationUoW : IUnitOfWork<IUsersEmailsValidationUoW>
     {
-        void ExecuteInserts(User user, EmailValidation emailValidation);
+        void ExecuteUserInsert(User user);
+        void ExecuteEmailValidationInsert(EmailValidation emailValidation);
     }
 }
