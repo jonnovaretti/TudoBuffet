@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using System.Collections.Generic;
 using TudoBuffet.Website.Configs;
 using TudoBuffet.Website.Entities;
 using TudoBuffet.Website.Repositories.Context;

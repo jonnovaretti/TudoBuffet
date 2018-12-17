@@ -10,7 +10,7 @@ using TudoBuffet.Website.Repositories.Context;
 namespace TudoBuffet.Website.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20181211010435_new")]
+    [Migration("20181216121139_new")]
     partial class @new
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,6 +26,10 @@ namespace TudoBuffet.Website.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("CreateAt");
+
+                    b.Property<Guid?>("CustomerId");
+
                     b.Property<DateTime>("DayParty");
 
                     b.Property<string>("EmailSender")
@@ -36,9 +40,26 @@ namespace TudoBuffet.Website.Migrations
 
                     b.Property<int>("QuantityPartyGuests");
 
+                    b.Property<DateTime?>("UpdateAt");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("CustomerId");
+
                     b.ToTable("Budgets");
+                });
+
+            modelBuilder.Entity("TudoBuffet.Website.Entities.BudgetBuffet", b =>
+                {
+                    b.Property<Guid>("BudgetId");
+
+                    b.Property<Guid>("BuffetId");
+
+                    b.HasKey("BudgetId", "BuffetId");
+
+                    b.HasIndex("BuffetId");
+
+                    b.ToTable("BudgetBuffet");
                 });
 
             modelBuilder.Entity("TudoBuffet.Website.Entities.Buffet", b =>
@@ -47,8 +68,6 @@ namespace TudoBuffet.Website.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime?>("ActivedAt");
-
-                    b.Property<Guid?>("BudgetId");
 
                     b.Property<string>("Category")
                         .IsRequired()
@@ -99,9 +118,10 @@ namespace TudoBuffet.Website.Migrations
 
                     b.Property<DateTime?>("UpdateAt");
 
-                    b.HasKey("Id");
+                    b.Property<string>("Zipcode")
+                        .HasMaxLength(256);
 
-                    b.HasIndex("BudgetId");
+                    b.HasKey("Id");
 
                     b.HasIndex("OwnerId");
 
@@ -209,9 +229,9 @@ namespace TudoBuffet.Website.Migrations
                     b.ToTable("Plans");
 
                     b.HasData(
-                        new { Id = new Guid("68dc7964-0385-4bee-95a4-17e23f00c57a"), CreateAt = new DateTime(2018, 12, 10, 23, 4, 34, 252, DateTimeKind.Local), Description = "O plano ouro favorece o aparecimento em mais vezes nas pesquisas e irá aparecer com mais frequencia no destaques do dia", Image = "img/planouro.jpg", IsActive = true, Name = "Plano ouro", Order = 1, Price = 30.00m },
-                        new { Id = new Guid("58878d10-dd49-4422-bd0c-0eca5f33dffe"), CreateAt = new DateTime(2018, 12, 10, 23, 4, 34, 260, DateTimeKind.Local), Description = "O plano prata está a frente do plano bronze e também irá aparecer nas pesquisa com uma boa frequencia e também estará presente nos destaques do dia", Image = "img/planprata.jpg", IsActive = true, Name = "Plano prata", Order = 2, Price = 20.00m },
-                        new { Id = new Guid("6d9c516c-4d8c-451c-a8df-ef7f5dd8c83d"), CreateAt = new DateTime(2018, 12, 10, 23, 4, 34, 260, DateTimeKind.Local), Description = "O plano bronze irá aparecer nas pesquisas, mas com menos frequencia na primeira página", Image = "img/planbronze.jpg", IsActive = true, Name = "Plano bronze", Order = 3, Price = 10.00m }
+                        new { Id = new Guid("3eead379-60b7-435a-9758-b974b670b1e7"), CreateAt = new DateTime(2018, 12, 16, 10, 11, 38, 992, DateTimeKind.Local), Description = "O plano ouro favorece o aparecimento em mais vezes nas pesquisas e irá aparecer com mais frequencia no destaques do dia", Image = "img/planouro.jpg", IsActive = true, Name = "Plano ouro", Order = 1, Price = 30.00m },
+                        new { Id = new Guid("83cf4165-2208-4156-8a86-6e13f5635d1e"), CreateAt = new DateTime(2018, 12, 16, 10, 11, 38, 997, DateTimeKind.Local), Description = "O plano prata está a frente do plano bronze e também irá aparecer nas pesquisa com uma boa frequencia e também estará presente nos destaques do dia", Image = "img/planprata.jpg", IsActive = true, Name = "Plano prata", Order = 2, Price = 20.00m },
+                        new { Id = new Guid("7a952970-6f32-49b1-b033-b70a6039b368"), CreateAt = new DateTime(2018, 12, 16, 10, 11, 38, 997, DateTimeKind.Local), Description = "O plano bronze irá aparecer nas pesquisas, mas com menos frequencia na primeira página", Image = "img/planbronze.jpg", IsActive = true, Name = "Plano bronze", Order = 3, Price = 10.00m }
                     );
                 });
 
@@ -224,6 +244,10 @@ namespace TudoBuffet.Website.Migrations
 
                     b.Property<DateTime>("CreateAt");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(256);
+
                     b.Property<string>("Email")
                         .HasMaxLength(256);
 
@@ -235,7 +259,9 @@ namespace TudoBuffet.Website.Migrations
                     b.Property<string>("PasswordHash")
                         .HasMaxLength(256);
 
-                    b.Property<int>("Profile");
+                    b.Property<string>("Profile")
+                        .IsRequired()
+                        .HasMaxLength(20);
 
                     b.Property<string>("Salt")
                         .HasMaxLength(256);
@@ -245,16 +271,54 @@ namespace TudoBuffet.Website.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
+                });
+
+            modelBuilder.Entity("TudoBuffet.Website.Entities.UserBuffetAdmin", b =>
+                {
+                    b.HasBaseType("TudoBuffet.Website.Entities.User");
+
+
+                    b.ToTable("UserBuffetAdmin");
+
+                    b.HasDiscriminator().HasValue("UserBuffetAdmin");
+                });
+
+            modelBuilder.Entity("TudoBuffet.Website.Entities.UserCustomer", b =>
+                {
+                    b.HasBaseType("TudoBuffet.Website.Entities.User");
+
+
+                    b.ToTable("UserCustomer");
+
+                    b.HasDiscriminator().HasValue("UserCustomer");
+                });
+
+            modelBuilder.Entity("TudoBuffet.Website.Entities.Budget", b =>
+                {
+                    b.HasOne("TudoBuffet.Website.Entities.UserCustomer", "Customer")
+                        .WithMany("Budgets")
+                        .HasForeignKey("CustomerId");
+                });
+
+            modelBuilder.Entity("TudoBuffet.Website.Entities.BudgetBuffet", b =>
+                {
+                    b.HasOne("TudoBuffet.Website.Entities.Budget", "Budget")
+                        .WithMany("BudgetBuffets")
+                        .HasForeignKey("BudgetId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("TudoBuffet.Website.Entities.Buffet", "Buffet")
+                        .WithMany()
+                        .HasForeignKey("BuffetId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("TudoBuffet.Website.Entities.Buffet", b =>
                 {
-                    b.HasOne("TudoBuffet.Website.Entities.Budget")
-                        .WithMany("BuffetsSelected")
-                        .HasForeignKey("BudgetId");
-
-                    b.HasOne("TudoBuffet.Website.Entities.User", "Owner")
-                        .WithMany()
+                    b.HasOne("TudoBuffet.Website.Entities.UserBuffetAdmin", "Owner")
+                        .WithMany("Buffets")
                         .HasForeignKey("OwnerId");
 
                     b.HasOne("TudoBuffet.Website.Entities.Plan", "PlanSelected")

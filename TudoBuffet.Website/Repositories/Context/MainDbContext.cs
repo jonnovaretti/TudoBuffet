@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using TudoBuffet.Website.Entities;
 using System.Linq;
 using System;
+using TudoBuffet.Website.ValuesObjects;
 
 namespace TudoBuffet.Website.Repositories.Context
 {
@@ -29,6 +30,16 @@ namespace TudoBuffet.Website.Repositories.Context
 
             modelBuilder.Entity<Buffet>().Property(e => e.Price)
                                          .HasConversion(v => v.ToString(), v => (RangePrice)Enum.Parse(typeof(RangePrice), v)).HasMaxLength(20);
+
+            modelBuilder.Entity<User>().Property(e => e.Profile)
+                                         .HasConversion(v => v.ToString(), v => (Profile)Enum.Parse(typeof(Profile), v)).HasMaxLength(20);
+
+            modelBuilder.Entity<BudgetBuffet>().HasKey(bb => new { bb.BudgetId, bb.BuffetId });
+
+            modelBuilder.Entity<BudgetBuffet>()
+            .HasOne(pt => pt.Budget)
+            .WithMany(p => p.BudgetBuffets)
+            .HasForeignKey(pt => pt.BudgetId);
 
             foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(t => t.GetProperties()).Where(p => p.ClrType == typeof(string)))
             {

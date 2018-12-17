@@ -1,12 +1,17 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
+using System.Security.Claims;
 using TudoBuffet.Website.Entities;
 using TudoBuffet.Website.Exceptions;
-using TudoBuffet.Website.Infrastructures.Interfaces;
+using TudoBuffet.Website.Infrastructures.Contracts;
 using TudoBuffet.Website.Models;
 using TudoBuffet.Website.Services.Contracts;
+using TudoBuffet.Website.ValuesObjects;
 
 namespace TudoBuffet.Website.Controllers
 {
@@ -14,15 +19,13 @@ namespace TudoBuffet.Website.Controllers
     [AllowAnonymous]
     public class UserController : Controller
     {
-        private readonly IUserSignup userSignupService;
-        private readonly IUserAuthenticatior userAuthenticatiorService;
+        private readonly IUserAccount userSignupService;
         private readonly IHttpContextAccessor httpContext;
         private readonly IRecaptchaValidator recaptchaValidator;
 
-        public UserController(IUserSignup userSignupService, IUserAuthenticatior userAuthenticatiorService, IHttpContextAccessor httpContext, IRecaptchaValidator recaptchaValidator)
+        public UserController(IUserAccount userSignupService, IHttpContextAccessor httpContext, IRecaptchaValidator recaptchaValidator)
         {
             this.userSignupService = userSignupService;
-            this.userAuthenticatiorService = userAuthenticatiorService;
             this.httpContext = httpContext;
             this.recaptchaValidator = recaptchaValidator;
         }
@@ -58,7 +61,7 @@ namespace TudoBuffet.Website.Controllers
 
                 userSignupService.RegisterNewUser(user);
 
-                return View("Foi enviado um e-mail de confirmação. Siga as instruções para conseguir fazer seu anuncio.");
+                return View("ReturnRegisterUser");
             }
             catch (BusinessException ex)
             {
@@ -70,25 +73,42 @@ namespace TudoBuffet.Website.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("entrar")]
+        public IActionResult Authenticate()
+        {
+            return View(new UserModel());
+        }
+
         [HttpPost]
         [Route("entrar")]
-        public ActionResult Authenticate(UserModel userModel)
+        public IActionResult Authenticate(UserModel userModel)
         {
             try
             {
-                if (userAuthenticatiorService.IsCredentialCorrect(userModel.Email, userModel.Password))
-                {
-                    AuthenticatedUserModel authenticatedUser = userAuthenticatiorService.GenerateJwt(userModel.Email);
+                ClaimsIdentity claimsGenerated;
 
-                    return Ok(new { authenticatedUser });
-                }
+                claimsGenerated = userSignupService.AutheticateUser(userModel);
 
-                return NotFound("E-mail ou senha inválidos");
+                if (claimsGenerated == null)
+                    return NotFound("E-mail ou senha inválidos");
+
+                HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsGenerated), new AuthenticationProperties()).GetAwaiter().GetResult();
+
+                if (GetRoleClaimValue(claimsGenerated).Equals(Enum.GetName(typeof(Profile), Profile.BuffetAdmin)))
+                    return RedirectToAction("Index", "BuffetAdmin");
+
+                return View();
             }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
+        }
+
+        private static string GetRoleClaimValue(ClaimsIdentity claimsGenerated)
+        {
+            return claimsGenerated.Claims.ToList().Where(c => c.Type == claimsGenerated.RoleClaimType).First().Value;
         }
     }
 }

@@ -3,7 +3,7 @@
     public enum Profile
     {
         Customer,
-        OwnerBuffet,
+        BuffetAdmin,
         Provider
     }
 }

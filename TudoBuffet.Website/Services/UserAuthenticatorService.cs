@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -11,6 +13,7 @@ using TudoBuffet.Website.Models;
 using TudoBuffet.Website.Repositories.Context;
 using TudoBuffet.Website.Services.Contracts;
 using TudoBuffet.Website.Tools;
+using TudoBuffet.Website.ValuesObjects;
 
 namespace TudoBuffet.Website.Services
 {
@@ -25,21 +28,12 @@ namespace TudoBuffet.Website.Services
             this.appSettings = appSettings;
         }
 
-        public bool IsCredentialCorrect(string email, string password)
+        
+
+        public AuthenticatedUserModel GenerateCookie(User user)
         {
-            User user;
-            string passwordHash;
-            
-            user = mainDbContext.Users.FirstOrDefault(u => u.Email == email);
 
-            if(user != null)
-            {
-                passwordHash = PasswordHashGenerator.CreateHashedTextFromText(password, user.Salt);
-
-                return user.PasswordHash.Equals(passwordHash);
-            }
-
-            return false;
+            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), new );
         }
 
         public AuthenticatedUserModel GenerateJwt(string email)
@@ -56,7 +50,8 @@ namespace TudoBuffet.Website.Services
             tokenHandler = new JwtSecurityTokenHandler();
             key = Encoding.ASCII.GetBytes(appSettings.Value.SecretKey);
 
-            securityTokenConfiguration = new SecurityTokenDescriptor() {
+            securityTokenConfiguration = new SecurityTokenDescriptor()
+            {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim("id", user.Id.ToString()),

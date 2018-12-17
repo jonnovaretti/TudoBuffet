@@ -1,4 +1,9 @@
-﻿namespace TudoBuffet.Website.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using TudoBuffet.Website.Entities;
+
+namespace TudoBuffet.Website.Models
 {
     public class RangePriceModel
     {
@@ -9,6 +14,27 @@
         {
             Code = code;
             Text = text;
+        }
+
+        public static List<RangePriceModel> GetRangePriceList()
+        {
+            List<RangePriceModel> rangesPriceModel;
+            List<string> rangesPriceText;
+
+            rangesPriceText = Enum.GetNames(typeof(RangePrice)).ToList();
+
+            rangesPriceModel = new List<RangePriceModel>();
+
+            foreach (var rangePriceText in rangesPriceText)
+            {
+                RangePriceModel rangePriceModel = null;
+
+                rangePriceModel = CreateRangePriceModel(rangePriceText);
+
+                rangesPriceModel.Add(rangePriceModel);
+            }
+
+            return rangesPriceModel;
         }
 
         public static RangePriceModel CreateRangePriceModel(string rangePriceText)

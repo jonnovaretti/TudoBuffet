@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace TudoBuffet.Website.Entities
 {
-    public class Budget
+    public class Budget : BaseEntity
     {
-        public Guid Id { get; set; }
-        public List<Buffet> BuffetsSelected { get; set; }
+        public UserCustomer Customer { get; set; }
+        public List<BudgetBuffet> BudgetBuffets { get; set; }
         public string EmailSender { get; set; }
         public int QuantityPartyGuests { get; set; }
         public DateTime DayParty { get; set; }

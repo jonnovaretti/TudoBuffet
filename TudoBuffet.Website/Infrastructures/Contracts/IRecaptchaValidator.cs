@@ -1,4 +1,4 @@
-﻿namespace TudoBuffet.Website.Infrastructures.Interfaces
+﻿namespace TudoBuffet.Website.Infrastructures.Contracts
 {
     public interface IRecaptchaValidator
     {

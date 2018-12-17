@@ -1,23 +1,23 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using TudoBuffet.Website.Repositories.Context;
-using Microsoft.EntityFrameworkCore;
-using TudoBuffet.Website.Services.Contracts;
-using TudoBuffet.Website.Services;
+using System;
 using System.IO;
 using TudoBuffet.Website.Configs;
+using TudoBuffet.Website.Infrastructures;
+using TudoBuffet.Website.Infrastructures.Contracts;
 using TudoBuffet.Website.Repositories;
+using TudoBuffet.Website.Repositories.Context;
 using TudoBuffet.Website.Repositories.Contracts;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.Threading.Tasks;
-using System;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
+using TudoBuffet.Website.Services;
+using TudoBuffet.Website.Services.Contracts;
 
 namespace TudoBuffet.Website
 {
@@ -38,6 +38,16 @@ namespace TudoBuffet.Website
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+            {
+                options.Cookie.SameSite = SameSiteMode.Strict;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                options.Cookie.Expiration = TimeSpan.FromHours(24);
+                options.AccessDeniedPath = "/usuarios/acesso-negado";
+                options.LoginPath = "/usuarios/entrar";
+                options.LogoutPath = "/usuarios/sair";
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                              .AddJsonOptions((setup) =>
                              {
@@ -47,52 +57,6 @@ namespace TudoBuffet.Website
 
             AddServicesToContainer(services);
             AddConfigurationInstance(services);
-            AddAuthenticationToPipeline(services);
-        }
-
-        private void AddAuthenticationToPipeline(IServiceCollection services)
-        {
-            var configBuilder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
-                                                          .AddJsonFile("appsettings.json", optional: true);
-            var config = configBuilder.Build();
-
-
-            var appSettingsSection = Configuration.GetSection("ApplicationSetting");
-            var key = Encoding.ASCII.GetBytes(appSettingsSection.GetSection("SecretKey").Value);
-
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-
-                x.Events = new JwtBearerEvents
-                {
-                    OnTokenValidated = context =>
-                    {
-                        var userService = context.HttpContext.RequestServices.GetRequiredService<IUserAuthenticatior>();
-                        var userId = Guid.Parse(context.Principal.FindFirst("id").Value);
-                        var user = userService.GetUserById(userId);
-                        if (user == null)
-                        {
-                            context.Fail("Não autorizado");
-                        }
-                        return Task.CompletedTask;
-                    }
-                };
-
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });
         }
 
         private static void AddConfigurationInstance(IServiceCollection services)
@@ -116,15 +80,15 @@ namespace TudoBuffet.Website
 
         private static void AddServicesToContainer(IServiceCollection services)
         {
-            services.AddTransient<IUserSignup, UserSignupService>();
+            services.AddTransient<IUserAccount, UserAccountService>();
             services.AddTransient<IEmailSender, EmailSenderService>();
             services.AddTransient<IUsersEmailsValidationUoW, UsersEmailsValidationUoW>();
             services.AddTransient<IEmailValidator, EmailValidatorService>();
-            services.AddTransient<IUserAuthenticatior, UserAuthenticatorService>();
             services.AddTransient<IBuffets, Buffets>();
             services.AddTransient<IPlans, Plans>();
             services.AddTransient<IPhotos, Photos>();
             services.AddTransient<IPhotoHandler, PhotoHandlerService>();
+            services.AddTransient<IRecaptchaValidator, RecaptchaValidator>();
 
             services.AddHttpContextAccessor();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
@@ -148,11 +112,16 @@ namespace TudoBuffet.Website
                 .AllowAnyHeader()
                 .AllowCredentials());
 
+            app.UseCookiePolicy(new CookiePolicyOptions
+            {
+                HttpOnly = HttpOnlyPolicy.Always,
+                MinimumSameSitePolicy = SameSiteMode.Strict
+            });
+
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseCookiePolicy();
-            app.UseAuthentication();
-    
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

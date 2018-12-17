@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using TudoBuffet.Website.Configs;
-using TudoBuffet.Website.Infrastructures.Interfaces;
+using TudoBuffet.Website.Infrastructures.Contracts;
 using TudoBuffet.Website.Models;
 
 namespace TudoBuffet.Website.Infrastructures
@@ -26,8 +26,8 @@ namespace TudoBuffet.Website.Infrastructures
 
             recaptchaModel = new RecaptchaModel
             {
-                RemoteIp = httpContext.HttpContext.Connection.RemoteIpAddress.ToString(),
-                Response = Request.Form["g-recaptcha-response"],
+                RemoteIp = clientIp,
+                Response = recaptchaKeyReceived,
                 Secret = recaptchaSetting.Value.Key
             };
 

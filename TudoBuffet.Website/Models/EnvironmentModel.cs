@@ -1,4 +1,9 @@
-﻿namespace TudoBuffet.Website.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using TudoBuffet.Website.Entities;
+
+namespace TudoBuffet.Website.Models
 {
     public class EnvironmentModel
     {
@@ -9,6 +14,27 @@
         {
             Code = code;
             Text = text;
+        }
+
+        public static List<EnvironmentModel> GetEnvironments()
+        {
+            List<EnvironmentModel> environmentsModel;
+            List<string> environments;
+
+            environments = Enum.GetNames(typeof(BuffetEnvironment)).ToList();
+
+            environmentsModel = new List<EnvironmentModel>();
+
+            foreach (var environmentText in environments)
+            {
+                EnvironmentModel environmentModel = null;
+
+                environmentModel = EnvironmentModel.CreateEnvironmentModel(environmentText);
+
+                environmentsModel.Add(environmentModel);
+            }
+
+            return environmentsModel;
         }
 
         public static EnvironmentModel CreateEnvironmentModel(string environmentText)

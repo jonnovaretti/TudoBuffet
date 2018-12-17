@@ -54,7 +54,7 @@ namespace TudoBuffet.Website.Controllers
             budgetSelectedViewModel.BudgetSent.Validate();
 
             budget = new Budget();
-            budgetSelectedViewModel.BuffetsBudgetSelected.ForEach(b => { budget.BuffetsSelected.Add(new Buffet() { Id = b.Id }); });
+            budgetSelectedViewModel.BuffetsBudgetSelected.ForEach(b => { budget.BudgetBuffets.Add(new BudgetBuffet  () { BuffetId = b.Id }); });
             budget.DayParty = budgetSelectedViewModel.BudgetSent.DayParty;
             budget.EmailSender = budgetSelectedViewModel.BudgetSent.EmailSender;
             budget.Observation = budgetSelectedViewModel.BudgetSent.Observation;

@@ -1,13 +1,4 @@
-﻿(function ($, window, document, undefined) {
-
-    $(function () {
-        $("#header").load("header.html");
-        $("#footer").load("footer.html");
-    });
-
-})(jQuery, window, document);
-
-function ShowMessage(message, status) {
+﻿function ShowMessage(message, status) {
     if (status >= 500) {
         window.location = "404.html";
     }

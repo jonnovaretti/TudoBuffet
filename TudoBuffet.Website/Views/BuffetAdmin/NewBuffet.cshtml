@@ -1,0 +1,249 @@
+﻿@model TudoBuffet.Website.Models.NewBuffetViewModel
+@{
+    ViewData["Title"] = "NewBuffet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<form id="newbuffetForm" method="post" action="/admin/buffet/novo">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li aria-current="page" class="breadcrumb-item active">Meus buffets</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="col-lg-3">
+                <div class="card sidebar-menu">
+                    <div class="card-header">
+                        <h3 class="h4 card-title">Seção do usuário</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav nav-pills flex-column">
+                            <a href="usuario-novo-buffet.html" class="nav-link active"><i class="fa fa-plus"></i> Novo buffet</a>
+                            <a href="usuario-buffets.html" class="nav-link"><i class="fa fa-list"></i> Meus buffets</a>
+                            <a href="customer-wishlist.html" class="nav-link"><i class="fa fa-heart"></i> Orçamentos recebidos</a>
+                            <a href="customer-account.html" class="nav-link"><i class="fa fa-user"></i> Minha conta</a>
+                            <a href="index.html" class="nav-link"><i class="fa fa-sign-out"></i> Sair</a>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="box">
+                    <h1>Novo buffet</h1>
+                    <p class="lead">Selecione um plano de divulgação e preencha as informações do buffet</p>
+                    <h3>Opções de plano</h3>
+                    <p class="text-muted">Clique em detalhes para explicação sobre o plano e valores</p>
+                    <div class="row ">
+                        @foreach (var plan in Model.Plans)
+                        {
+                            <div class="col-md-4 clickable active">
+                                <ul id="allPlansOptions" class="list-group" onclick="selectPlan('@plan.Id', this)">
+                                    <li class="list-group-item clickable text-center ">
+                                        <label>@plan.Name</label>
+                                    </li>
+                                    <li class="list-group-item clickable text-center">
+                                        <img src="~/@plan.Image" width="120" />
+                                    </li>
+                                    <li class="list-group-item clickable  text-center">
+                                        <label>@plan.Description</label>
+                                    </li>
+                                </ul>
+                            </div>
+                        }
+                        <div class="col-md-12 text-center">
+                            @Html.HiddenFor(m => m.Buffet.SelectedPlan, new { id = "selectedPlan" })
+                            @Html.ValidationMessageFor(m => m.Buffet.SelectedPlan, string.Empty, new { style = "color:red" })
+                        </div>
+                    </div>
+                    <h3 class="mt-5">Detalhes do buffet</h3>
+                    <div clas\s="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="name">Nome</label>
+                                @Html.TextBoxFor(m => m.Buffet.Name, new { @class = "form-control", @id = "name" })
+                                @Html.ValidationMessageFor(m => m.Buffet.Name, string.Empty, new { style = "color:red" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="description">Apresentação</label>
+                                @Html.TextAreaFor(m => m.Buffet.Description, new { @class = "form-control", cols = "55", rows = "5", @id = "description" })
+                                @Html.ValidationMessageFor(m => m.Buffet.Description, string.Empty, new { style = "color:red" })
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.row-->
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="zipcode">Cep</label>
+                                @Html.TextBoxFor(m => m.Buffet.Zipcode, new { @class = "form-control", @id = "zipcode" })
+                                @Html.ValidationMessageFor(m => m.Buffet.Zipcode, string.Empty, new { style = "color:red" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="street">Endereço (ex: Rua/Avenida Ricardo Jafet)</label>
+                                @Html.TextBoxFor(m => m.Buffet.Street, new { @class = "form-control", @id = "street" })
+                                @Html.ValidationMessageFor(m => m.Buffet.Street, string.Empty, new { style = "color:red" })
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="number">Number</label>
+                                @Html.TextBoxFor(m => m.Buffet.Number, new { @class = "form-control", @readonly = true, @id = "number" })
+                                @Html.ValidationMessageFor(m => m.Buffet.Number, string.Empty, new { style = "color:red" })
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.row-->
+                    <div class="row">
+                        <div class="col-md-6 col-lg-3">
+                            <div class="form-group">
+                                <label for="city">Bairro</label>
+                                @Html.TextBoxFor(m => m.Buffet.District, new { @class = "form-control", @readonly = true, @id = "district" })
+                                @Html.ValidationMessageFor(m => m.Buffet.District, string.Empty, new { style = "color:red" })
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="form-group">
+                                <label for="state">Cidade</label>
+                                @Html.TextBoxFor(m => m.Buffet.City, new { @class = "form-control", @readonly = true, @id = "city" })
+                                @Html.ValidationMessageFor(m => m.Buffet.City, string.Empty, new { style = "color:red" })
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="form-group">
+                                <label for="state">UF</label>
+                                @Html.TextBoxFor(m => m.Buffet.State, new { @class = "form-control", @readonly = true, @id = "state" })
+                                @Html.ValidationMessageFor(m => m.Buffet.State, string.Empty, new { style = "color:red" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="company">Faixa de preços</label>
+                                @Html.DropDownListFor(m => m.Buffet.SelectedRangePrice, new SelectList(Model.RangesPrices, "Code", "Text"), "Selecione uma faixa de preço", new { @class = "form-control", id = "rangeprice" })
+                                @Html.ValidationMessageFor(m => m.Buffet.SelectedRangePrice, string.Empty, new { style = "color:red" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="street">Categoria</label>
+                                @Html.DropDownListFor(m => m.Buffet.SelectedBuffetCategory, new SelectList(Model.Categories, "Code", "Text"), "Selecione uma categoria", new { @class = "form-control", id = "category" })
+                                @Html.ValidationMessageFor(m => m.Buffet.SelectedBuffetCategory)
+                            </div>
+                        </div>
+                        <!-- /.row-->
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="street">Ambiente</label>
+                                @Html.DropDownListFor(m => m.Buffet.SelectedBuffetEnvironment, new SelectList(Model.Environments, "Code", "Text"), "Selecione um tipo de ambiente", new { @class = "form-control", id = "environment" })
+                                @Html.ValidationMessageFor(m => m.Buffet.SelectedBuffetEnvironment, string.Empty, new { style = "color:red" })
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="form-group">
+                                <label for="phone">Celular</label>
+                                @Html.TextBoxFor(m => m.Buffet.Cellphone, new { @class = "form-control", placeholder = "numero com DDD" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="facebook">Página do Facebook</label>
+                                @Html.TextBoxFor(m => m.Buffet.Facebook, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="instagram">Perfil do Instagram</label>
+                                @Html.TextBoxFor(m => m.Buffet.Instagram, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-12 text-center">
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Salvar</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+
+    <script src="~/js/functions.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+
+        $.validator.setDefaults({
+            ignore: ""
+        });
+
+        function selectPlan(id, control) {
+            var selectedPlan;
+
+            var allPlansOptions = $('#allPlansOptions>li');
+
+            $.each(allPlansOptions, function (key, value) {
+                value.className = "list-group-item clickable  text-center";
+            });
+
+            control.children[0].className = 'list-group-item clickable  text-center active';
+            control.children[2].className = 'list-group-item clickable  text-center active';
+
+            $('#selectedPlan').val(id);
+            
+            $('#selectedPlan-error').remove();
+        }
+
+        $(document).ready(function () {
+
+            function cleanAddres() {
+                $("#street").val("");
+                $("#district").val("");
+                $("#city").val("");
+                $("#state").val("");
+            }
+
+            $("#zipcode").blur(function () {
+
+                var zipcode = $(this).val().replace(/\D/g, '');
+
+                if (zipcode != "") {
+
+                    var validatecep = /^[0-9]{8}$/;
+
+                    if (validatecep.test(zipcode)) {
+                        $.getJSON("https://viacep.com.br/ws/" + zipcode + "/json/?callback=?", function (payload) {
+                            if (!("erro" in payload)) {
+                                $("#street").val(payload.logradouro);
+                                $("#district").val(payload.bairro);
+                                $("#city").val(payload.localidade);
+                                $("#state").val(payload.uf);
+                            }
+                            else {
+                                cleanAddres();
+                                ShowMessage("CEP não encontrado.");
+                            }
+                        });
+                    }
+                    else {
+                        cleanAddres();
+                        ShowMessage("CEP não encontrado.");
+                    }
+                }
+                else {
+                    cleanAddres();
+                }
+            });
+        });
+
+    </script>
+}

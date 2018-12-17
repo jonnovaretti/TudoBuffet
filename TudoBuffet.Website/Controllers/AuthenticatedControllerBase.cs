@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace TudoBuffet.Website.Controllers
 {
-    public class AuthenticatedControllerBase : ControllerBase
+    public class AuthenticatedControllerBase : Controller
     {
         public Guid UserId
         {
@@ -19,6 +19,18 @@ namespace TudoBuffet.Website.Controllers
                 idParsed = Guid.Parse(claim.Value);
 
                 return idParsed;
+            }
+        }
+
+        public string FullName
+        {
+            get
+            {
+                Claim claim;
+
+                claim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "fullname");
+
+                return claim.Value;
             }
         }
 
