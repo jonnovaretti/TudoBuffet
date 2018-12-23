@@ -17,7 +17,7 @@ namespace TudoBuffet.Website.Repositories
 
         public IEnumerable<Plan> GetAll()
         {
-            return mainDbContext.Plans.ToList();
+            return mainDbContext.Plans.ToList().OrderBy(o => o.Order);
         }
     }
 }

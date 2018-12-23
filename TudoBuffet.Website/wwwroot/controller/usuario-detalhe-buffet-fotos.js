@@ -1,46 +1,10 @@
-﻿function Photo(data) {
-    this.name = data.name;
-    this.deleteUrl = data.deleteUrl;
-    this.thumbnailUrl = data.thumbnailUrl;
-    this.type = data.type;
-    this.url = data.url;
-    this.size = data.size;
-    this.id = data.id;
-    this.functionDelete = "javascript:callApi('" + data.deleteUrl + "', '" + data.id +"')"
-}
-
-function PhotosViewModel() {
-    var self = this;
-
-    self.photos = ko.observableArray([]);
-    self.token = ko.observable(window.sessionStorage.getItem('token'));
-    self.params = getUrlVars();
-
-    $.ajax("/api/admin/fotos?buffetId=" + self.params['buffetId'], {
-        type: "get",
-        contentType: "application/json",
-        headers: { 'Authorization': 'Bearer ' + self.token() },
-        success: function (payload) {
-            var photosFound = $.map(payload, function (item) { return new Photo(item) });
-            self.photos(photosFound);
-
-            self.photos()[1].name = 'zzz';
-        },
-        error: function (result) {
-            ShowMessage(result.responseText, result.status);
-        }
-    });
-}
-
-ko.applyBindings(new PhotosViewModel());
-
-$(function () {
+﻿$(function () {
     'use strict';
 
     var token = window.sessionStorage.getItem('token')
-    var params = getUrlVars();
+    var buffetId = $('#buffetid').val();
 
-    var url = 'api/admin/fotos?buffetId=' + params['buffetId'],
+    var url = '../../../api/admin/buffets/' + buffetId + '/fotos',
         uploadButton = $('<button/>')
             .addClass('btn btn-primary')
             .prop('disabled', true)
@@ -135,15 +99,13 @@ $(function () {
 
 function callApi(url, idDiv) {
 
-    var token = window.sessionStorage.getItem('token');
-
     document.getElementById(idDiv).outerHTML = '';
 
     $.ajax(url, {
         type: "delete",
         contentType: "application/json",
-        headers: { 'Authorization': 'Bearer ' + token },
         success: function (payload) {
+            ShowMessage('Foto removida com sucesso', 200);
         },
         error: function (result) {
             ShowMessage(result.responseText, result.status);

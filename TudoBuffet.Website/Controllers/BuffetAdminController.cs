@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TudoBuffet.Website.Entities;
 using TudoBuffet.Website.Models;
 using TudoBuffet.Website.Repositories.Contracts;
@@ -9,75 +10,39 @@ using TudoBuffet.Website.Services.Contracts;
 
 namespace TudoBuffet.Website.Controllers
 {
-    [Route("admin/buffet")]
+    [Route("admin/buffets")]
     [Authorize(Roles = "BuffetAdmin")]
     public class BuffetAdminController : AuthenticatedControllerBase
     {
         private readonly IBuffets buffets;
         private readonly IPhotoHandler photoHandlerService;
         private readonly IPlans plans;
+        private readonly IPhotos photos;
 
-        public BuffetAdminController(IBuffets buffets, IPhotoHandler photoHandlerService, IPlans plans)
+        public BuffetAdminController(IBuffets buffets, IPhotoHandler photoHandlerService, IPlans plans, IPhotos photos)
         {
             this.buffets = buffets;
             this.photoHandlerService = photoHandlerService;
             this.plans = plans;
-        }
-
-        [Route("")]
-        [HttpGet]
-        public IActionResult Index()
-        {
-            BuffetAdminViewModel buffetAdmin;
-            List<PurchasedBuffetAdModel> purchasedBuffetAds;
-            IEnumerable<Buffet> buffetsFound;
-
-            buffetsFound = buffets.GetBuffetsFromUserId(UserId);
-
-            purchasedBuffetAds = new List<PurchasedBuffetAdModel>();
-
-            foreach (var buffet in buffetsFound)
-            {
-                if (buffet != null)
-                {
-                    var purchasedPlan = new PurchasedBuffetAdModel()
-                    {
-                        Name = buffet.Name,
-                        ActivedAt = buffet.ActivedAt.HasValue ? buffet.ActivedAt.Value.ToString("dd/MM/yyyy") : string.Empty,
-                        Id = buffet.Id.ToString().Substring(0, 6),
-                        NamePlan = buffet.PlanSelected.Name,
-                        Status = buffet.PlanSelected.IsActive ? "Ativo" : "Inativo"
-                    };
-
-                    purchasedBuffetAds.Add(purchasedPlan);
-                }
-            }
-
-            buffetAdmin = new BuffetAdminViewModel();
-            buffetAdmin.PurchasedBuffetAds = purchasedBuffetAds;
-            buffetAdmin.OwnerName = FullName;
-
-            return View(buffetAdmin);
+            this.photos = photos;
         }
 
         [HttpGet]
-        [Route("novo")]
-        public ActionResult NewBuffet()
+        public ActionResult Index()
         {
             IEnumerable<Plan> plansFound;
-            NewBuffetViewModel newBuffetViewModel;
+            AdminBuffetViewModel newBuffetViewModel;
 
             plansFound = plans.GetAll();
 
-            newBuffetViewModel = new NewBuffetViewModel();
+            newBuffetViewModel = new AdminBuffetViewModel();
             newBuffetViewModel.MapperPlans(plansFound);
 
             return View(newBuffetViewModel);
         }
 
         [HttpPost]
-        [Route("novo")]
-        public ActionResult NewBuffet(NewBuffetViewModel newBuffetModel)
+        public ActionResult Index(AdminBuffetViewModel newBuffetModel)
         {
             Buffet buffet;
             Guid buffetId;
@@ -89,12 +54,88 @@ namespace TudoBuffet.Website.Controllers
 
                 buffetId = buffets.Save(buffet);
 
-                return Ok(buffetId);
+                return RedirectToAction("Index", "Admin");
             }
-            catch (Exception ex)    
+            catch (Exception ex)
             {
                 return ServerError();
             }
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public ActionResult Edit(string id)
+        {
+            Buffet buffetFound;
+            IEnumerable<Plan> plansFound, planSelected;
+            AdminBuffetViewModel newBuffetViewModel;
+
+            buffetFound = buffets.GetBuffetsById(Guid.Parse(id));
+
+            plansFound = plans.GetAll();
+            planSelected = plansFound.Where(p => p.Id == buffetFound.PlanSelected.Id);
+
+            newBuffetViewModel = new AdminBuffetViewModel();
+            newBuffetViewModel.MapperPlans(planSelected);
+
+            newBuffetViewModel.Buffet = BuffetModel.ToModel(buffetFound);
+            newBuffetViewModel.Buffet.Id = buffetFound.Id;
+
+            return View(newBuffetViewModel);
+        }
+
+        [HttpPost]
+        [Route("{id}")]
+        public ActionResult Edit(string id, AdminBuffetViewModel buffetViewModel)
+        {
+            Buffet buffet;
+            Guid buffetId;
+
+            try
+            {
+                buffetViewModel.Buffet.Validate();
+                buffet = buffetViewModel.Buffet.ToEntity(UserId);
+
+                buffetId = buffets.Update(Guid.Parse(id), buffet);
+
+                return RedirectToAction("Index", "Admin");
+            }
+            catch (Exception ex)
+            {
+                return ServerError();
+            }
+        }
+
+        [HttpGet]
+        [Route("{id}/fotos")]
+        public ActionResult Photos(Guid id)
+        {
+            PhotoDetailViewModel photoDetail;
+            List<PhotoUploadedModel> photosUploadedModel;
+            IEnumerable<Photo> photosFound;
+            Buffet buffetFound;
+
+            buffetFound = buffets.GetBuffetsById(id);
+
+            if (buffetFound.Owner.Id != UserId)
+                return BadRequest();
+
+            photosFound = photos.GetPhotosByBuffet(id);
+
+            photosUploadedModel = new List<PhotoUploadedModel>();
+
+            foreach (var photoFound in photosFound)
+            {
+                var photoUploadedModel = PhotoUploadedModel.Create(id, photoFound);
+
+                photosUploadedModel.Add(photoUploadedModel);
+            }
+
+            photoDetail = new PhotoDetailViewModel();
+            photoDetail.BuffetId = id;
+            photoDetail.Photos = photosUploadedModel;
+
+            return View(photoDetail);
         }
     }
 }

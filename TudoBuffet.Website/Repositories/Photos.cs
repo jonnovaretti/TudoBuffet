@@ -33,7 +33,7 @@ namespace TudoBuffet.Website.Repositories
             return photoFound;
         }
 
-        public IEnumerable<Photo> GetPhotosByBuffetAsync(Guid buffetId)
+        public IEnumerable<Photo> GetPhotosByBuffet(Guid buffetId)
         {
             IEnumerable<Photo> photosFound;
 

@@ -79,7 +79,7 @@ function NewBuffetViewModel() {
             return;
         }
 
-        $.ajax("/api/admin/buffet", {
+        $.ajax("/api/admin", {
             data: ko.toJSON(new Buffet(self)),
             type: "post",
             contentType: "application/json",

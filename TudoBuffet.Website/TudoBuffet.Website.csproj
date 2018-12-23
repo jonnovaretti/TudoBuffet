@@ -29,6 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\BuffetAdmin\Edit.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Shared\_LayoutBuffetAdmin.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

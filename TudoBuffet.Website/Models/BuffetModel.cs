@@ -6,6 +6,7 @@ namespace TudoBuffet.Website.Models
 {
     public class BuffetModel
     {
+        public Guid? Id { get; set; }
         [Required(ErrorMessage ="Nome é obrigatório")]
         public string Name { get; set; }
         [Required(ErrorMessage = "Apresentação é obrigatório")]
@@ -66,6 +67,32 @@ namespace TudoBuffet.Website.Models
                 throw new ArgumentNullException("Ambiente é obrigatório");
         }
 
+        public static BuffetModel ToModel(Buffet buffet)
+        {
+            BuffetModel buffetModel;
+
+            buffetModel = new BuffetModel()
+            {
+                SelectedBuffetCategory = Enum.GetName(typeof(BuffetCategory), buffet.Category),
+                Cellphone = buffet.Cellphone,
+                City = buffet.City,
+                Description = buffet.Description,
+                District = buffet.District,
+                Facebook = buffet.Facebook,
+                Instagram = buffet.Instagram,
+                Number = buffet.Number,
+                Name = buffet.Name,
+                SelectedPlan = buffet.PlanSelected.Id,
+                SelectedRangePrice = Enum.GetName(typeof(RangePrice), buffet.Price),
+                State = buffet.State,
+                Street = buffet.Street,
+                Zipcode = buffet.Zipcode,
+                SelectedBuffetEnvironment = Enum.GetName(typeof(BuffetEnvironment), buffet.Environment)
+            };
+
+            return buffetModel;
+        }
+
         public Buffet ToEntity(Guid ownerId)
         {
             Buffet buffet;
@@ -86,6 +113,7 @@ namespace TudoBuffet.Website.Models
                 Price = (RangePrice)Enum.Parse(typeof(RangePrice), SelectedRangePrice),
                 State = State,
                 Street = Street,
+                Zipcode = Zipcode,
                 Environment = (BuffetEnvironment)Enum.Parse(typeof(BuffetEnvironment), SelectedBuffetEnvironment )
             };
 

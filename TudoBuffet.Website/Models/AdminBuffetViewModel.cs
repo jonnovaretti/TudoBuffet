@@ -6,7 +6,7 @@ using TudoBuffet.Website.Repositories.Contracts;
 
 namespace TudoBuffet.Website.Models
 {
-    public class NewBuffetViewModel
+    public class AdminBuffetViewModel
     {
         public BuffetModel Buffet { get; set; }
         public List<RangePriceModel> RangesPrices { get; set; }
@@ -14,7 +14,7 @@ namespace TudoBuffet.Website.Models
         public List<BuffetCategoryModel> Categories { get; set; }
         public List<PlanModel> Plans { get; set; }
 
-        public NewBuffetViewModel()
+        public AdminBuffetViewModel()
         {
             RangesPrices = RangePriceModel.GetRangePriceList();
             Environments = EnvironmentModel.GetEnvironments();

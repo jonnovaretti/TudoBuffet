@@ -9,7 +9,7 @@ namespace TudoBuffet.Website.Repositories.Contracts
     {
         Task<Guid> Save(Photo photo);
         Task<Photo> GetById(Guid fileId);
-        IEnumerable<Photo> GetPhotosByBuffetAsync(Guid buffetId);
+        IEnumerable<Photo> GetPhotosByBuffet(Guid buffetId);
         Task Delete(Photo photo);
     }
 }

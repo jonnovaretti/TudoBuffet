@@ -55,6 +55,7 @@ namespace TudoBuffet.Website.Repositories
         {
             mainDbContext.Add(buffet);
             mainDbContext.Entry(buffet.PlanSelected).State = EntityState.Detached;
+            mainDbContext.Entry(buffet.Owner).State = EntityState.Detached;
             mainDbContext.SaveChanges();
 
             return buffet.Id;
@@ -111,6 +112,20 @@ namespace TudoBuffet.Website.Repositories
             buffets = mainDbContext.Buffets.Include(b => b.Photos).Include(b => b.PlanSelected).Where(where.ToString(), paramsValue.ToArray()).OrderBy(b => b.PlanSelected.Order).ToList();
 
             return buffets;
+        }
+
+        public Guid Update(Guid id, Buffet buffet)
+        {
+            buffet.Id = id;
+
+            mainDbContext.Update(buffet);
+
+            mainDbContext.Entry(buffet.PlanSelected).State = EntityState.Detached;
+            mainDbContext.Entry(buffet.Owner).State = EntityState.Detached;
+
+            mainDbContext.SaveChanges();
+
+            return buffet.Id;
         }
     }
 }
