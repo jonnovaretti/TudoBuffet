@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Text;
+using System.Threading.Tasks;
 using TudoBuffet.Website.Entities;
 using TudoBuffet.Website.Repositories.Context;
 using TudoBuffet.Website.Repositories.Contracts;
@@ -61,56 +62,24 @@ namespace TudoBuffet.Website.Repositories
             return buffet.Id;
         }
 
-        public IEnumerable<Buffet> GetBuffets(string uf, string cidade, BuffetCategory? buffetCategory, BuffetEnvironment? buffetEnvironment, RangePrice? rangePrice, string name = null)
+        public async Task<IEnumerable<Buffet>> GetBuffets(string uf, string city, BuffetCategory? buffetCategory, BuffetEnvironment? buffetEnvironment, RangePrice? rangePrice, string name = null)
         {
+            ConditionBuffetBuilder conditionBuffet;
             List<Buffet> buffets;
-            StringBuilder where;
-            List<object> paramsValue;
-            int paramsOrder = 2;
 
-            paramsValue = new List<object>();
-            where = new StringBuilder();
+            conditionBuffet = new ConditionBuffetBuilder().WhereCity(city)
+                                                          .WhereUf(uf)
+                                                          .WhereCategory(buffetCategory)
+                                                          .WhereEnvironment(buffetEnvironment)
+                                                          .WhereRangePrice(rangePrice)
+                                                          .WhereName(name)
+                                                          .Build();
 
-            where.Append(" city == @0");
-            paramsValue.Add(cidade);
-
-            where.Append(" and ");
-            where.Append(" state == @1");
-            paramsValue.Add(uf);
-
-            if (buffetCategory.HasValue)
-            {
-                where.Append(" and ");
-                where.Append(" category == @" + paramsOrder);
-                paramsValue.Add(buffetCategory);
-                paramsOrder++;
-            }
-
-            if (buffetEnvironment.HasValue)
-            {
-                where.Append(" and ");
-                where.Append(" environment = @" + paramsOrder);
-                paramsValue.Add(buffetEnvironment);
-                paramsOrder++;
-            }
-
-            if (buffetEnvironment.HasValue)
-            {
-                where.Append(" and ");
-                where.Append(" price = @" + paramsOrder);
-                paramsValue.Add(buffetEnvironment);
-                paramsOrder++;
-            }
-
-            if (!string.IsNullOrEmpty(name))
-            {
-                where.Append(" and ");
-                where.Append(" name = @" + paramsOrder);
-                paramsValue.Add(name);
-            }
-
-            buffets = mainDbContext.Buffets.Include(b => b.Photos).Include(b => b.PlanSelected).Where(where.ToString(), paramsValue.ToArray()).OrderBy(b => b.PlanSelected.Order).ToList();
-
+            buffets = await mainDbContext.Buffets.Include(b => b.Photos)
+                                                 .Include(b => b.PlanSelected)
+                                                 .Where(conditionBuffet.GetWhere(), conditionBuffet.GetParams())
+                                                 .OrderBy(b => b.PlanSelected.Order)
+                                                 .ToListAsync();
             return buffets;
         }
 

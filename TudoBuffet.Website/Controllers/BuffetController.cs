@@ -1,38 +1,54 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using TudoBuffet.Website.Entities;
 using TudoBuffet.Website.Models;
 using TudoBuffet.Website.Repositories.Contracts;
+using TudoBuffet.Website.Infrastructures.Contracts;
+using TudoBuffet.Website.Infrastructures;
+using System.Threading.Tasks;
 
 namespace TudoBuffet.Website.Controllers
 {
-    [Route("buffet")]
+    [Route("buffets")]
     public class BuffetController : Controller
     {
         private readonly IBuffets buffets;
+        private readonly IHttpContextAccessor httpContext;
+        private readonly IIpLocalizator ipLocalizator;
 
-        public BuffetController(IBuffets buffets)
+        public BuffetController(IBuffets buffets, IHttpContextAccessor httpContext, IIpLocalizator ipLocalizator)
         {
             this.buffets = buffets;
+            this.httpContext = httpContext;
+            this.ipLocalizator = ipLocalizator;
         }
 
         [HttpGet]
-        [Route("busca")]
-        public IActionResult SearchBuffets(FilterBuffetSearch filters)
+        public async Task<IActionResult> SearchBuffets(FilterBuffetSearch filters)
         {
             SearchBuffetsViewModel searchBuffetsViewModel;
             IEnumerable<Buffet> buffetsFound;
             BuffetCategory? buffetCategory;
             BuffetEnvironment? buffetEnvironment;
             RangePrice? rangePrice;
+            GeoLocation geoLocation;
 
             buffetCategory = string.IsNullOrEmpty(filters.Category) ? null : (BuffetCategory?) Enum.Parse(typeof(BuffetCategory), filters.Category);
             buffetEnvironment = string.IsNullOrEmpty(filters.Environment) ? null : (BuffetEnvironment?)Enum.Parse(typeof(BuffetEnvironment), filters.Environment);
             rangePrice = string.IsNullOrEmpty(filters.RangePrice) ? null : (RangePrice?)Enum.Parse(typeof(RangePrice), filters.RangePrice);
 
-            buffetsFound = buffets.GetBuffets(filters.State, filters.City, buffetCategory, buffetEnvironment, rangePrice, filters.Name);
+            if(string.IsNullOrEmpty(filters.State) && string.IsNullOrEmpty(filters.City))
+            {
+                geoLocation = await ipLocalizator.GetCountryFromIp(httpContext.HttpContext.Connection.RemoteIpAddress.ToString());
+
+                filters.State = geoLocation.State;
+                filters.City = geoLocation.City;
+            }
+
+            buffetsFound = await buffets.GetBuffets(filters.State, filters.City, buffetCategory, buffetEnvironment, rangePrice, filters.Name);
 
             searchBuffetsViewModel = new SearchBuffetsViewModel();
 
