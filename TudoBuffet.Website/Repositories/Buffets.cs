@@ -78,7 +78,7 @@ namespace TudoBuffet.Website.Repositories
                                                           .WhereName(name)
                                                           .Build();
             if (pageSize == 0)
-                pageSize = 12;
+                pageSize = 20;
 
             if (page > 0)
                 --page;
