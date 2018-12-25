@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using TudoBuffet.Website.Entities;
+using TudoBuffet.Website.Models.Bases;
 
 namespace TudoBuffet.Website.Models
 {
-    public class EnvironmentModel
+    public class EnvironmentModel : QueryStringModelBase
     {
         public string Text { get; private set; }
-        public string Code { get; private set; }
 
         public EnvironmentModel(string code, string text)
         {

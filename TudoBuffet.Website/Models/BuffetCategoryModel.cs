@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using TudoBuffet.Website.Entities;
+using TudoBuffet.Website.Models.Bases;
 
 namespace TudoBuffet.Website.Models
 {
-    public class BuffetCategoryModel
+    public class BuffetCategoryModel : QueryStringModelBase
     {
         public string Text { get; set; }
-        public string Code { get; set; }
 
         public static List<BuffetCategoryModel> GetBuffetCategories()
         {

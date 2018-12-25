@@ -10,5 +10,6 @@ namespace TudoBuffet.Website.Models
         public string SecondThumbnailUrl { get; set; }
         public string City { get; set; }
         public string State { get; set; }
+        public string Category { get; set; }
     }
 }

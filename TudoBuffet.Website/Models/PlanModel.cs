@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TudoBuffet.Website.Models.Models
+namespace TudoBuffet.Website.Models
 {
     public class PlanModel
     {

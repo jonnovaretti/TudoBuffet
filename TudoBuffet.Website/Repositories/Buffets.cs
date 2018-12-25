@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TudoBuffet.Website.Entities;
 using TudoBuffet.Website.Repositories.Context;
 using TudoBuffet.Website.Repositories.Contracts;
+using TudoBuffet.Website.Repositories.Paging;
 
 namespace TudoBuffet.Website.Repositories
 {
@@ -62,10 +63,12 @@ namespace TudoBuffet.Website.Repositories
             return buffet.Id;
         }
 
-        public async Task<IEnumerable<Buffet>> GetBuffets(string uf, string city, BuffetCategory? buffetCategory, BuffetEnvironment? buffetEnvironment, RangePrice? rangePrice, string name = null)
+        public async Task<PagedQuery<Buffet>> GetBuffets(int page, int pageSize, string uf, string city, BuffetCategory? buffetCategory, BuffetEnvironment? buffetEnvironment, RangePrice? rangePrice, string name = null)
         {
+            PagedQuery<Buffet> pagedResult;
             ConditionBuffetBuilder conditionBuffet;
             List<Buffet> buffets;
+            IQueryable<Buffet> buffetsQueryble;
 
             conditionBuffet = new ConditionBuffetBuilder().WhereCity(city)
                                                           .WhereUf(uf)
@@ -74,13 +77,29 @@ namespace TudoBuffet.Website.Repositories
                                                           .WhereRangePrice(rangePrice)
                                                           .WhereName(name)
                                                           .Build();
+            if (pageSize == 0)
+                pageSize = 12;
 
-            buffets = await mainDbContext.Buffets.Include(b => b.Photos)
+            if (page > 0)
+                --page;
+
+            buffetsQueryble = mainDbContext.Buffets.Include(b => b.Photos)
                                                  .Include(b => b.PlanSelected)
-                                                 .Where(conditionBuffet.GetWhere(), conditionBuffet.GetParams())
-                                                 .OrderBy(b => b.PlanSelected.Order)
-                                                 .ToListAsync();
-            return buffets;
+                                                 .Where(conditionBuffet.GetWhere(), conditionBuffet.GetParams());
+
+            pagedResult = new PagedQuery<Buffet>();
+            pagedResult.CurrentPage = page + 1;
+            pagedResult.PageSize = pageSize;
+            pagedResult.TotalItems = buffetsQueryble.Count();
+
+            buffets = await buffetsQueryble.Skip(page * pageSize)
+                                           .Take(pageSize)
+                                           .OrderBy(b => b.PlanSelected.Order)
+                                           .ToListAsync();
+
+            pagedResult.Result = buffets;
+
+            return pagedResult;
         }
 
         public Guid Update(Guid id, Buffet buffet)

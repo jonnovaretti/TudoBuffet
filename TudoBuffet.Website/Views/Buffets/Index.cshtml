@@ -1,0 +1,122 @@
+﻿@model TudoBuffet.Website.Models.SearchBuffetsViewModel
+
+@{
+    ViewData["Title"] = "SearchBuffets";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+            <!--
+            *** MENUS AND FILTERS ***
+            _________________________________________________________
+            -->
+            <div class="card sidebar-menu mb-4">
+                <div class="card-header">
+                    <h3 class="h4 card-title">Categoria<a href="#" class="btn btn-sm btn-danger pull-right"><i class="fa fa-times-circle"></i> Limpar</a></h3>
+                </div>
+                <div class="card-body">
+                    <ul class="nav nav-pills flex-column category-menu">
+                        <li>
+                            @foreach (var category in Model.Categories)
+                            {
+                                <h6>
+                                    <a href="@category.QueryString">@category.Text</a>
+                                </h6>
+                            }
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card sidebar-menu mb-4">
+                <div class="card-header">
+                    <h3 class="h4 card-title">Tipo ambiente<a href="#" class="btn btn-sm btn-danger pull-right"><i class="fa fa-times-circle"></i> Limpar</a></h3>
+                </div>
+                <div class="card-body">
+                    <ul class="nav nav-pills flex-column category-menu">
+                        <li>
+                            @foreach (var environment in Model.Environments)
+                            {
+                                <h6>
+                                    <a href="@environment.QueryString">@environment.Text</a>
+                                </h6>
+                            }
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card sidebar-menu mb-4">
+                <div class="card-header">
+                    <h3 class="h4 card-title">Faixa de preço<a href="#" class="btn btn-sm btn-danger pull-right"><i class="fa fa-times-circle"></i> Limpar</a></h3>
+                </div>
+                <div class="card-body">
+                    <ul class="nav nav-pills flex-column category-menu">
+                        <li>
+                            @foreach (var rangePrice in Model.RangesPrices)
+                            {
+                                <h6> <a href="@rangePrice.QueryString">@rangePrice.Text</a></h6>
+                            }
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div class="box info-bar">
+                <div class="row">
+                    <div class="col-md-12 col-lg-4 products-showing">Exibindo <strong>@Model.PageSize</strong> de <strong>@Model.TotalItems</strong> buffets</div>
+                    <div class="col-md-12 col-lg-7 products-number-sort">
+                        <form class="form-inline d-block d-lg-flex justify-content-between flex-column flex-md-row">
+                            <div class="products-number">
+                                <a href="&itens=20" class="btn btn-sm btn-primary">20</a>
+                                <a href="&itens=40" class="btn btn-outline-secondary btn-sm">40</a>
+                                <a href="&itens=60" class="btn btn-outline-secondary btn-sm">60</a>
+                            </div>
+                            @*<div class="products-sort-by mt-2 mt-lg-0">
+                                <strong>Order por</strong>
+                                <select name="sort-by" class="form-control">
+                                    <option>Nome</option>
+                                    <option>Mais acessados</option>
+                                    <option>Sales first</option>
+                                </select>
+                            </div>*@
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row products">
+                @foreach (var buffetFound in Model.BuffetsSearchFound)
+                {
+                    <div class="col-lg-4 col-md-6 text-center">
+                        <div class="product">
+                            <a href="buffets/detalhe/@buffetFound.Id"><img src="@buffetFound.FirstThumbnailUrl" alt="Tipo de festa @buffetFound.Category" class="img-fluid" style="height:200px"></a>
+                            <div class="text">
+                                <h4><a href="buffets/detalhe/@buffetFound.Id">@buffetFound.Name</a></h4>
+                                <p>@buffetFound.Category</p>
+                                <p class="buttons">
+                                    <a href="buffets/detalhe/@buffetFound.Id" class="btn btn-primary">Ver detalhe</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="pages">
+                <nav aria-label="Page navigation example" class="d-flex justify-content-center">
+                    <ul class="pagination">
+                        <li class="page-item"><a href="#" aria-label="Previous" class="page-link"><span aria-hidden="true">«</span><span class="sr-only">Previous</span></a></li>
+                        <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                        <li class="page-item"><a href="#" class="page-link">2</a></li>
+                        <li class="page-item"><a href="#" class="page-link">3</a></li>
+                        <li class="page-item"><a href="#" class="page-link">4</a></li>
+                        <li class="page-item"><a href="#" class="page-link">5</a></li>
+                        <li class="page-item"><a href="#" aria-label="Next" class="page-link"><span aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>

@@ -4,6 +4,7 @@ using TudoBuffet.Website.Entities;
 using System.Linq;
 using System;
 using TudoBuffet.Website.ValuesObjects;
+using TudoBuffet.Website.Models;
 
 namespace TudoBuffet.Website.Repositories.Context
 {
@@ -87,5 +88,7 @@ namespace TudoBuffet.Website.Repositories.Context
 
 
         }
+
+        public DbSet<TudoBuffet.Website.Models.BuffetModel> BuffetModel { get; set; }
     }
 }

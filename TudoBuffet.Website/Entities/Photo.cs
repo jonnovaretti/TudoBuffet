@@ -7,7 +7,7 @@
         public string DetailFileName { get; set; }
         public string DetailUrl { get; set; }
         public string SearchFileName { get; set; }
-        public string SearachUrl { get; set; }
+        public string SearchUrl { get; set; }
         public string ThumbnailFileName { get; set; }
         public string ThumbnailUrl { get; set; }
         public long Size { get; set; }

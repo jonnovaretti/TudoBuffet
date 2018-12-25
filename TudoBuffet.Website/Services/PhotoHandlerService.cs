@@ -74,7 +74,7 @@ namespace TudoBuffet.Website.Services
                 ThumbnailFileName = completeDirectoryForThumbnailImage,
                 DetailUrl = detailUrl,
                 DetailFileName = completeDirectoryForDetailImage,
-                SearachUrl = searchUrl,
+                SearchUrl = searchUrl,
                 SearchFileName = completeDirectoryForSearchImage
             };
 

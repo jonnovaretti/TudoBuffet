@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TudoBuffet.Website.Entities;
-using TudoBuffet.Website.Models.Models;
-using TudoBuffet.Website.Repositories.Contracts;
 
 namespace TudoBuffet.Website.Models
 {

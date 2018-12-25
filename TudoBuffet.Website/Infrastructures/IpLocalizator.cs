@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using TudoBuffet.Website.Configs;
@@ -22,14 +23,21 @@ namespace TudoBuffet.Website.Infrastructures
             JObject jObject;
             string city = string.Empty, state = string.Empty, body;
 
-            body = await RequestLocationFromIp(ip);
-
-            if (body.Contains("success"))
+            try
             {
-                jObject = JObject.Parse(body);
+                body = await RequestLocationFromIp(ip);
 
-                city = jObject.SelectToken("data.geo.city").Value<string>();
-                state = jObject.SelectToken("data.geo.region_code").Value<string>();
+                if (body.Contains("success"))
+                {
+                    jObject = JObject.Parse(body);
+
+                    city = jObject.SelectToken("data.geo.city").Value<string>();
+                    state = jObject.SelectToken("data.geo.region_code").Value<string>();
+                }
+            }
+            catch (Exception)
+            {
+                
             }
 
             return new GeoLocation(city, state);

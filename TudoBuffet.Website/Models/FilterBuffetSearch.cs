@@ -2,7 +2,7 @@
 
 namespace TudoBuffet.Website.Models
 {
-    public class FilterBuffetSearch
+    public class FilterBuffetSearch : PagingBase
     {
         [FromQuery(Name = "ambiente")]
         public string Environment { get; set; }
@@ -16,5 +16,9 @@ namespace TudoBuffet.Website.Models
         public string City { get; set; }
         [FromQuery(Name = "nome")]
         public string Name { get; set; }
+        [FromQuery(Name = "pagina")]
+        public int Page { get; set; }
+        [FromQuery(Name = "itens")]
+        public int PageSize { get; set; }
     }
 }

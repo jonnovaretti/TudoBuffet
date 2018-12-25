@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using TudoBuffet.Website.Entities;
+using TudoBuffet.Website.Models.Bases;
 
 namespace TudoBuffet.Website.Models
 {
-    public class RangePriceModel
+    public class RangePriceModel : QueryStringModelBase
     {
         public string Text { get; private set; }
-        public string Code { get; private set; }
 
         private RangePriceModel(string code, string text)
         {
             Code = code;
             Text = text;
         }
-
+        
         public static List<RangePriceModel> GetRangePriceList()
         {
             List<RangePriceModel> rangesPriceModel;
