@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using TudoBuffet.Website.Entities;
+using TudoBuffet.Website.ValuesObjects;
 
 namespace TudoBuffet.Website.Repositories
 {

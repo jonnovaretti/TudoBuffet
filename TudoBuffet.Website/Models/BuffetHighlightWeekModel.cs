@@ -1,5 +1,4 @@
 ﻿using System;
-using TudoBuffet.Website.Entities;
 
 namespace TudoBuffet.Website.Models
 {
@@ -10,5 +9,6 @@ namespace TudoBuffet.Website.Models
         public string Category { get; set; }
         public string FirstThumbnailUrl { get; set; }
         public string SecondThumbnailUrl { get; set; }
+        public string Title { get; set; }
     }
 }

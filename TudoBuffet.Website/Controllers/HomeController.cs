@@ -5,6 +5,7 @@ using System.Linq;
 using TudoBuffet.Website.Entities;
 using TudoBuffet.Website.Models;
 using TudoBuffet.Website.Repositories.Contracts;
+using TudoBuffet.Website.ValuesObjects;
 
 namespace TudoBuffet.Website.Controllers
 {
@@ -40,7 +41,8 @@ namespace TudoBuffet.Website.Controllers
                         Category = Enum.GetName(typeof(BuffetCategory), buffetFound.Category),
                         Id = buffetFound.Id,
                         Name = buffetFound.Name,
-                        FirstThumbnailUrl = firstThumbnailUrl
+                        FirstThumbnailUrl = firstThumbnailUrl,
+                        Title = buffetFound.Title
                     };
 
                     homeViewModel.WeekHighlightBuffets.Add(buffetHighlightWeek);

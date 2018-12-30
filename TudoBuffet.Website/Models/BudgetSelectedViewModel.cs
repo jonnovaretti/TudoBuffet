@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TudoBuffet.Website.Entities;
+using TudoBuffet.Website.ValuesObjects;
 
 namespace TudoBuffet.Website.Models
 {
@@ -18,10 +19,10 @@ namespace TudoBuffet.Website.Models
             BuffetsBudgetSelected.Add(new BuffetBudgetSelectedModel()
             {
                 Category = Enum.GetName(typeof(BuffetCategory), buffet.Category),
-                Environment = EnvironmentModel.CreateEnvironmentModel(Enum.GetName(typeof(BuffetEnvironment), buffet.Environment)).Text,
+                Environment = EnvironmentModel.Create(buffet.Environment).Text,
                 Id = buffet.Id,
                 Name = buffet.Name,
-                RangePrice = RangePriceModel.CreateRangePriceModel(Enum.GetName(typeof(RangePrice), buffet.Price)).Text,
+                RangePrice = RangePriceModel.Create(buffet.Price).Text,
                 ThumbnailUrl = buffet.Photos.First().ThumbnailUrl
             });
         }

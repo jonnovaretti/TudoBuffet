@@ -13,6 +13,7 @@ namespace TudoBuffet.Website.Models
         public string City { get; set; }
         public string State { get; set; }
         public string Category { get; set; }
+        public string Title { get; set; }
 
         public static BuffetSearchModel ToModel(Buffet buffet)
         {
@@ -24,7 +25,8 @@ namespace TudoBuffet.Website.Models
                 State = buffet.State,
                 FirstThumbnailUrl = buffet.Photos.Any() ? buffet.Photos.First().SearchUrl : string.Empty,
                 SecondThumbnailUrl = buffet.Photos.Any() ? buffet.Photos.Last().SearchUrl : string.Empty,
-                Category = buffet.Category.ToString()
+                Category = buffet.Category.ToString(),
+                Title = buffet.Title
             };
 
             return buffetFoundModel;

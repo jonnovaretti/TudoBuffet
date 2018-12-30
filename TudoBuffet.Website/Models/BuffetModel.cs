@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using TudoBuffet.Website.Entities;
+using TudoBuffet.Website.Infrastructures;
+using TudoBuffet.Website.ValuesObjects;
 
 namespace TudoBuffet.Website.Models
 {
@@ -96,10 +98,17 @@ namespace TudoBuffet.Website.Models
         public Buffet ToEntity(Guid ownerId)
         {
             Buffet buffet;
+            BuffetCategory category;
+            RangePrice rangePrice;
+            BuffetEnvironment buffetEnvironment;
+
+            category = (BuffetCategory)Enum.Parse(typeof(BuffetCategory), SelectedBuffetCategory);
+            rangePrice = (RangePrice)Enum.Parse(typeof(RangePrice), SelectedRangePrice);
+            buffetEnvironment = (BuffetEnvironment)Enum.Parse(typeof(BuffetEnvironment), SelectedBuffetEnvironment);
 
             buffet = new Buffet()
             {
-                Category = (BuffetCategory)Enum.Parse(typeof(BuffetCategory), SelectedBuffetCategory),
+                Category = category,
                 Cellphone = Cellphone,
                 City = City,
                 Description = Description,
@@ -110,11 +119,12 @@ namespace TudoBuffet.Website.Models
                 Owner = new UserBuffetAdmin() { Id = ownerId },
                 Name = Name,
                 PlanSelected = new Plan() { Id = SelectedPlan },
-                Price = (RangePrice)Enum.Parse(typeof(RangePrice), SelectedRangePrice),
+                Price = rangePrice,
                 State = State,
                 Street = Street,
                 Zipcode = Zipcode,
-                Environment = (BuffetEnvironment)Enum.Parse(typeof(BuffetEnvironment), SelectedBuffetEnvironment )
+                Environment = buffetEnvironment,
+                Title = FriendlyUrlHelper.GetFriendlyTitle(string.Concat(Name, "-", "festa", "-", category.GetDescription(), "-", buffetEnvironment.GetDescription(), "-", City, "-", State), true)
             };
 
             return buffet;

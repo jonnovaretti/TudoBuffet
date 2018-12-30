@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TudoBuffet.Website.ValuesObjects;
 
 namespace TudoBuffet.Website.Entities
 {
@@ -23,33 +24,6 @@ namespace TudoBuffet.Website.Entities
         public RangePrice Price { get; set; }
         public DateTime? ActivedAt { get; set; }
         public BuffetEnvironment Environment { get; set; }
-    }
-
-    public enum RangePrice
-    {
-        Less2000,
-        Between2000And4000,
-        Between4000And6000,
-        Between6000And8000,
-        Between8000And12000,
-        More12000
-    }
-
-    public enum BuffetCategory
-    {
-        Casamento,
-        Infantil,
-        Evento
-    }
-
-    public enum BuffetEnvironment
-    {
-        SalaoDeFesta,
-        Fazenda,
-        Clube,
-        Restaurante,
-        AreaDeEntretenimento,
-        Praia,
-        SitioChacara
+        public string Title { get; set; }
     }
 }

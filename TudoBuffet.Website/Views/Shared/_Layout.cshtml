@@ -33,7 +33,7 @@
         <div id="top">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-6 offer mb-3 mb-lg-0"></div>
+                    <div class="col-lg-6 offer mb-3 mb-lg-0" style="color:gray">tudo buffet</div>
                     <div class="col-lg-6 text-center text-lg-right">
                         <ul class="menu list-inline mb-0">
                             <li class="list-inline-item"><a href="~/usuarios/entrar">Entrar</a></li>
@@ -53,7 +53,7 @@
                 </div>
                 <div id="navigation" class="collapse navbar-collapse">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item"><a href="#" class="nav-link active">Início</a></li>
+                        <li class="nav-item"><a href="~/" class="nav-link active">Início</a></li>
                         <li class="nav-item dropdown menu-large">
                             <a href="#" data-toggle="dropdown" data-hover="dropdown" data-delay="200" class="dropdown-toggle nav-link">Buffets<b class="caret"></b></a>
                             <ul class="dropdown-menu megamenu">
@@ -62,33 +62,39 @@
                                         <div class="col-md-6 col-lg-3">
                                             <h5>Tipo de festa</h5>
                                             <ul class="list-unstyled mb-3">
-                                                <li class="nav-item"><a href="category.html" class="nav-link">Infantil</a></li>
-                                                <li class="nav-item"><a href="category.html" class="nav-link">Casamento</a></li>
-                                                <li class="nav-item"><a href="category.html" class="nav-link">Evento</a></li>
+                                                <li class="nav-item"><a href="~/buffets?categoria=Infantil" class="nav-link">Infantil</a></li>
+                                                <li class="nav-item"><a href="~/buffets?categoria=Casamento" class="nav-link">Casamento</a></li>
+                                                <li class="nav-item"><a href="~/buffets?categoria=Evento" class="nav-link">Evento</a></li>
                                                 <li class="nav-item"><a href="~/buffets" class="nav-link">Todos</a></li>
                                             </ul>
                                         </div>
                                         <div class="col-md-6 col-lg-3">
                                             <h5>Ambiente</h5>
                                             <ul class="list-unstyled mb-3">
-                                                <li class="nav-item"><a href="category.html" class="nav-link">Salão</a></li>
-                                                <li class="nav-item"><a href="category.html" class="nav-link">Fazendo</a></li>
-                                                <li class="nav-item"><a href="category.html" class="nav-link">Chácara</a></li>
-                                                <li class="nav-item"><a href="category.html" class="nav-link">Praia</a></li>
-                                                <li class="nav-item"><a href="category.html" class="nav-link">Sítio</a></li>
-                                                <li class="nav-item"><a href="category.html" class="nav-link">Restaurante</a></li>
+                                                <li class="nav-item"><a href="~/buffets?ambiente=Salao" class="nav-link">Salão</a></li>
+                                                <li class="nav-item"><a href="~/buffets?ambiente=Fazenda" class="nav-link">Fazenda</a></li>
+                                                <li class="nav-item"><a href="~/buffets?ambiente=Chacara" class="nav-link">Chácara</a></li>
+                                                <li class="nav-item"><a href="~/buffets?ambiente=Praia" class="nav-link">Praia</a></li>
+                                                <li class="nav-item"><a href="~/buffets?ambiente=Sitio" class="nav-link">Sítio</a></li>
+                                                <li class="nav-item"><a href="~/buffets?ambiente=Restaurante" class="nav-link">Restaurante</a></li>
+                                                <li class="nav-item"><a href="~/buffets" class="nav-link">Todos</a></li>
                                             </ul>
                                         </div>
                                         <div class="col-md-6 col-lg-3">
                                             <h5>Faixa de preço</h5>
                                             <ul class="list-unstyled mb-3">
-                                                <li class="nav-item"><a href="category.html" class="nav-link">abaixo de R$ 1.000,00</a></li>
-                                                <li class="nav-item"><a href="category.html" class="nav-link">entre R$ 1.000,00 a R$ 3.000,00</a></li>
-                                                <li class="nav-item"><a href="category.html" class="nav-link">entre R$ 3.000,00 a R$ 5.000,00</a></li>
-                                                <li class="nav-item"><a href="category.html" class="nav-link">entre R$ 5.000,00 a R$ 8.000,00</a></li>
-                                                <li class="nav-item"><a href="category.html" class="nav-link">entre R$ 8.000,00 a R$ 12.000,00</a></li>
-                                                <li class="nav-item"><a href="category.html" class="nav-link">acima R$ 12.000,00</a></li>
+                                                <li class="nav-item"><a href="~/buffets?faixadepreco=Menos2000" class="nav-link">abaixo de R$ 1.000,00</a></li>
+                                                <li class="nav-item"><a href="~/buffets?faixadepreco=Entre2000e4000" class="nav-link">entre R$ 1.000,00 a R$ 3.000,00</a></li>
+                                                <li class="nav-item"><a href="~/buffets?faixadepreco=Entre4000e6000" class="nav-link">entre R$ 3.000,00 a R$ 5.000,00</a></li>
+                                                <li class="nav-item"><a href="~/buffets?faixadepreco=Entre6000e8000" class="nav-link">entre R$ 5.000,00 a R$ 8.000,00</a></li>
+                                                <li class="nav-item"><a href="~/buffets?faixadepreco=Entre8000e12000" class="nav-link">entre R$ 8.000,00 a R$ 12.000,00</a></li>
+                                                <li class="nav-item"><a href="~/buffets?faixadepreco=Mais12000" class="nav-link">acima R$ 12.000,00</a></li>
+                                                <li class="nav-item"><a href="~/buffets" class="nav-link">Todos</a></li>
                                             </ul>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3">
+                                            <div class="banner"><a href="#"><img src="~/img/banner.jpg" alt="" class="img img-fluid"></a></div>
+                                            <div class="banner"><a href="#"><img src="~/img/banner2.jpg" alt="" class="img img-fluid"></a></div>
                                         </div>
                                     </div>
                                 </li>
@@ -120,61 +126,6 @@
                                                 <li class="nav-item"><a href="category.html" class="nav-link">Decoração</a></li>
                                                 <li class="nav-item"><a href="category.html" class="nav-link">Atrações</a></li>
                                                 <li class="nav-item"><a href="category.html" class="nav-link">Dj</a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="col-md-6 col-lg-3">
-                                            <div class="banner"><a href="#"><img src="~/img/banner.jpg" alt="" class="img img-fluid"></a></div>
-                                            <div class="banner"><a href="#"><img src="~/img/banner2.jpg" alt="" class="img img-fluid"></a></div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown menu-large">
-                            <a href="#" data-toggle="dropdown" data-hover="dropdown" data-delay="200" class="dropdown-toggle nav-link">Template<b class="caret"></b></a>
-                            <ul class="dropdown-menu megamenu">
-                                <li>
-                                    <div class="row">
-                                        <div class="col-md-6 col-lg-3">
-                                            <h5>Shop</h5>
-                                            <ul class="list-unstyled mb-3">
-                                                <li class="nav-item"><a href="index.html" class="nav-link">Homepage</a></li>
-                                                <li class="nav-item"><a href="category.html" class="nav-link">Category - sidebar left</a></li>
-                                                <li class="nav-item"><a href="category-right.html" class="nav-link">Category - sidebar right</a></li>
-                                                <li class="nav-item"><a href="category-full.html" class="nav-link">Category - full width</a></li>
-                                                <li class="nav-item"><a href="detail.html" class="nav-link">Product detail</a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="col-md-6 col-lg-3">
-                                            <h5>User</h5>
-                                            <ul class="list-unstyled mb-3">
-                                                <li class="nav-item"><a href="register.html" class="nav-link">Register / login</a></li>
-                                                <li class="nav-item"><a href="customer-orders.html" class="nav-link">Orders history</a></li>
-                                                <li class="nav-item"><a href="customer-order.html" class="nav-link">Order history detail</a></li>
-                                                <li class="nav-item"><a href="customer-wishlist.html" class="nav-link">Wishlist</a></li>
-                                                <li class="nav-item"><a href="customer-account.html" class="nav-link">Customer account / change password</a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="col-md-6 col-lg-3">
-                                            <h5>Order process</h5>
-                                            <ul class="list-unstyled mb-3">
-                                                <li class="nav-item"><a href="basket.html" class="nav-link">Shopping cart</a></li>
-                                                <li class="nav-item"><a href="checkout1.html" class="nav-link">Checkout - step 1</a></li>
-                                                <li class="nav-item"><a href="checkout2.html" class="nav-link">Checkout - step 2</a></li>
-                                                <li class="nav-item"><a href="checkout3.html" class="nav-link">Checkout - step 3</a></li>
-                                                <li class="nav-item"><a href="checkout4.html" class="nav-link">Checkout - step 4</a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="col-md-6 col-lg-3">
-                                            <h5>Pages and blog</h5>
-                                            <ul class="list-unstyled mb-3">
-                                                <li class="nav-item"><a href="blog.html" class="nav-link">Blog listing</a></li>
-                                                <li class="nav-item"><a href="post.html" class="nav-link">Blog Post</a></li>
-                                                <li class="nav-item"><a href="faq.html" class="nav-link">FAQ</a></li>
-                                                <li class="nav-item"><a href="text.html" class="nav-link">Text page</a></li>
-                                                <li class="nav-item"><a href="text-right.html" class="nav-link">Text page - right sidebar</a></li>
-                                                <li class="nav-item"><a href="404.html" class="nav-link">404 page</a></li>
-                                                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
                                             </ul>
                                         </div>
                                     </div>

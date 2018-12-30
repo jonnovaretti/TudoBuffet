@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TudoBuffet.Website.Entities;
 using TudoBuffet.Website.Repositories.Paging;
+using TudoBuffet.Website.ValuesObjects;
 
 namespace TudoBuffet.Website.Repositories.Contracts
 {
@@ -15,5 +16,6 @@ namespace TudoBuffet.Website.Repositories.Contracts
         Task<PagedQuery<Buffet>> GetBuffets(int page, int pageSize, string uf, string cidade, BuffetCategory? buffetCategory, BuffetEnvironment? buffetEnvironment, RangePrice? rangePrice, string name = null);
         IEnumerable<Buffet> GetBuffetsByIds(List<string> list);
         Guid Update(Guid id, Buffet buffet);
+        Buffet GetBuffetsByTitle(string title);
     }
 }

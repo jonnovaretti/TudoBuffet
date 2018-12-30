@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TudoBuffet.Website.Entities;
+using TudoBuffet.Website.Infrastructures;
 using TudoBuffet.Website.Models.Bases;
+using TudoBuffet.Website.ValuesObjects;
 
 namespace TudoBuffet.Website.Models
 {
@@ -16,59 +17,30 @@ namespace TudoBuffet.Website.Models
             Text = text;
         }
 
+        public static EnvironmentModel Create<T>(T type) where T : struct
+        {
+            return new EnvironmentModel(Enum.GetName(typeof(T), type), type.GetDescription());
+        }
+
         public static List<EnvironmentModel> GetEnvironments()
         {
             List<EnvironmentModel> environmentsModel;
-            List<string> environments;
+            IEnumerable<BuffetEnvironment> environments;
 
-            environments = Enum.GetNames(typeof(BuffetEnvironment)).ToList();
+            environments = Enum.GetValues(typeof(BuffetEnvironment)).Cast<BuffetEnvironment>();
 
             environmentsModel = new List<EnvironmentModel>();
 
-            foreach (var environmentText in environments)
+            foreach (var environment in environments)
             {
                 EnvironmentModel environmentModel = null;
 
-                environmentModel = EnvironmentModel.CreateEnvironmentModel(environmentText);
+                environmentModel = new EnvironmentModel(Enum.GetName(typeof(BuffetEnvironment), environment), environment.GetDescription());
 
                 environmentsModel.Add(environmentModel);
             }
 
             return environmentsModel;
-        }
-
-        public static EnvironmentModel CreateEnvironmentModel(string environmentText)
-        { 
-            EnvironmentModel environmentModel = null;
-
-            switch (environmentText)
-            {
-                case "SalaoDeFesta":
-                    environmentModel = new EnvironmentModel("SalaoDeFesta", "Salão de festa" );
-                    break;
-                case "Fazenda":
-                    environmentModel = new EnvironmentModel("Fazenda", "Fazenda" );
-                    break;
-                case "Clube":
-                    environmentModel = new EnvironmentModel("Clube", "Clube" );
-                    break;
-                case "Restaurante":
-                    environmentModel = new EnvironmentModel("Restaurante", "Restaurante" );
-                    break;
-                case "AreaDeEntretenimento":
-                    environmentModel = new EnvironmentModel("AreaDeEntretenimento", "Área de entretenimento" );
-                    break;
-                case "Praia":
-                    environmentModel = new EnvironmentModel("Praia", "Praia");
-                    break;
-                case "SitioChacara":
-                    environmentModel = new EnvironmentModel("SitioCharaca", "Sitio/chacara");
-                    break;
-                default:
-                    break;
-            }
-
-            return environmentModel;
         }
     }
 }

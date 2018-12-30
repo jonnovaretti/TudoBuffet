@@ -3,12 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
-using System.Text;
 using System.Threading.Tasks;
 using TudoBuffet.Website.Entities;
 using TudoBuffet.Website.Repositories.Context;
 using TudoBuffet.Website.Repositories.Contracts;
 using TudoBuffet.Website.Repositories.Paging;
+using TudoBuffet.Website.ValuesObjects;
 
 namespace TudoBuffet.Website.Repositories
 {
@@ -39,6 +39,15 @@ namespace TudoBuffet.Website.Repositories
                            select b;
 
             return buffetsFound;
+        }
+
+        public Buffet GetBuffetsByTitle(string title)
+        {
+            Buffet buffetFound;
+
+            buffetFound = mainDbContext.Buffets.Include(b => b.Owner).Include(b => b.Photos).FirstOrDefault(b => b.Title.Equals(title));
+
+            return buffetFound;
         }
 
         public List<Buffet> GetBuffetsHighlighWeek()

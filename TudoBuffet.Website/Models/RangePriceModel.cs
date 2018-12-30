@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TudoBuffet.Website.Entities;
+using TudoBuffet.Website.Infrastructures;
 using TudoBuffet.Website.Models.Bases;
+using TudoBuffet.Website.ValuesObjects;
 
 namespace TudoBuffet.Website.Models
 {
@@ -15,55 +16,27 @@ namespace TudoBuffet.Website.Models
             Code = code;
             Text = text;
         }
+
+        public static RangePriceModel Create<T>(T type) where T :struct
+        {
+            return new RangePriceModel(Enum.GetName(typeof(T), type), type.GetDescription());
+        }
         
         public static List<RangePriceModel> GetRangePriceList()
         {
             List<RangePriceModel> rangesPriceModel;
-            List<string> rangesPriceText;
+            IEnumerable<RangePrice> rangesPrices;
 
-            rangesPriceText = Enum.GetNames(typeof(RangePrice)).ToList();
+            rangesPrices = Enum.GetValues(typeof(RangePrice)).Cast<RangePrice>();
 
             rangesPriceModel = new List<RangePriceModel>();
 
-            foreach (var rangePriceText in rangesPriceText)
+            foreach (var rangePrice in rangesPrices)
             {
-                RangePriceModel rangePriceModel = null;
-
-                rangePriceModel = CreateRangePriceModel(rangePriceText);
-
-                rangesPriceModel.Add(rangePriceModel);
+                rangesPriceModel.Add(new RangePriceModel(Enum.GetName(typeof(RangePrice), rangePrice), rangePrice.GetDescription()));
             }
-
+            
             return rangesPriceModel;
-        }
-
-        public static RangePriceModel CreateRangePriceModel(string rangePriceText)
-        {
-            RangePriceModel rangePriceModel = null;
-
-            switch (rangePriceText)
-            {
-                case "Less2000":
-                    rangePriceModel = new RangePriceModel(rangePriceText, "Menos de R$ 2000,00");
-                    break;
-                case "Between2000And4000":
-                    rangePriceModel = new RangePriceModel(rangePriceText, "Entre R$ 2000,00 e R$ 4000,00");
-                    break;
-                case "Between4000And6000":
-                    rangePriceModel = new RangePriceModel(rangePriceText, "Entre R$ 4000,00 e R$ 6000,00");
-                    break;
-                case "Between6000And8000":
-                    rangePriceModel = new RangePriceModel(rangePriceText, "Entre R$ 6000,00 e R$ 8000,00");
-                    break;
-                case "Between8000And12000":
-                    rangePriceModel = new RangePriceModel(rangePriceText, "Entre R$ 8000,00 e R$ 12000,00");
-                    break;
-                case "More12000":
-                    rangePriceModel = new RangePriceModel(rangePriceText, "Mais do que R$ 12000,00");
-                    break;
-            }
-
-            return rangePriceModel;
         }
     }
 }

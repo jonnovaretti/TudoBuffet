@@ -8,6 +8,7 @@ using TudoBuffet.Website.Infrastructures.Contracts;
 using TudoBuffet.Website.Models;
 using TudoBuffet.Website.Repositories.Contracts;
 using TudoBuffet.Website.Repositories.Paging;
+using TudoBuffet.Website.ValuesObjects;
 
 namespace TudoBuffet.Website.Controllers
 {
@@ -55,8 +56,8 @@ namespace TudoBuffet.Website.Controllers
         }
         
         [HttpGet]
-        [Route("detalhe/{buffetId}")]
-        public IActionResult Detail(string buffetId)
+        [Route("{title}")]
+        public IActionResult Detail(string title)
         {
             Buffet buffetFound;
             BuffetDetailModel buffetDetail;
@@ -64,10 +65,10 @@ namespace TudoBuffet.Website.Controllers
             RangePriceModel rangePriceModel;
             EnvironmentModel environmentModel;
 
-            buffetFound = buffets.GetBuffetsById(Guid.Parse(buffetId));
+            buffetFound = buffets.GetBuffetsByTitle(title);
 
-            rangePriceModel = RangePriceModel.CreateRangePriceModel(Enum.GetName(typeof(RangePrice), buffetFound.Price));
-            environmentModel = EnvironmentModel.CreateEnvironmentModel(Enum.GetName(typeof(BuffetEnvironment), buffetFound.Environment));
+            rangePriceModel = RangePriceModel.Create(buffetFound.Price);
+            environmentModel = EnvironmentModel.Create(buffetFound.Environment);
 
             buffetDetail = BuffetDetailModel.Create(buffetFound, rangePriceModel, environmentModel);
 

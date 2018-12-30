@@ -1,5 +1,4 @@
-﻿using ImageMagick;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System;
 using System.IO;
@@ -10,6 +9,7 @@ using TudoBuffet.Website.Infrastructures;
 using TudoBuffet.Website.Repositories.Contracts;
 using TudoBuffet.Website.Services.Contracts;
 using TudoBuffet.Website.Tools;
+using TudoBuffet.Website.ValuesObjects;
 
 namespace TudoBuffet.Website.Services
 {
