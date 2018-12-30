@@ -49,7 +49,7 @@ namespace TudoBuffet.Website.Controllers
 
             pagedQuery = await buffets.GetBuffets(filters.Page, filters.PageSize, filters.State, filters.City, buffetCategory, buffetEnvironment, rangePrice, filters.Name);
 
-            searchBuffetsViewModel = SearchBuffetsViewModel.Create(pagedQuery, Request.QueryString.Value);
+            searchBuffetsViewModel = SearchBuffetsViewModel.Create(pagedQuery, Request.QueryString.Value, filters.State, filters.City, filters.Name);
 
             return View(searchBuffetsViewModel);
         }

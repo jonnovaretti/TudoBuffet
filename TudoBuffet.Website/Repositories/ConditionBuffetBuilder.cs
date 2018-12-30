@@ -87,7 +87,7 @@ namespace TudoBuffet.Website.Repositories
             if (!string.IsNullOrEmpty(name))
             {
                 where.Append(" and ");
-                where.Append(" name = @" + paramsOrder);
+                where.Append(" name.Contains(@" + paramsOrder + ")");
                 paramsValue.Add(name);
                 paramsOrder++;
             }

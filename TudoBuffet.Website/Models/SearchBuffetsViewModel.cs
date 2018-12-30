@@ -24,24 +24,13 @@ namespace TudoBuffet.Website.Models
         public int TotalItems { get; set; }
         public int CurrentPage { get; set; }
         public int PageSize { get; set; }
+        public string State { get; set; }
+        public string City { get; set; }
+        public string Name { get; set; }
 
-        public List<QueryStringModelBase> GeneratePages(int pageCount)
-        {
-            List<QueryStringModelBase> pages;
+        public string[] Uf = { "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA", "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RR", "RS", "SC", "SE", "SP", "TO", };
 
-            pages = new List<QueryStringModelBase>();
-
-            for (int i = 1; i <= pageCount; i++)
-            {
-                var page = new QueryStringModelBase() { Code = i.ToString() };
-
-                pages.Add(page);
-            }
-
-            return pages;
-        }
-
-        public static SearchBuffetsViewModel Create(PagedQuery<Buffet> pagedQuery, string queryString)
+        public static SearchBuffetsViewModel Create(PagedQuery<Buffet> pagedQuery, string queryString, string state, string city, string name)
         {
             SearchBuffetsViewModel searchBuffetsViewModel = new SearchBuffetsViewModel();
 
@@ -66,8 +55,27 @@ namespace TudoBuffet.Website.Models
             searchBuffetsViewModel.Environments.ToList().ForEach(e => e.FormatQueryString("ambiente", queryString));
             searchBuffetsViewModel.RangesPrices.ToList().ForEach(r => r.FormatQueryString("faixadepreco", queryString));
             searchBuffetsViewModel.Pages.ToList().ForEach(p => p.FormatQueryString("pagina", queryString));
+            searchBuffetsViewModel.State = state;
+            searchBuffetsViewModel.City = city;
+            searchBuffetsViewModel.Name = name;
 
             return searchBuffetsViewModel;
+        }
+
+        private List<QueryStringModelBase> GeneratePages(int pageCount)
+        {
+            List<QueryStringModelBase> pages;
+
+            pages = new List<QueryStringModelBase>();
+
+            for (int i = 1; i <= pageCount; i++)
+            {
+                var page = new QueryStringModelBase() { Code = i.ToString() };
+
+                pages.Add(page);
+            }
+
+            return pages;
         }
     }
 }

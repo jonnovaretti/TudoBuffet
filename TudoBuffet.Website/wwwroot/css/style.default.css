@@ -388,7 +388,7 @@ h1 {
 */
 #footer {
     background: #e0e0e0;
-    padding: 100px 0;
+    padding: 30px 0;
 }
 
     #footer ul {
@@ -2896,7 +2896,7 @@ code {
 
     .card > .list-group:last-child .list-group-item:last-child {
         border-bottom-right-radius: 0.25rem;
-        border-bottom-left-radius: 0.25rem;
+        border-bottom-left-radius: 0.25rem;#footer
     }
 
 .card-body {

@@ -8,22 +8,64 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-3">
-            <!--
-            *** MENUS AND FILTERS ***
-            _________________________________________________________
-            -->
+
             <div class="card sidebar-menu mb-4">
                 <div class="card-header">
-                    <h3 class="h4 card-title">Categoria<a href="#" class="btn btn-sm btn-danger pull-right"><i class="fa fa-times-circle"></i> Limpar</a></h3>
+                    <h3 class="h4 card-title">Nome</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-10"> @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Nome do buffet", id = "name" })</div>
+                        @if (!string.IsNullOrEmpty(Model.Name))
+                        {
+                            <div class="col-md-2"><a href="javascript:cleanQueryParam('nome')" class="btn pull-right"><i class="fa fa-window-close"></i></a></div>
+                        }
+                    </div>
+                </div>
+                <h3 class="h4 card-title"><a href="#" class="btn btn-sm btn-secondary pull-right" style="margin-right:10px" onclick="filterByName('nome')">filtrar</a></h3>
+                <h3 class="h4 card-title"></h3>
+            </div>
+            <div class="card sidebar-menu mb-4">
+                <div class="card-header">
+                    <h3 class="h4 card-title">Localização</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-3 d-inline" style="padding-right:0px">
+                            @Html.DropDownListFor(m => m.State, new SelectList(Model.Uf), "UF", new { @class = "form-control", style = "padding-right:0px;padding-left:3px", id = "state" })
+                        </div>
+                        <div class="col-md-7"> @Html.TextBoxFor(m => m.City, new { @class = "form-control", placeholder = "Cidade", id = "city" })</div>
+                        @if (!string.IsNullOrEmpty(Model.City) || !string.IsNullOrEmpty(Model.State))
+                        {
+                            <div class="col-md-2"><a href="javascript:cleanQueryParamCityAndState()" class="btn pull-right"><i class="fa fa-window-close"></i></a></div>
+                        }
+                    </div>
+                </div>
+                <h3 class="h4 card-title"><a href="#" class="btn btn-sm btn-secondary pull-right" style="margin-right:10px" onclick="filterBy('cidade', 'uf')"> filtrar</a></h3>
+            </div>
+            <div class="card sidebar-menu mb-4">
+                <div class="card-header">
+                    <h3 class="h4 card-title">Categoria</h3>
                 </div>
                 <div class="card-body">
                     <ul class="nav nav-pills flex-column category-menu">
                         <li>
                             @foreach (var category in Model.Categories)
                             {
-                                <h6>
-                                    <a href="@category.QueryString">@category.Text</a>
-                                </h6>
+                                if (Context.Request.QueryString.Value.Contains(category.Code))
+                                {
+                                    <div class="row" style="margin-bottom:5px">
+                                        <div class="col-md-7">
+                                            <a href="javascript:cleanQueryParam('categoria')">@category.Text <i class="fa fa-window-close"></i></a>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <h6>
+                                        <a href="@category.QueryString">@category.Text</a>
+                                    </h6>
+                                }
                             }
                         </li>
                     </ul>
@@ -32,16 +74,27 @@
 
             <div class="card sidebar-menu mb-4">
                 <div class="card-header">
-                    <h3 class="h4 card-title">Tipo ambiente<a href="#" class="btn btn-sm btn-danger pull-right"><i class="fa fa-times-circle"></i> Limpar</a></h3>
+                    <h3 class="h4 card-title">Tipo ambiente</h3>
                 </div>
                 <div class="card-body">
                     <ul class="nav nav-pills flex-column category-menu">
                         <li>
                             @foreach (var environment in Model.Environments)
                             {
-                                <h6>
-                                    <a href="@environment.QueryString">@environment.Text</a>
-                                </h6>
+                                if (Context.Request.QueryString.Value.Contains(environment.Code))
+                                {
+                                    <div class="row" style="margin-bottom:5px">
+                                        <div class="col-md-7">
+                                            <a href="javascript:cleanQueryParam('ambiente')">@environment.Text <i class="fa fa-window-close"></i></a>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <h6>
+                                        <a href="@environment.QueryString">@environment.Text</a>
+                                    </h6>
+                                }
                             }
                         </li>
                     </ul>
@@ -50,14 +103,25 @@
 
             <div class="card sidebar-menu mb-4">
                 <div class="card-header">
-                    <h3 class="h4 card-title">Faixa de preço<a href="#" class="btn btn-sm btn-danger pull-right"><i class="fa fa-times-circle"></i> Limpar</a></h3>
+                    <h3 class="h4 card-title">Faixa de preço</h3>
                 </div>
                 <div class="card-body">
                     <ul class="nav nav-pills flex-column category-menu">
                         <li>
                             @foreach (var rangePrice in Model.RangesPrices)
                             {
-                                <h6> <a href="@rangePrice.QueryString">@rangePrice.Text</a></h6>
+                                if (Context.Request.QueryString.Value.Contains(rangePrice.Code))
+                                {
+                                    <div class="row" style="margin-bottom:5px">
+                                        <div class="col-md-7">
+                                            <a href="javascript:cleanQueryParam('faixadepreco')">@rangePrice.Text <i class="fa fa-window-close"></i></a>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <h6> <a href="@rangePrice.QueryString">@rangePrice.Text</a></h6>
+                                }
                             }
                         </li>
                     </ul>
@@ -69,21 +133,18 @@
                 <div class="row">
                     <div class="col-md-12 col-lg-4 products-showing">Exibindo <strong>@Model.PageSize</strong> de <strong>@Model.TotalItems</strong> buffets</div>
                     <div class="col-md-12 col-lg-7 products-number-sort">
-                        <form class="form-inline d-block d-lg-flex justify-content-between flex-column flex-md-row">
-                            <div class="products-number">
-                                <a href="&itens=20" class="btn btn-sm btn-primary">20</a>
-                                <a href="&itens=40" class="btn btn-outline-secondary btn-sm">40</a>
-                                <a href="&itens=60" class="btn btn-outline-secondary btn-sm">60</a>
+                        <div class="form-inline d-block d-lg-flex justify-content-between flex-column flex-md-row">
+
+                            <div class="products-sort-by mt-2 mt-lg-0">
+                                <strong>Sort by</strong>
+                                <select name="sort-by" class="form-control">
+                                    <option>Price</option>
+                                    <option>Name</option>
+                                    <option>Sales first</option>
+                                </select>
                             </div>
-                            @*<div class="products-sort-by mt-2 mt-lg-0">
-                                    <strong>Order por</strong>
-                                    <select name="sort-by" class="form-control">
-                                        <option>Nome</option>
-                                        <option>Mais acessados</option>
-                                        <option>Sales first</option>
-                                    </select>
-                                </div>*@
-                        </form>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -107,27 +168,135 @@
             <div class="pages">
                 <nav aria-label="Page navigation example" class="d-flex justify-content-center">
                     <ul class="pagination">
-                        @*<li class="page-item"><a href="#" aria-label="Previous" class="page-link"><span aria-hidden="true">«</span><span class="sr-only">Previous</span></a></li>*@
-
-                        @{ int i = 1;
-
-                            foreach (var pageLink in Model.Pages)
+                        <li class="page-item"><a href="@Model.Pages.First().QueryString" aria-label="Previous" class="page-link"><span aria-hidden="true">«</span><span class="sr-only">Primeira</span></a></li>
+                        @foreach (var pageLink in Model.Pages)
+                        {
+                            @if (Model.CurrentPage == int.Parse(pageLink.Code))
                             {
-                                string classActive = string.Empty;
-
-                                @if (Model.CurrentPage == i)
-                                {
-                                    classActive = "active";
-                                }
-
-                                <li class="page-item @classActive"><a href="@pageLink.QueryString" class="page-link">@i</a></li>
-                                ++i;
+                                <li class="page-item active"><a class="page-link">@pageLink.Code</a></li>
+                            }
+                            else
+                            {
+                                <li class="page-item"><a href="@pageLink.QueryString" class="page-link">@pageLink.Code</a></li>
                             }
                         }
-                        @*<li class="page-item"><a href="#" aria-label="Next" class="page-link"><span aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>*@
+                        <li class="page-item"><a href="@Model.Pages.Last().QueryString" aria-label="Next" class="page-link"><span aria-hidden="true">»</span><span class="sr-only">Última</span></a></li>
                     </ul>
                 </nav>
             </div>
         </div>
     </div>
 </div>
+@section Scripts{
+    <script src="~/js/functions.js"></script>
+    <script>
+
+        function cleanQueryParamCityAndState() {
+            let currentLink = window.location.href;
+            let params = getUrlVars();
+            let valuesParam = ['cidade', 'uf'];
+            let finalLink;
+
+            for (var i = 0; i < valuesParam.length; i++) {
+                let valueParam = params[valuesParam[i]];
+
+                if (params.length > 0 && currentLink.indexOf('?')) {
+                    if (params.length == 1)
+                        finalLink = currentLink.replace('?' + valuesParam[i] + '=' + valueParam, '');
+                    else
+                        finalLink = currentLink.replace(valuesParam[i] + '=' + valueParam + '&', '').replace('&' + valuesParam[i] + '=' + valueParam, '').replace('&' + valuesParam[i] + '=' + valueParam + '&', '');
+
+                    currentLink = finalLink;
+                }
+            }
+            window.location = finalLink;
+
+        }
+
+        function cleanQueryParam(paramName) {
+            let currentLink = window.location.href;
+            let params = getUrlVars();
+            let valueParam;
+            let finalLink;
+
+            valueParam = params[paramName];
+
+            if (params.length > 0 && currentLink.indexOf('?')) {
+                if (params.length == 1)
+                    finalLink = currentLink.replace('?' + paramName + '=' + valueParam, '');
+                else
+                    finalLink = currentLink.replace(paramName + '=' + valueParam + '&', '').replace('&' + paramName + '=' + valueParam, '').replace('&' + paramName + '=' + valueParam + '&', '');
+            }
+
+            window.location = finalLink;
+        }
+
+        function filterByName(nameParam) {
+            var name = document.getElementById('name');
+            var params = getUrlVars();
+            var nameInLink;
+            var finalHref;
+            var separator = '?';
+            var currentLink = window.location.href;
+
+            if (name.value === '' || name.value === undefined) {
+                cleanQueryParam(nameParam);
+            }
+            else {
+                if (currentLink.indexOf(nameParam + '=') >= 0) {
+                    nameInLink = params[nameParam];
+                    finalHref = currentLink.replace(nameInLink, name.value);
+                }
+
+                if (name.value !== undefined && name.value !== '' && currentLink.indexOf(nameParam + '=') == -1) {
+                    if (currentLink.indexOf('?') >= 0)
+                        separator = '&';
+                    finalHref = currentLink + separator + nameParam + '=' + name.value;
+                }
+
+                window.location = finalHref;
+            }
+        }
+
+        function filterBy(cityParam, stateParam) {
+            var city = document.getElementById('city');
+            var state = document.getElementById('state');
+            var params = getUrlVars();
+            var cityInLink, stateInLink;
+            var finalHref;
+            var separator = '?';
+            var currentLink = window.location.href;
+
+            if (currentLink.indexOf(stateParam + '=') >= 0 && currentLink.indexOf(cityParam + '=') >= 0) {
+                stateInLink = params[stateParam];
+                cityInLink = params[cityParam];
+                finalHref = currentLink.replace(stateInLink, state.value).replace(cityInLink, city.value);
+            }
+
+            if (currentLink.indexOf(cityParam + '=') >= 0) {
+                cityInLink = params[cityParam];
+                finalHref = currentLink.replace(cityInLink, city.value);
+            }
+            else if (currentLink.indexOf(stateParam + '=') >= 0) {
+                stateInLink = params[stateParam];
+                finalHref = currentLink.replace(stateInLink, state.value);
+            }
+
+            if (city.value !== undefined && city.value !== '' && currentLink.indexOf(cityParam + '=') == -1) {
+                if (currentLink.indexOf('?') >= 0)
+                    separator = '&';
+
+                finalHref = currentLink + separator + cityParam + '=' + city.value;
+            }
+
+            if (state.value !== undefined && state.value !== '' && currentLink.indexOf(stateParam + '=') == -1) {
+                if (currentLink.indexOf('?') >= 0)
+                    separator = '&';
+
+                finalHref = currentLink + separator + stateParam + '=' + state.value;
+            }
+
+            window.location = finalHref;
+        }
+    </script>
+}
