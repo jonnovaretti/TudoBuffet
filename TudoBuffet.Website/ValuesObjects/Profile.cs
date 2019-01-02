@@ -2,8 +2,8 @@
 {
     public enum Profile
     {
-        Customer,
-        BuffetAdmin,
-        Provider
+        UserPartyOwner,
+        UserBuffetAdmin,
+        UserProvider
     }
 }

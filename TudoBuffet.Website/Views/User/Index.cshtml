@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<form id="registerForm" method="post" action="/usuarios/registrar">
+<form id="registerForm" method="post" action="/usuarios">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -59,7 +59,8 @@
                         </ul>
                     </div>
                     <div class="text-center">
-                        <div class="g-recaptcha" data-sitekey="6Lep3YEUAAAAABpogSqdCwN-ZlY-ug2Bov76aayE"></div>
+                        <div class="g-recaptcha" data-sitekey="6Lep3YEUAAAAABpogSqdCwN-ZlY-ug2Bov76aayE" data-callback="recaptchaCallback"></div>
+                        <input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">
                     </div>
                 </div>
             </div>
@@ -72,6 +73,10 @@
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
     <script>
+        function recaptchaCallback() {
+            $('#hiddenRecaptcha').valid();
+        };
+
         function changeProfile(option) {
             var allProfileOptions;
             var selectedProfileId;
@@ -107,6 +112,15 @@
                 },
                 SelectedProfileId: {
                     required: true
+                },
+                hiddenRecaptcha: {
+                    required: function () {
+                        if (grecaptcha.getResponse() == '') {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
                 }
             },
             messages: {
@@ -124,7 +138,8 @@
                 },
                 SelectedProfileId: {
                     required: "Selecione um perfil"
-                }
+                },
+                hiddenRecaptcha: "Confirme o recaptcha"
             }
         });
     </script>

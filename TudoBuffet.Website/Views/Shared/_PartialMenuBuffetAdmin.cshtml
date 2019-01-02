@@ -6,13 +6,13 @@
         <div class="card-body">
             <ul class="nav nav-pills flex-column">
 
-                @if (Context.Request.Path.HasValue && Context.Request.Path.Value.Equals("/admin/buffets"))
+                @if (Context.Request.Path.HasValue && Context.Request.Path.Value.Equals("/admin/buffets") || Context.Request.Path.Value.Contains("/fotos"))
                 {
-                    <a href="~/admin/buffets" class="nav-link active"><i class="fa fa-plus"></i> Novo buffet</a>
+                    <a href="~/admin/buffets" class="nav-link active"><i class="fa fa-plus"></i> Buffets</a>
                 }
                 else
                 {
-                    <a href="~/admin/buffets" class="nav-link"><i class="fa fa-plus"></i> Novo buffet</a>
+                    <a href="~/admin/buffets" class="nav-link"><i class="fa fa-plus"></i> Buffets</a>
                 }
 
                 @if (Context.Request.Path.HasValue && Context.Request.Path.Value.Equals("/admin"))

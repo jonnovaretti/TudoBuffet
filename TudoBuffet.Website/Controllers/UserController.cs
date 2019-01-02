@@ -30,15 +30,16 @@ namespace TudoBuffet.Website.Controllers
             this.recaptchaValidator = recaptchaValidator;
         }
 
-        [Route("registrar")]
         [HttpGet]
-        public IActionResult RegisterUser()
+        [Route("")]
+        public IActionResult Index()
         {
             return View();
         }
 
-        [Route("registrar")]
-        public IActionResult RegisterUser(UserModel userModel)
+        [HttpPost]
+        [Route("")]
+        public IActionResult Index(UserModel userModel)
         {
             User user;
             string clientIp, recaptchaResponse;
@@ -74,15 +75,15 @@ namespace TudoBuffet.Website.Controllers
         }
 
         [HttpGet]
-        [Route("entrar")]
-        public IActionResult Authenticate()
+        [Route("login")]
+        public IActionResult Login()
         {
             return View(new UserModel());
         }
 
         [HttpPost]
-        [Route("entrar")]
-        public IActionResult Authenticate(UserModel userModel)
+        [Route("login")]
+        public IActionResult Login(UserModel userModel)
         {
             try
             {
@@ -95,7 +96,7 @@ namespace TudoBuffet.Website.Controllers
 
                 HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsGenerated), new AuthenticationProperties()).GetAwaiter().GetResult();
 
-                if (GetRoleClaimValue(claimsGenerated).Equals(Enum.GetName(typeof(Profile), Profile.BuffetAdmin)))
+                if (GetRoleClaimValue(claimsGenerated).Equals(Enum.GetName(typeof(Profile), Profile.UserBuffetAdmin)))
                     return RedirectToAction("Index", "Admin");
 
                 return View();

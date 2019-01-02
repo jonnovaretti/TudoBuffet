@@ -72,8 +72,7 @@ namespace TudoBuffet.Website.Services
                     EmailValidation emailValidation;
                     Response response;
 
-                    user.Id = Guid.NewGuid();
-                    user.IsActive = false;
+                    user.SetNewSignup();
 
                     emailValidation = EmailValidation.Build(user.Email);
 

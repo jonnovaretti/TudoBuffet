@@ -2,7 +2,7 @@
 
 namespace TudoBuffet.Website.Entities
 {
-    public class UserCustomer : User
+    public class UserPartyOwner : User
     {
         public List<Budget> Budgets { get; set; }
     }

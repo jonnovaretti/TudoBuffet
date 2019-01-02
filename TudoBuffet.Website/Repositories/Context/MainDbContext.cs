@@ -88,7 +88,5 @@ namespace TudoBuffet.Website.Repositories.Context
 
 
         }
-
-        public DbSet<TudoBuffet.Website.Models.BuffetModel> BuffetModel { get; set; }
     }
 }

@@ -14,6 +14,11 @@ namespace TudoBuffet.Website.Entities
         public bool IsActive { get; set; }
         public DateTime? ActivedAt { get; set; }
         public Profile Profile { get; set; }
+        public string Discriminator
+        {
+            get { return Enum.GetName(typeof(Profile), Profile); }
+            set { Profile = (Profile) Enum.Parse(typeof(Profile), value); }
+        }
 
         public void Validate()
         {
@@ -35,6 +40,12 @@ namespace TudoBuffet.Website.Entities
             IsActive = true;
             ActivedAt = DateTime.UtcNow;
             UpdateAt = DateTime.UtcNow;
+        }
+
+        public void SetNewSignup()
+        {
+            IsActive = false;
+            CreateAt = DateTime.Now;
         }
     }
 }

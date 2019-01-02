@@ -101,7 +101,7 @@ namespace TudoBuffet.Website.Migrations
                     Description = table.Column<string>(maxLength: 256, nullable: true),
                     Zipcode = table.Column<string>(maxLength: 256, nullable: true),
                     Street = table.Column<string>(maxLength: 256, nullable: true),
-                    Number = table.Column<int>(nullable: true),
+                    Number = table.Column<string>(maxLength: 256, nullable: true),
                     District = table.Column<string>(maxLength: 256, nullable: true),
                     City = table.Column<string>(maxLength: 256, nullable: true),
                     State = table.Column<string>(maxLength: 256, nullable: true),
@@ -112,7 +112,8 @@ namespace TudoBuffet.Website.Migrations
                     Category = table.Column<string>(maxLength: 20, nullable: false),
                     Price = table.Column<string>(maxLength: 20, nullable: false),
                     ActivedAt = table.Column<DateTime>(nullable: true),
-                    Environment = table.Column<string>(maxLength: 20, nullable: false)
+                    Environment = table.Column<string>(maxLength: 20, nullable: false),
+                    Title = table.Column<string>(maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -167,7 +168,7 @@ namespace TudoBuffet.Website.Migrations
                     DetailFileName = table.Column<string>(maxLength: 256, nullable: true),
                     DetailUrl = table.Column<string>(maxLength: 256, nullable: true),
                     SearchFileName = table.Column<string>(maxLength: 256, nullable: true),
-                    SearachUrl = table.Column<string>(maxLength: 256, nullable: true),
+                    SearchUrl = table.Column<string>(maxLength: 256, nullable: true),
                     ThumbnailFileName = table.Column<string>(maxLength: 256, nullable: true),
                     ThumbnailUrl = table.Column<string>(maxLength: 256, nullable: true),
                     Size = table.Column<long>(nullable: false),
@@ -187,17 +188,17 @@ namespace TudoBuffet.Website.Migrations
             migrationBuilder.InsertData(
                 table: "Plans",
                 columns: new[] { "Id", "CreateAt", "Description", "Image", "IsActive", "Name", "Order", "Price", "UpdateAt" },
-                values: new object[] { new Guid("3eead379-60b7-435a-9758-b974b670b1e7"), new DateTime(2018, 12, 16, 10, 11, 38, 992, DateTimeKind.Local), "O plano ouro favorece o aparecimento em mais vezes nas pesquisas e irá aparecer com mais frequencia no destaques do dia", "img/planouro.jpg", true, "Plano ouro", 1, 30.00m, null });
+                values: new object[] { new Guid("e5d61358-2a65-490f-81cd-c1d57ef78b28"), new DateTime(2019, 1, 1, 21, 45, 38, 767, DateTimeKind.Local), "O plano ouro favorece o aparecimento em mais vezes nas pesquisas e irá aparecer com mais frequencia no destaques do dia", "img/planouro.jpg", true, "Plano ouro", 1, 30.00m, null });
 
             migrationBuilder.InsertData(
                 table: "Plans",
                 columns: new[] { "Id", "CreateAt", "Description", "Image", "IsActive", "Name", "Order", "Price", "UpdateAt" },
-                values: new object[] { new Guid("83cf4165-2208-4156-8a86-6e13f5635d1e"), new DateTime(2018, 12, 16, 10, 11, 38, 997, DateTimeKind.Local), "O plano prata está a frente do plano bronze e também irá aparecer nas pesquisa com uma boa frequencia e também estará presente nos destaques do dia", "img/planprata.jpg", true, "Plano prata", 2, 20.00m, null });
+                values: new object[] { new Guid("86a6e4e8-5de1-4ffc-8e68-8741843f50b8"), new DateTime(2019, 1, 1, 21, 45, 38, 814, DateTimeKind.Local), "O plano prata está a frente do plano bronze e também irá aparecer nas pesquisa com uma boa frequencia e também estará presente nos destaques do dia", "img/planprata.jpg", true, "Plano prata", 2, 20.00m, null });
 
             migrationBuilder.InsertData(
                 table: "Plans",
                 columns: new[] { "Id", "CreateAt", "Description", "Image", "IsActive", "Name", "Order", "Price", "UpdateAt" },
-                values: new object[] { new Guid("7a952970-6f32-49b1-b033-b70a6039b368"), new DateTime(2018, 12, 16, 10, 11, 38, 997, DateTimeKind.Local), "O plano bronze irá aparecer nas pesquisas, mas com menos frequencia na primeira página", "img/planbronze.jpg", true, "Plano bronze", 3, 10.00m, null });
+                values: new object[] { new Guid("8c25b3a5-9b4a-400e-a641-6c5af0a1c7bd"), new DateTime(2019, 1, 1, 21, 45, 38, 814, DateTimeKind.Local), "O plano bronze irá aparecer nas pesquisas, mas com menos frequencia na primeira página", "img/planbronze.jpg", true, "Plano bronze", 3, 10.00m, null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BudgetBuffet_BuffetId",

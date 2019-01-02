@@ -11,7 +11,7 @@ using TudoBuffet.Website.Services.Contracts;
 namespace TudoBuffet.Website.Controllers
 {
     [Route("admin/buffets")]
-    [Authorize(Roles = "BuffetAdmin")]
+    [Authorize(Roles = "UserBuffetAdmin")]
     public class BuffetAdminController : AuthenticatedControllerBase
     {
         private readonly IBuffets buffets;

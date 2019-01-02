@@ -10,7 +10,7 @@ using TudoBuffet.Website.Repositories.Context;
 namespace TudoBuffet.Website.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20181216121139_new")]
+    [Migration("20190101234540_new")]
     partial class @new
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -100,7 +100,8 @@ namespace TudoBuffet.Website.Migrations
                     b.Property<string>("Name")
                         .HasMaxLength(256);
 
-                    b.Property<int?>("Number");
+                    b.Property<string>("Number")
+                        .HasMaxLength(256);
 
                     b.Property<Guid?>("OwnerId");
 
@@ -114,6 +115,9 @@ namespace TudoBuffet.Website.Migrations
                         .HasMaxLength(256);
 
                     b.Property<string>("Street")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("Title")
                         .HasMaxLength(256);
 
                     b.Property<DateTime?>("UpdateAt");
@@ -174,10 +178,10 @@ namespace TudoBuffet.Website.Migrations
                     b.Property<string>("DetailUrl")
                         .HasMaxLength(256);
 
-                    b.Property<string>("SearachUrl")
+                    b.Property<string>("SearchFileName")
                         .HasMaxLength(256);
 
-                    b.Property<string>("SearchFileName")
+                    b.Property<string>("SearchUrl")
                         .HasMaxLength(256);
 
                     b.Property<long>("Size");
@@ -229,9 +233,9 @@ namespace TudoBuffet.Website.Migrations
                     b.ToTable("Plans");
 
                     b.HasData(
-                        new { Id = new Guid("3eead379-60b7-435a-9758-b974b670b1e7"), CreateAt = new DateTime(2018, 12, 16, 10, 11, 38, 992, DateTimeKind.Local), Description = "O plano ouro favorece o aparecimento em mais vezes nas pesquisas e irá aparecer com mais frequencia no destaques do dia", Image = "img/planouro.jpg", IsActive = true, Name = "Plano ouro", Order = 1, Price = 30.00m },
-                        new { Id = new Guid("83cf4165-2208-4156-8a86-6e13f5635d1e"), CreateAt = new DateTime(2018, 12, 16, 10, 11, 38, 997, DateTimeKind.Local), Description = "O plano prata está a frente do plano bronze e também irá aparecer nas pesquisa com uma boa frequencia e também estará presente nos destaques do dia", Image = "img/planprata.jpg", IsActive = true, Name = "Plano prata", Order = 2, Price = 20.00m },
-                        new { Id = new Guid("7a952970-6f32-49b1-b033-b70a6039b368"), CreateAt = new DateTime(2018, 12, 16, 10, 11, 38, 997, DateTimeKind.Local), Description = "O plano bronze irá aparecer nas pesquisas, mas com menos frequencia na primeira página", Image = "img/planbronze.jpg", IsActive = true, Name = "Plano bronze", Order = 3, Price = 10.00m }
+                        new { Id = new Guid("e5d61358-2a65-490f-81cd-c1d57ef78b28"), CreateAt = new DateTime(2019, 1, 1, 21, 45, 38, 767, DateTimeKind.Local), Description = "O plano ouro favorece o aparecimento em mais vezes nas pesquisas e irá aparecer com mais frequencia no destaques do dia", Image = "img/planouro.jpg", IsActive = true, Name = "Plano ouro", Order = 1, Price = 30.00m },
+                        new { Id = new Guid("86a6e4e8-5de1-4ffc-8e68-8741843f50b8"), CreateAt = new DateTime(2019, 1, 1, 21, 45, 38, 814, DateTimeKind.Local), Description = "O plano prata está a frente do plano bronze e também irá aparecer nas pesquisa com uma boa frequencia e também estará presente nos destaques do dia", Image = "img/planprata.jpg", IsActive = true, Name = "Plano prata", Order = 2, Price = 20.00m },
+                        new { Id = new Guid("8c25b3a5-9b4a-400e-a641-6c5af0a1c7bd"), CreateAt = new DateTime(2019, 1, 1, 21, 45, 38, 814, DateTimeKind.Local), Description = "O plano bronze irá aparecer nas pesquisas, mas com menos frequencia na primeira página", Image = "img/planbronze.jpg", IsActive = true, Name = "Plano bronze", Order = 3, Price = 10.00m }
                     );
                 });
 
@@ -285,19 +289,19 @@ namespace TudoBuffet.Website.Migrations
                     b.HasDiscriminator().HasValue("UserBuffetAdmin");
                 });
 
-            modelBuilder.Entity("TudoBuffet.Website.Entities.UserCustomer", b =>
+            modelBuilder.Entity("TudoBuffet.Website.Entities.UserPartyOwner", b =>
                 {
                     b.HasBaseType("TudoBuffet.Website.Entities.User");
 
 
-                    b.ToTable("UserCustomer");
+                    b.ToTable("UserPartyOwner");
 
-                    b.HasDiscriminator().HasValue("UserCustomer");
+                    b.HasDiscriminator().HasValue("UserPartyOwner");
                 });
 
             modelBuilder.Entity("TudoBuffet.Website.Entities.Budget", b =>
                 {
-                    b.HasOne("TudoBuffet.Website.Entities.UserCustomer", "Customer")
+                    b.HasOne("TudoBuffet.Website.Entities.UserPartyOwner", "Customer")
                         .WithMany("Budgets")
                         .HasForeignKey("CustomerId");
                 });

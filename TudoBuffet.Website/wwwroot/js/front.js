@@ -20,7 +20,8 @@ $(function () {
         dots: true,
         autoplay: true,
         autoplayHoverPause: true,
-        dotsSpeed: 400
+        dotsSpeed: 400,
+        loop: true
     });
 
 
