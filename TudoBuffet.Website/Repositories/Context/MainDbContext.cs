@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using TudoBuffet.Website.Entities;
-using System.Linq;
 using System;
+using System.Linq;
+using TudoBuffet.Website.Entities;
 using TudoBuffet.Website.ValuesObjects;
-using TudoBuffet.Website.Models;
 
 namespace TudoBuffet.Website.Repositories.Context
 {
@@ -20,6 +19,8 @@ namespace TudoBuffet.Website.Repositories.Context
         public DbSet<Plan> Plans { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Budget> Budgets { get; set; }
+        public DbSet<BudgetDetail> BudgetDetails { get; set; }
+        public DbSet<BudgetQuestion> BudgetQuestions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,14 +35,7 @@ namespace TudoBuffet.Website.Repositories.Context
 
             modelBuilder.Entity<User>().Property(e => e.Profile)
                                          .HasConversion(v => v.ToString(), v => (Profile)Enum.Parse(typeof(Profile), v)).HasMaxLength(20);
-
-            modelBuilder.Entity<BudgetBuffet>().HasKey(bb => new { bb.BudgetId, bb.BuffetId });
-
-            modelBuilder.Entity<BudgetBuffet>()
-            .HasOne(pt => pt.Budget)
-            .WithMany(p => p.BudgetBuffets)
-            .HasForeignKey(pt => pt.BudgetId);
-
+            
             foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(t => t.GetProperties()).Where(p => p.ClrType == typeof(string)))
             {
                 property.AsProperty().Builder.HasMaxLength(256, ConfigurationSource.Convention);
@@ -85,8 +79,6 @@ namespace TudoBuffet.Website.Repositories.Context
                 Price = 10.00M,
                 UpdateAt = null
             });
-
-
         }
     }
 }

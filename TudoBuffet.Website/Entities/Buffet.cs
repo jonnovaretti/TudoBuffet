@@ -25,5 +25,6 @@ namespace TudoBuffet.Website.Entities
         public DateTime? ActivedAt { get; set; }
         public BuffetEnvironment Environment { get; set; }
         public string Title { get; set; }
+        public string UrlPage { get; set; }
     }
 }

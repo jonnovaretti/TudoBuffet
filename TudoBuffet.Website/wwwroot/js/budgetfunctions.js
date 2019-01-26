@@ -11,7 +11,7 @@ function loadBuffetsSelected() {
 
     currentList = window.localStorage.getItem(nameBudgetListItem);
 
-    if (currentList !== undefined) {
+    if (currentList !== null) {
         budgetList = currentList.split('|');
 
         viewButtonBudgetList = document.getElementById('viewButtonBudgetList');
@@ -20,6 +20,7 @@ function loadBuffetsSelected() {
     else {
         viewButtonBudgetList = document.getElementById('viewButtonBudgetList');
         viewButtonBudgetList.innerText = '0 buffet selecionado';
+        $('#icostar').hide();
     }
 }
 
@@ -28,7 +29,7 @@ function addBuffetToBudgetList(buffetId) {
 
     currentList = window.localStorage.getItem(nameBudgetListItem);
 
-    if (currentList === undefined)
+    if (currentList === null)
         currentList = buffetId;
     else {
         if (currentList.indexOf(buffetId) === -1)
@@ -36,8 +37,11 @@ function addBuffetToBudgetList(buffetId) {
     }
 
     window.localStorage.setItem(nameBudgetListItem, currentList);
+    loadBuffetsSelected();
 
-    return;
+    $('#icostar').show();
+
+    return false;
 }
 
 function prepareBudgetList() {

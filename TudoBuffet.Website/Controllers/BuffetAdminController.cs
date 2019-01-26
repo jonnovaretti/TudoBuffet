@@ -10,7 +10,7 @@ using TudoBuffet.Website.Services.Contracts;
 
 namespace TudoBuffet.Website.Controllers
 {
-    [Route("admin/buffets")]
+    [Route("admin")]
     [Authorize(Roles = "UserBuffetAdmin")]
     public class BuffetAdminController : AuthenticatedControllerBase
     {
@@ -18,31 +18,70 @@ namespace TudoBuffet.Website.Controllers
         private readonly IPhotoHandler photoHandlerService;
         private readonly IPlans plans;
         private readonly IPhotos photos;
+        private readonly IBudgets budgets;
 
-        public BuffetAdminController(IBuffets buffets, IPhotoHandler photoHandlerService, IPlans plans, IPhotos photos)
+        public BuffetAdminController(IBuffets buffets, IPhotoHandler photoHandlerService, IPlans plans, IPhotos photos, IBudgets budgets)
         {
             this.buffets = buffets;
             this.photoHandlerService = photoHandlerService;
             this.plans = plans;
             this.photos = photos;
+            this.budgets = budgets;
+        }
+
+        public IActionResult Home()
+        {
+            BuffetAdminViewModel buffetAdmin;
+            List<PurchasedBuffetAdModel> purchasedBuffetAds;
+            IEnumerable<Buffet> buffetsFound;
+
+            buffetsFound = buffets.GetBuffetsFromUserId(UserId);
+
+            purchasedBuffetAds = new List<PurchasedBuffetAdModel>();
+
+            foreach (var buffet in buffetsFound)
+            {
+                if (buffet != null)
+                {
+                    var purchasedPlan = new PurchasedBuffetAdModel()
+                    {
+                        Name = buffet.Name,
+                        ActivedAt = buffet.ActivedAt.HasValue ? buffet.ActivedAt.Value.ToString("dd/MM/yyyy") : "Aguardando ativação",
+                        Id = buffet.Id.ToString().Substring(0, 6),
+                        BuffetId = buffet.Id.ToString(),
+                        NamePlan = buffet.PlanSelected.Name,
+                        Status = buffet.ActivedAt.HasValue ? "Ativo" : "Inativo"
+                    };
+
+                    purchasedBuffetAds.Add(purchasedPlan);
+                }
+            }
+
+            buffetAdmin = new BuffetAdminViewModel();
+            buffetAdmin.PurchasedBuffetAds = purchasedBuffetAds;
+            buffetAdmin.OwnerName = FullName;
+
+            return View(buffetAdmin);
         }
 
         [HttpGet]
+        [Route("buffets")]
         public ActionResult Index()
         {
             IEnumerable<Plan> plansFound;
-            AdminBuffetViewModel newBuffetViewModel;
+            BuffetViewModel newBuffetViewModel;
 
             plansFound = plans.GetAll();
 
-            newBuffetViewModel = new AdminBuffetViewModel();
+            newBuffetViewModel = new BuffetViewModel();
             newBuffetViewModel.MapperPlans(plansFound);
 
             return View(newBuffetViewModel);
         }
 
         [HttpPost]
-        public ActionResult Index(AdminBuffetViewModel newBuffetModel)
+        [Route("buffets")]
+        public ActionResult Index(BuffetViewModel newBuffetModel)
         {
             Buffet buffet;
             Guid buffetId;
@@ -63,19 +102,19 @@ namespace TudoBuffet.Website.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("buffets/{id}")]
         public ActionResult Edit(string id)
         {
             Buffet buffetFound;
             IEnumerable<Plan> plansFound, planSelected;
-            AdminBuffetViewModel newBuffetViewModel;
+            BuffetViewModel newBuffetViewModel;
 
             buffetFound = buffets.GetBuffetsById(Guid.Parse(id));
 
             plansFound = plans.GetAll();
             planSelected = plansFound.Where(p => p.Id == buffetFound.PlanSelected.Id);
 
-            newBuffetViewModel = new AdminBuffetViewModel();
+            newBuffetViewModel = new BuffetViewModel();
             newBuffetViewModel.MapperPlans(planSelected);
 
             newBuffetViewModel.Buffet = BuffetModel.ToModel(buffetFound);
@@ -85,8 +124,8 @@ namespace TudoBuffet.Website.Controllers
         }
 
         [HttpPost]
-        [Route("{id}")]
-        public ActionResult Edit(string id, AdminBuffetViewModel buffetViewModel)
+        [Route("buffets/{id}")]
+        public ActionResult Edit(string id, BuffetViewModel buffetViewModel)
         {
             Buffet buffet;
             Guid buffetId;
@@ -107,7 +146,7 @@ namespace TudoBuffet.Website.Controllers
         }
 
         [HttpGet]
-        [Route("{id}/fotos")]
+        [Route("buffets/{id}/fotos")]
         public ActionResult Photos(Guid id)
         {
             PhotoDetailViewModel photoDetail;
@@ -136,6 +175,81 @@ namespace TudoBuffet.Website.Controllers
             photoDetail.Photos = photosUploadedModel;
 
             return View(photoDetail);
+        }
+
+        [HttpGet]
+        [Route("budgets")]
+        public ActionResult Bugets()
+        {
+            IEnumerable<Budget> budgetsFound;
+            List<ReceivedBudgetModel> receivedBudgets;
+            ReceivedBudgetViewModel receivedBudgetViewModel;
+
+            budgetsFound = budgets.GetByOwnerBuffet(UserId);
+
+            receivedBudgets = new List<ReceivedBudgetModel>();
+
+            foreach (var budgetFound in budgetsFound)
+            {
+                var receivedBudget = new ReceivedBudgetModel
+                {
+                    BudgetDetailId = budgetFound.Details.First().Id,
+                    OwnerPartyName = budgetFound.PartyOwner.Name,
+                    PartyDay = budgetFound.PartyDay,
+                    QuantityPartyGuests = budgetFound.QuantityPartyGuests,
+                    SentAt = budgetFound.CreateAt,
+                    WasAnswered = budgetFound.Details.First().AnsweredAt.HasValue
+                };
+
+                receivedBudgets.Add(receivedBudget);
+            }
+
+            receivedBudgetViewModel = new ReceivedBudgetViewModel();
+            receivedBudgetViewModel.ReceivedBudgets = receivedBudgets;
+
+            return View(receivedBudgetViewModel);
+        }
+
+        [HttpGet]
+        [Route("budgets/{budgetdetailid}")]
+        public ActionResult BudgetDetail(Guid budgetdetailid)
+        {
+            AnswerBudgetViewModel answerBudget;
+            BudgetDetailQuestionsModel budgetDetailQuestions;
+            Budget budgetFound;
+
+            budgetFound = budgets.GetById(budgetdetailid);
+
+            if (!budgetFound.BelongsToBuffetAdmin(UserId))
+                return ServerError();
+
+            budgetDetailQuestions = new BudgetDetailQuestionsModel()
+            {
+                BudgetDetailId = budgetFound.Details.First().Id,
+                IsDateAvailable = budgetFound.Details.First().IsDateAvaliable,
+                OwnerPartyName = budgetFound.PartyOwner.Name,
+                PartyDay = budgetFound.PartyDay,
+                ProposedDateFor = budgetFound.Details.First().ProposedDateFor,
+                QuantityGuests = budgetFound.QuantityPartyGuests
+            };
+
+            foreach (var question in budgetFound.Details.First().Questions)
+            {
+                var questionAnswred = new QuestionsAnswersModel();
+
+                questionAnswred.Question = question.Question;
+                questionAnswred.QuestionId = question.Id;
+
+                foreach (var answer in question.Answers)
+                    questionAnswred.Answer = answer.Answer;
+
+                budgetDetailQuestions.Questions.Add(questionAnswred);
+            }
+
+            answerBudget = new AnswerBudgetViewModel();
+            answerBudget.BudgetDetailQuestions = budgetDetailQuestions;
+
+            return View(answerBudget);
         }
     }
 }

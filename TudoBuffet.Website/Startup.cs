@@ -90,6 +90,7 @@ namespace TudoBuffet.Website
             services.AddTransient<IPhotoHandler, PhotoHandlerService>();
             services.AddTransient<IRecaptchaValidator, RecaptchaValidator>();
             services.AddSingleton<IIpLocalizator, IpLocalizator>();
+            services.AddTransient<IBudgets, Budgets>();
 
             services.AddHttpContextAccessor();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();

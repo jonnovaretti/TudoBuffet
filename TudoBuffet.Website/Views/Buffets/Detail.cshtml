@@ -32,7 +32,7 @@
                             <h5>Faixa de preço</h5>
                             <p><i class="fa fa-arrow-right"></i> @Model.BuffetDetail.RangePrince</p>
                         </div>
-                        <button class="btn btn-default btn-sm btn-primary" onclick="javascript:addBuffetToBudgetList('@Model.BuffetDetail.Id')"><i class="fa fa-list"></i> Adicionar na lista</button>
+                        <button class="btn btn-default btn-sm btn-primary" onclick="return addBuffetToBudgetList('@Model.BuffetDetail.Id');" style="margin-bottom:5px"><i class="fa fa-list"></i> Adicionar na lista</button>
                     </form>
                 </div>
             </div>

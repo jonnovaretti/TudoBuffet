@@ -97,7 +97,9 @@ namespace TudoBuffet.Website.Controllers
                 HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsGenerated), new AuthenticationProperties()).GetAwaiter().GetResult();
 
                 if (GetRoleClaimValue(claimsGenerated).Equals(Enum.GetName(typeof(Profile), Profile.UserBuffetAdmin)))
-                    return RedirectToAction("Index", "Admin");
+                    return RedirectToAction("Index", "admin");
+                else if (GetRoleClaimValue(claimsGenerated).Equals(Enum.GetName(typeof(Profile), Profile.UserPartyOwner)))
+                    return RedirectToAction("Index", "PartyOwner");
 
                 return View();
             }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using TudoBuffet.Website.Entities;
+using TudoBuffet.Website.Models;
 using TudoBuffet.Website.Repositories.Contracts;
 
 namespace TudoBuffet.Website.Controllers
@@ -19,11 +20,15 @@ namespace TudoBuffet.Website.Controllers
 
         public IActionResult Index()
         {
+            PartyOwnerViewModel adminPartyOwner;
             IEnumerable<Budget> budgetsFound;
 
             budgetsFound = budgets.GetByUserId(UserId);
 
-            return View();
+            adminPartyOwner = new PartyOwnerViewModel();
+            adminPartyOwner.AddBudget(budgetsFound);
+
+            return View(adminPartyOwner);
         }
     }
 }

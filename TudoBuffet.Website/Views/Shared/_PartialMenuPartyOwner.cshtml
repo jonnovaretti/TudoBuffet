@@ -1,0 +1,32 @@
+﻿<div class="col-lg-3">
+    <div class="card sidebar-menu">
+        <div class="card-header">
+            <h3 class="h4 card-title">Seção do usuário</h3>
+        </div>
+        <div class="card-body">
+            <ul class="nav nav-pills flex-column">
+
+                @if (Context.Request.Path.HasValue && (Context.Request.Path.Value.Equals("/dono-da-festa") || Context.Request.Path.Value.Equals("/dono-da-festa/detalhe")))
+                {
+                <a href="~/admin" class="nav-link active"><i class="fa fa-list"></i> Meus orçamentos</a>
+                }
+                else
+                {
+                <a href="~/admin" class="nav-link"><i class="fa fa-list"></i> Meus orçamentos</a>
+                }
+
+                @if (Context.Request.Path.HasValue && Context.Request.Path.Value.Equals("/dono-da-festa/conta"))
+                {
+                <a href="~/admin/account" class="nav-link active"><i class="fa fa-list"></i> Minha conta</a>
+                }
+                else
+                {
+                <a href="~/admin/account" class="nav-link"><i class="fa fa-list"></i> Minha conta</a>
+                }
+
+                <a href="index.html" class="nav-link"><i class="fa fa-sign-out"></i> Sair</a>
+            </ul>
+        </div>
+        <br />
+    </div>
+</div>

@@ -35,6 +35,9 @@
     <Content Update="Views\Shared\_LayoutBuffetAdmin.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Shared\_PartialMenuPartyOwner.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
 
 </Project>

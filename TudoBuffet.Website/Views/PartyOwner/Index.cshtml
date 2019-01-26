@@ -1,0 +1,46 @@
+﻿@model TudoBuffet.Website.Models.PartyOwnerViewModel
+@{
+    ViewData["Title"] = "Gerencie seus orçamentos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        @await Html.PartialAsync("~/Views/Shared/_PartialMenuPartyOwner.cshtml")
+        <div id="customer-orders" class="col-lg-9">
+            <div class="box">
+                <h1>Orçamentos</h1>
+                <p class="lead">Bem-vindo, @Model.OwnerName</p>
+                <p class="text-muted">Se houver algum problema, entre em <a href="contact.html">contato</a>, responderemos o mais breve possível.</p>
+                <div class="table-responsive">
+                    @foreach (var budget in Model.Budgets)
+                    {
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th colspan="4">Quantidade de convidados: @budget.QuantityGuests | Data da festa: @budget.PartyDay.ToString("dd/MM/yyyy")</th>
+                                </tr>
+                                <tr>
+                                    <th>Nome buffet</th>
+                                    <th>Foi respondido</th>
+                                    <th>Está disponível na data</th>
+                                    <th>Nova data proposta</th>
+                                    <th>Ver respostas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a href="~/buffets/@budget.Detail.Title">@budget.Detail.BuffetName</a></td>
+                                    <td>@(budget.Detail.WasAnswered ? "Sim" : "Ainda não") </td>
+                                    <td>@(budget.Detail.IsDateAvailable ? "Sim" : "Não" )</td>
+                                    <td>@(budget.Detail.IsDateAvailable ? "-" : budget.Detail.ProposedDateFor.ToString("dd/MM/yyyy") )</td>
+                                    <td>@(budget.Detail.WasAnswered ? @Html.ActionLink("Ver respostas", "Answers", "PartyOwner", new { id = budget.Detail.DetailId }, null) : Html.Raw(" - ") )</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

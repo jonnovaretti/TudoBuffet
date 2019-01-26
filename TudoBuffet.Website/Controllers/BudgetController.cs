@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using TudoBuffet.Website.Repositories.Contracts;
 namespace TudoBuffet.Website.Controllers
 {
     [Route("orcamento")]
-    public class BudgetController : Controller
+    public class BudgetController : AuthenticatedControllerBase
     {
         private readonly IBuffets buffets;
         private readonly IBudgets budgets;
@@ -20,9 +21,9 @@ namespace TudoBuffet.Website.Controllers
             this.budgets = budgets;
         }
 
-        [Route("listar")]
         [HttpPost]
-        public IActionResult GetBuffetsByIdList(string currentList)
+        [Route("listar")]
+        public IActionResult Index(string currentList)
         {
             IEnumerable<Buffet> buffetsFound;
             BudgetSelectedViewModel budgetSelectedViewModel;
@@ -43,8 +44,9 @@ namespace TudoBuffet.Website.Controllers
         }
 
         [HttpPost]
-        [Route("enviar")]
-        public IActionResult CreateEmailValidation(BudgetSelectedViewModel budgetSelectedViewModel)
+        [Route("")]
+        [Authorize(Roles = "UserPartyOwner")]
+        public IActionResult Index(BudgetSelectedViewModel budgetSelectedViewModel)
         {
             Budget budget;
 
@@ -54,14 +56,33 @@ namespace TudoBuffet.Website.Controllers
             budgetSelectedViewModel.BudgetSent.Validate();
 
             budget = new Budget();
-            budgetSelectedViewModel.BuffetsBudgetSelected.ForEach(b => { budget.BudgetBuffets.Add(new BudgetBuffet  () { BuffetId = b.Id }); });
-            budget.DayParty = budgetSelectedViewModel.BudgetSent.DayParty;
-            budget.EmailSender = budgetSelectedViewModel.BudgetSent.EmailSender;
-            budget.Observation = budgetSelectedViewModel.BudgetSent.Observation;
             budget.QuantityPartyGuests = budgetSelectedViewModel.BudgetSent.QuantityPartyGuests;
+            budget.PartyDay = budgetSelectedViewModel.BudgetSent.PartyDay;
+            budget.PartyOwner = new UserPartyOwner() { Id = UserId };
+
+            foreach (var buffetSelected in budgetSelectedViewModel.BuffetsBudgetSelected)
+            {
+                var budgetDetail = new BudgetDetail();
+
+                budgetDetail.Buffet = new Buffet();
+                budgetDetail.Buffet.Id = buffetSelected.Id;
+
+                budgetDetail.Questions = new List<BudgetQuestion>();
+                foreach (var question in budgetSelectedViewModel.BudgetSent.Questions)
+                {
+                    budgetDetail.Questions.Add(new BudgetQuestion() { Question = question });
+                }
+
+                budget.Details.Add(budgetDetail);
+            }
 
             budgets.Insert(budget);
 
+            return View("Confirm");
+        }
+
+        public IActionResult Confirm()
+        {
             return View();
         }
     }

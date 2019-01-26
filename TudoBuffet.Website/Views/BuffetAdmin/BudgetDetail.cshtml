@@ -1,0 +1,74 @@
+﻿@model TudoBuffet.Website.Models.AnswerBudgetViewModel
+@{
+    ViewData["Title"] = "BudgetDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form id="newbuffetForm" method="post" action="/admin/budgets">
+    <div class="container">
+        <div class="row">
+            @await Html.PartialAsync("~/Views/Shared/_PartialMenuBuffetAdmin.cshtml")
+            <div class="col-lg-9">
+                <div class="box">
+                    <h3 class="mt-5">Detalhes do buffet</h3>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="name">Nome do interessado</label>
+                                @Html.TextBoxFor(m => m.OwnerPartyName, new { @class = "form-control", @readonly = true })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="description">Quantidade de convidados</label>
+                                @Html.TextBoxFor(m => m.QuantityGuests, new { @class = "form-control", @readonly = true })
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.row-->
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Data da festa</label>
+                                @Html.TextBoxFor(m => m.DayParty, new { @class = "form-control", @readonly = true })
+                               
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <label>Está disponível?</label>
+                                @Html.CheckBoxFor(m => m.IsAvaliableDate)
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="street">Propor nova data</label>
+                                @Html.TextBoxFor(m => m.BudgetDetailQuestions, new { @class = "form-control", @type = "date" })
+                            </div>
+                        </div>
+                        <div class="row ">
+                            @for (int i = 0; i < Model.Questions.Count; i++)
+                            {
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.Label("question", Model.BudgetDetailQuestions.Questions[i].Question, null)
+                                        @Html.TextBoxFor(m => m.BudgetDetailQuestions.Questions[i].Answer, new { @class = "form-control" })
+                                        @Html.HiddenFor(m => m.BudgetDetailQuestions.Questions[i].QuestionId)
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-md-12 text-center">
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Enviar resposta</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+

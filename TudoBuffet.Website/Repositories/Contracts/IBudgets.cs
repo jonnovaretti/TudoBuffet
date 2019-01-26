@@ -8,5 +8,7 @@ namespace TudoBuffet.Website.Repositories.Contracts
     {
         void Insert(Budget budget);
         IEnumerable<Budget> GetByUserId(Guid userId);
+        IEnumerable<Budget> GetByOwnerBuffet(Guid userId);
+        Budget GetById(Guid budgetId);
     }
 }
