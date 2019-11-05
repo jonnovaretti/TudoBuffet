@@ -1,12 +1,12 @@
-<mxfile host="www.draw.io" modified="2019-11-05T08:34:36.610Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36" etag="0C499pI8T3XrzJF9hNMs" version="12.2.0" type="github" pages="1">
+<mxfile host="www.draw.io" modified="2019-11-05T08:39:42.412Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36" etag="HmiFzCz7AqRyM1kvc2g7" version="12.2.0" type="github" pages="1">
   <diagram id="4-ExnRH2nlpV1U6-dy7Q" name="Page-1">
-    <mxGraphModel dx="678" dy="390" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1163" dy="669" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0"/>
         <mxCell id="1" parent="0"/>
         <object label="&lt;div style=&quot;text-align: left&quot;&gt;Margintrade System&lt;/div&gt;&lt;div style=&quot;text-align: left&quot;&gt;[1.0]&lt;/div&gt;" placeholders="1" c4Name="Margintrade System" c4Type="ExecutionEnvironment" c4Application="1.0" id="3FadowJ8ZwP5fmZhmTym-16">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#ffffff;fontColor=#000000;align=left;arcSize=3;strokeColor=#000000;verticalAlign=top;dashed=1;" parent="1" vertex="1">
-            <mxGeometry x="200" y="60" width="410" height="900" as="geometry"/>
+            <mxGeometry x="207" y="60" width="403" height="900" as="geometry"/>
             <C4ExecutionEnvironment as="c4"/>
           </mxCell>
         </object>
@@ -105,7 +105,7 @@
         </object>
         <object label="&lt;span&gt;Database&lt;/span&gt;&lt;div&gt;[Container:&amp;nbsp;mongodb]&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;storage orders sent to Alphapoint&lt;/div&gt;" placeholders="1" c4Type="Database" c4Technology="mongodb" c4Description="storage orders sent to Alphapoint" id="Y7Dl6s04BHCU936dO34F-2">
           <mxCell style="shape=cylinder;whiteSpace=wrap;html=1;boundedLbl=1;rounded=0;labelBackgroundColor=none;fillColor=#FFE599;fontSize=12;fontColor=#000000;align=center;strokeColor=#6c8ebf;" vertex="1" parent="1">
-            <mxGeometry x="345.9999999999999" y="810" width="133" height="114" as="geometry"/>
+            <mxGeometry x="345.99999999999983" y="810" width="133" height="114" as="geometry"/>
             <C4Database as="c4"/>
           </mxCell>
         </object>
